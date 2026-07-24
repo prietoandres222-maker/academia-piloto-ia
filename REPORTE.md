@@ -76,5 +76,36 @@ desconocido; sin placeholders/lorem; sintaxis JS válida (`node --check`).
 - `REPORTE.md` — este archivo.
 - `.gitignore` / `.vercelignore` — excluyen archivos auxiliares locales.
 
-## Fase 2 (Supabase)
-Ver sección al final — actualizada tras el intento.
+## Fase 2 (Supabase) — NO ACTIVADA (decisión documentada)
+
+**Estado: la sincronización con Supabase NO quedó activa.** La app usa **localStorage como
+fuente única de verdad**, con **exportar/importar JSON** desde el Modo Tutor como mecanismo
+de respaldo y traslado entre dispositivos.
+
+**Qué pasó:** intenté crear un proyecto Supabase nuevo con el token de cuenta (como pide la
+regla de "un proyecto por programa, sin reutilizar las llaves del CRM MOP"). La API respondió:
+
+> *"...reached their maximum limits for the number of active free projects... (2 project limit).
+> To continue, these users will need to either delete, pause or upgrade one or more of these projects."*
+
+La organización de Supabase de Felipe ya tiene **2 proyectos gratuitos activos** (el máximo del
+plan free; uno es el CRM MOP). Crear el proyecto nuevo exigiría **eliminar o pausar un proyecto
+existente de Felipe** —una acción destructiva sobre datos que no son de este programa— o
+**subir de plan (pago)**. Ninguna de las dos es apropiada hacerla de forma autónoma mientras
+Felipe duerme, y contradice la regla de no tocar las llaves/proyectos del CRM MOP.
+
+**Decisión:** siguiendo el fallback definido ("si Supabase da un problema que no resuelvo en 3
+intentos, dejo la integración fuera limpiamente"), **no se agregó ningún código de Supabase al
+`index.html`**. Por eso la app quedó intacta, sin claves expuestas y sin dependencia de red: no
+hubo que revertir ni re-desplegar nada. La versión pública es la de Fase 1, ya verificada.
+
+**Para activar la Fase 2 en el futuro** (cuando Felipe quiera): liberar un cupo en Supabase
+(pausar/eliminar un proyecto que ya no use, o subir de plan) y volver a correr la creación del
+proyecto `academia-piloto-ia`. La app ya tiene el punto natural donde engancharlo: `save()` (para
+hacer upsert del estado) y `load()` (para leer el respaldo al iniciar).
+
+## Pendientes / notas
+- **Nada bloqueante quedó pendiente.** Todos los criterios de éxito se cumplen con la Fase 1.
+- La racha usa la fecha de America/Bogota (regla de zona horaria de Felipe).
+- El único "requisito" no cumplido al 100% es la Fase 2, que es **opcional** y quedó fuera por el
+  límite de plan de Supabase (explicado arriba), no por un fallo de la app.
