@@ -14,7 +14,15 @@ _(la vieja `https://academia-piloto-ia-mop-modular-crm.vercel.app` también func
 
 **Código:** https://github.com/prietoandres222-maker/academia-piloto-ia (el repo/URL conservan el nombre viejo; la app se llama **Capitán EchandIA**).
 
-## 🎨 Última actualización (diseño + clase de hoy)
+## 🆕 Última ronda (avance, insignias, Comandante, nube)
+- **Sincronización a la nube = automática** en cada acción de Daniel (guardado con retardo de ~1.5s) **+ "flush" con `keepalive` al cerrar/ocultar** la app (nunca se pierde el último cambio).
+- **Avance sembrado (Sesión 1 ya hecha):** el módulo **"La era de la IA" (Despegue)** arranca completo, con ~115 XP e insignias *Primer Vuelo* y *Piloto Seguro*. **Prompts y lo demás quedan por hacer** (sin chulo verde; Prompts aparece como el nodo "actual" que brilla). Es una semilla: si Daniel ya tiene progreso real (local o nube), ese manda.
+- **Orden:** Despegue (hecha) → **Prompts** → Imágenes → Hablar por voz → Radar → Negocio → Constructor.
+- **Recorrido de insignias hacia Capitán:** en **escritorio**, riel **vertical a la derecha** del Camino (Capitán arriba, marca "◄ vas aquí" en la próxima); en **móvil**, franja horizontal compacta arriba del mapa. Muestra ganadas vs. pendientes.
+- **"Tutor" → "Comandante"** (el que instruye a los futuros capitanes). Mismo PIN **1214**.
+- Perfil ahora usa 🏅 y Comandante 🎖️ (íconos distintos).
+
+## 🎨 Actualización previa (diseño + clase)
 - **Nombre → Capitán EchandIA** (juego de palabras con el apellido Echandía + IA; la "IA" va resaltada).
 - **Rediseño de escritorio (diseñador experto):** barra superior fija + **barra lateral izquierda** de navegación + **columna de contenido centrada** (~648px). Se acabó lo ancho/angosto/espacio desperdiciado. En **celular** queda a pantalla completa con barra inferior (verificado a 375px, sin scroll horizontal).
 - **Insignias automáticas:** Daniel se las gana solo al completar cada proyecto (ya NO las otorga el tutor).
