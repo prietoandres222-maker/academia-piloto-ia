@@ -316,7 +316,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* =====================================================================
    ACADEMIA PILOTO IA  —  app de una sola página, vanilla JS
    Estructura:  CURRICULUM (contenido)  +  ENGINE (lógica de juego)
-   Persistencia: localStorage.  PIN tutor: 2412.
+   Persistencia: localStorage.  PIN tutor: 1214.
    ===================================================================== */
 
 /* ============================================================
@@ -1186,7 +1186,7 @@ CURRICULUM.levels = ['n1','n2','n3','n5','n4','n6','n7'].map(id=>CURRICULUM.leve
    3) ENGINE  —  lógica de juego
    ===================================================================== */
 const LS_KEY = "academiaPilotoIA_v1";
-const PIN = "2412";
+const PIN = "1214";
 
 const DEFAULT_STATE = () => ({
   name:"Daniel", xp:0, streak:0, bestStreak:0, lastDay:null,
@@ -1757,7 +1757,7 @@ function tmNext(){ clearInterval(TM.iv); TM.run=false; TM.rest=false; TM.block=M
 function tmReset(){ clearInterval(TM.iv); TM={run:false,rest:false,sec:25*60,block:0,iv:null}; renderSession(); }
 
 /* =========================================================
-   PANTALLA 5 · MODO TUTOR (PIN 2412)
+   PANTALLA 5 · MODO TUTOR (PIN 1214)
    ========================================================= */
 const elOv=document.getElementById('overlay'), elModal=document.getElementById('modal');
 function openTutor(){
