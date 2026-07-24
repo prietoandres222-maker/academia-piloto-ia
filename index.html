@@ -282,6 +282,38 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 @media(min-width:1300px){
   .screen{max-width:700px;padding-left:34px;padding-right:34px}
 }
+
+/* ===== RECORRIDO DE INSIGNIAS ===== */
+.pathgrid{display:block}
+.badgerail{display:none}
+.badgestrip{background:linear-gradient(135deg,#16265a,#0c1738);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:2px 0 14px}
+.bstrip-h{font-size:11.5px;font-weight:700;color:var(--dim);margin-bottom:8px}
+.bstrip-h b{color:var(--cyan)}
+.bstrip-track{display:flex;gap:9px;overflow-x:auto;padding-bottom:2px}
+.bstrip-item{flex:0 0 auto;width:40px;height:40px;border-radius:11px;background:rgba(0,0,0,.25);display:grid;place-items:center;font-size:22px;filter:grayscale(1);opacity:.35;border:1.5px solid transparent}
+.bstrip-item.on{filter:none;opacity:1;background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.45)}
+.bstrip-item.next{filter:none;opacity:.95;border-color:var(--cyan);animation:railpulse 1.8s infinite}
+@keyframes railpulse{0%,100%{box-shadow:0 0 0 0 rgba(34,211,238,.45)}50%{box-shadow:0 0 0 6px rgba(34,211,238,0)}}
+@media(min-width:920px){
+  #scr-path{max-width:980px}
+  .pathgrid{display:grid;grid-template-columns:minmax(0,1fr) 238px;gap:26px;align-items:start;max-width:900px;margin:0 auto}
+  .badgestrip{display:none}
+  .badgerail{display:block;position:sticky;top:78px;background:linear-gradient(180deg,#16265a,#0b1636);border:1px solid var(--line);border-radius:18px;padding:16px 13px;box-shadow:var(--sh)}
+  .brail-head{text-align:center;padding-bottom:12px;margin-bottom:8px;border-bottom:1px solid var(--line)}
+  .brail-title{font-size:15px;font-weight:800;background:var(--gradA);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .brail-rank{font-size:12px;color:var(--ink);font-weight:700;margin-top:5px}
+  .brail-sub{font-size:10.5px;color:var(--dim2);margin-top:2px}
+  .brail-track{display:flex;flex-direction:column;gap:3px}
+  .brail-item{display:flex;align-items:center;gap:10px;padding:6px 8px;border-radius:11px;opacity:.42;transition:.2s}
+  .brail-item.on{opacity:1;background:rgba(52,211,153,.1)}
+  .brail-item.next{opacity:1;background:rgba(34,211,238,.12);border:1px solid rgba(34,211,238,.4)}
+  .brail-ic{width:34px;height:34px;border-radius:10px;background:rgba(0,0,0,.3);display:grid;place-items:center;font-size:20px;filter:grayscale(1);flex-shrink:0}
+  .brail-item.on .brail-ic{filter:none;background:rgba(52,211,153,.18)}
+  .brail-item.next .brail-ic{filter:none;background:rgba(34,211,238,.18)}
+  .brail-nm{font-size:11.5px;font-weight:700;color:var(--dim);line-height:1.2}
+  .brail-item.on .brail-nm,.brail-item.next .brail-nm{color:var(--ink)}
+  .brail-you{display:block;font-size:9.5px;font-weight:800;color:var(--cyan);margin-top:1px}
+}
 </style>
 </head>
 <body>
@@ -327,8 +359,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <nav class="nav">
     <button class="navbtn active" data-nav="path"><span class="ni">🗺️</span>Camino</button>
     <button class="navbtn" data-nav="session"><span class="ni">⏱️</span>Sesión</button>
-    <button class="navbtn" data-nav="profile"><span class="ni">🎖️</span>Perfil</button>
-    <button class="navbtn" data-nav="tutor"><span class="ni">🔐</span>Tutor</button>
+    <button class="navbtn" data-nav="profile"><span class="ni">🏅</span>Perfil</button>
+    <button class="navbtn" data-nav="tutor"><span class="ni">🎖️</span>Comandante</button>
   </nav>
 </div>
 
@@ -1218,8 +1250,8 @@ const CURRICULUM = {
 
 /* Orden de módulos según el Gamma "IA para emprendedores":
    era de la IA → hablarle → PROMPTS → imágenes → alucinaciones → negocio/agente → constructor(bonus) */
-/* Orden para la clase de HOY: Prompts → Prompts de imagen → Hablar por voz, luego el resto */
-CURRICULUM.levels = ['n3','n5','n2','n1','n4','n6','n7'].map(id=>CURRICULUM.levels.find(l=>l.id===id));
+/* Orden: Sesión 1 ya vista (La era de la IA), luego lo de HOY: Prompts → Imágenes → Hablar por voz, luego el resto */
+CURRICULUM.levels = ['n1','n3','n5','n2','n4','n6','n7'].map(id=>CURRICULUM.levels.find(l=>l.id===id));
 (function(){
   const TAG={
    n1:"La era de la IA: qué es y por qué a veces falla",
@@ -1244,7 +1276,31 @@ const DEFAULT_STATE = () => ({
   review:[], muted:false, lessonsCount:0, exCount:0, correctCount:0, createdAt:Date.now(), _t:0
 });
 let S = load();
+// Semilla: si es un equipo nuevo (sin progreso), arranca como si ya hubiera hecho la Sesión 1
+// (el módulo "La era de la IA"). Prompts y lo demás quedan por hacer.
+if(!S.lessonsCount && !S.xp && !Object.keys(S.done||{}).length){ S = seedState(); saveLocal(); }
 let tutorAuthed = false;
+
+function seedState(){
+  const s = DEFAULT_STATE();
+  const n1 = CURRICULUM.levels.find(l=>l.id==='n1'); // La era de la IA (Sesión 1)
+  if(n1){
+    let ex=0, eth=0;
+    n1.lessons.forEach(l=>{ s.done[l.id]=true; s.lessonsCount++; l.ex.forEach(e=>{ ex++; if(e.eth) eth++; }); });
+    s.moduleDone['n1']=true;
+    s.projects['n1p']='done';
+    const ok=Math.round(ex*0.85);
+    s.skill['fundamentos']={ok:Math.round(ok*0.7),total:Math.round(ex*0.7)};
+    s.skill['verificar']={ok:Math.round(ok*0.2),total:Math.round(ex*0.2)};
+    s.skill['etica']={ok:eth,total:eth};
+    s.exCount=ex; s.correctCount=ok; s.ethCount=eth;
+    s.badges['primerVuelo']=true; s.badges['pilotoSeguro']=true;
+    s.xp = s.lessonsCount*13 + 50; // ~115 XP: avance real, Cadete rumbo a Alférez
+    s.streak=1; s.bestStreak=1; s.lastDay=todayBogota();
+  }
+  s._t = 1000; // marca baja: cualquier progreso real futuro gana en la sincronización
+  return s;
+}
 
 function load(){
   try{ const r = localStorage.getItem(LS_KEY); if(r){ return Object.assign(DEFAULT_STATE(), JSON.parse(r)); } }catch(e){}
@@ -1284,6 +1340,15 @@ function cloudLoad(){
       }).catch(()=>setCloud(false));
   }catch(e){ setCloud(false); }
 }
+/* Flush inmediato al cerrar/ocultar: garantiza que el último cambio suba a la nube (keepalive) */
+function flushCloud(){
+  try{ clearTimeout(sbTimer);
+    fetch(SB_URL+"/rest/v1/progreso?on_conflict=id",{method:"POST",keepalive:true,
+      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},
+      body:JSON.stringify([{id:SB_ROW,data:S,updated_at:new Date().toISOString()}])}); }catch(e){}
+}
+addEventListener('pagehide', flushCloud);
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushCloud(); });
 
 /* ---------- fechas (America/Bogota) ---------- */
 function todayBogota(){ return new Date().toLocaleDateString('en-CA',{timeZone:'America/Bogota'}); }
@@ -1476,6 +1541,7 @@ function renderPath(){
     </div></div>
     <div class="capi"><div class="face">🦜</div><div class="bub">${capiPhrase()}</div></div>
     <button class="btn ghost sm" style="margin-bottom:4px" onclick="APP.review()">🛩️ Simulador de vuelo (repaso) ${S.review.length?('· '+S.review.length):''}</button>`;
+  h+=badgeStripHTML(); // recorrido de insignias (franja compacta; se ve en móvil)
 
   CURRICULUM.levels.forEach((lv,i)=>{
     const unlocked=levelUnlocked(i);
@@ -1512,8 +1578,33 @@ function renderPath(){
         <div class="badgexp">${pSt?'🏅':'+50'}</div></div>`;
     h+=`</div>`;
   });
-  document.getElementById('scr-path').innerHTML=h;
+  document.getElementById('scr-path').innerHTML='<div class="pathgrid"><div class="pathmain">'+h+'</div>'+badgeRailHTML()+'</div>';
   refreshTop();
+}
+/* ---------- Recorrido de insignias (hasta Capitán) ---------- */
+function badgeData(){
+  const order=CURRICULUM.badges;
+  let nextId=null; for(const b of order){ if(!S.badges[b.id]){ nextId=b.id; break; } }
+  return {order,nextId,earned:Object.keys(S.badges).length};
+}
+function badgeRailHTML(){ // escritorio: columna vertical a la derecha (Capitán arriba)
+  const {order,nextId,earned}=badgeData(); const r=rankFor(S.xp), nx=nextRank(S.xp);
+  const items=order.slice().reverse().map(b=>{ const on=!!S.badges[b.id], isNext=b.id===nextId;
+    return `<div class="brail-item ${on?'on':''} ${isNext?'next':''}">
+      <div class="brail-ic">${b.ic}</div>
+      <div class="brail-nm">${b.n}${isNext?'<span class="brail-you">◄ vas aquí</span>':''}</div></div>`; }).join('');
+  return `<aside class="badgerail">
+    <div class="brail-head"><div class="brail-title">🏅 Ruta a Capitán</div>
+      <div class="brail-rank">${r.ic} ${r.n} · ${earned}/${order.length} insignias</div>
+      <div class="brail-sub">${nx?('Faltan '+(nx.xp-S.xp)+' XP para '+nx.n):'¡Rango máximo!'}</div></div>
+    <div class="brail-track">${items}</div></aside>`;
+}
+function badgeStripHTML(){ // móvil: franja horizontal compacta
+  const {order,nextId,earned}=badgeData();
+  const items=order.map(b=>{ const on=!!S.badges[b.id], isNext=b.id===nextId;
+    return `<div class="bstrip-item ${on?'on':''} ${isNext?'next':''}" title="${b.n}">${b.ic}</div>`; }).join('');
+  return `<div class="badgestrip"><div class="bstrip-h">🏅 Insignias ${earned}/${order.length} · <b>rumbo a Capitán</b></div>
+    <div class="bstrip-track">${items}</div></div>`;
 }
 
 /* =========================================================
@@ -1812,7 +1903,7 @@ function tmReset(){ clearInterval(TM.iv); TM={run:false,rest:false,sec:25*60,blo
 const elOv=document.getElementById('overlay'), elModal=document.getElementById('modal');
 function openTutor(){
   if(tutorAuthed){ renderTutor(); show('tutor'); return; }
-  elModal.innerHTML=`<h3>🔐 Modo Tutor</h3><p>Panel privado de Felipe. Ingresa el PIN de 4 dígitos.</p>
+  elModal.innerHTML=`<h3>🎖️ Modo Comandante</h3><p>Panel del Comandante (Felipe), quien instruye a los futuros capitanes. Ingresa el PIN de 4 dígitos.</p>
     <input class="pininput" id="pinIn" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
     <button class="btn primary" onclick="APP.checkPin()">Entrar</button>
     <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
@@ -1825,7 +1916,7 @@ function closeOverlay(){ elOv.classList.remove('show'); }
 
 function renderTutor(){
   const r=rankFor(S.xp);
-  let h=`<div class="sectitle">Panel del tutor · Progreso de Daniel</div>
+  let h=`<div class="sectitle">Panel del Comandante · Progreso de Daniel</div>
     <div class="statgrid">
       <div class="statbox"><div class="v">${S.xp}</div><div class="l">XP · ${r.n}</div></div>
       <div class="statbox"><div class="v">${S.lessonsCount}</div><div class="l">Lecciones hechas</div></div>
@@ -1864,7 +1955,7 @@ function renderTutor(){
     <button class="btn ghost sm" style="margin-bottom:8px" onclick="document.getElementById('importFile').click()">⬆️ Importar progreso (JSON)</button>
     <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="APP.importData(event)">
     <button class="btn red sm" style="margin-bottom:8px" onclick="APP.resetData()">🗑️ Resetear todo el progreso</button>
-    <button class="btn ghost sm" onclick="APP.lockTutor()">🔒 Salir del modo tutor</button>
+    <button class="btn ghost sm" onclick="APP.lockTutor()">🔒 Salir del modo Comandante</button>
     <div class="muted" style="margin-top:14px;text-align:center">Capitán EchandIA · progreso en este equipo + espejo en la nube</div>`;
   document.getElementById('scr-tutor').innerHTML=h;
 }
