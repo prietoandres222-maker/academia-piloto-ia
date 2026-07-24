@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#0a1128">
-<title>Academia Piloto IA</title>
+<title>Capitán Dani IA</title>
 <style>
 /* ============ RESET / BASE ============ */
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -25,7 +25,13 @@ body{
   user-select:none;
 }
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-.app{max-width:560px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:84px}
+.app{width:100%;max-width:100%;margin:0 auto;min-height:100vh;position:relative;padding-bottom:84px}
+/* En pantallas anchas el contenido usa todo el ancho, con columnas de lectura cómodas */
+.wrap{width:100%;max-width:920px;margin:0 auto}
+@media(min-width:900px){
+  .screen{padding:22px 30px}
+  .path{max-width:760px;margin:0 auto}
+}
 
 /* ============ TOP BAR ============ */
 .topbar{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(7,13,32,.96),rgba(7,13,32,.75));
@@ -147,7 +153,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .copybtn{font-size:11px;font-weight:800;color:var(--cyan);margin-top:6px;padding:6px 10px;background:rgba(34,211,238,.1);border-radius:8px;display:inline-block}
 
 /* feedback bar */
-.fb{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:16px;max-width:560px;margin:0 auto;transform:translateY(120%);transition:transform .32s cubic-bezier(.2,.9,.3,1)}
+.fb{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:16px;max-width:760px;margin:0 auto;transform:translateY(120%);transition:transform .32s cubic-bezier(.2,.9,.3,1)}
 .fb.show{transform:none}
 .fb .box{border-radius:16px;padding:15px 16px;box-shadow:0 -8px 30px rgba(0,0,0,.4)}
 .fb.good .box{background:linear-gradient(135deg,#0f5132,#065f46);border:1px solid var(--green)}
@@ -160,7 +166,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 
 /* ============ PROFILE ============ */
 .sectitle{font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--dim2);margin:20px 2px 10px}
-.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .statbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
 .statbox .v{font-size:26px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .statbox .l{font-size:12px;color:var(--dim);margin-top:2px}
@@ -192,7 +198,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .blk .bt small{display:block;font-weight:500;color:var(--dim2);font-size:11.5px;margin-top:2px}
 
 /* ============ NAV ============ */
-.nav{position:fixed;bottom:0;left:0;right:0;max-width:560px;margin:0 auto;background:rgba(9,16,38,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;padding:6px 6px 8px;z-index:35}
+.nav{position:fixed;bottom:0;left:0;right:0;margin:0 auto;background:rgba(9,16,38,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:center;gap:6px;padding:6px 6px 8px;z-index:35}
+.navbtn{max-width:200px}
 .navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;color:var(--dim2);font-size:10px;font-weight:700;transition:.15s}
 .navbtn .ni{font-size:21px}
 .navbtn.active{color:var(--cyan)}
@@ -218,6 +225,29 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .celebrate .cm{font-size:16px;font-weight:700;color:var(--ink);margin-top:12px;max-width:440px;line-height:1.4}
 .celebrate .cx{font-size:15px;font-weight:800;color:var(--amber);margin-top:14px;background:rgba(251,191,36,.14);padding:8px 18px;border-radius:999px}
 
+/* ===== SIMULACIÓN DE VUELO (fin de módulo) ===== */
+.flightsim{position:fixed;inset:0;z-index:72;display:none;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(1200px 600px at 50% 120%,#0b2a5e 0%,transparent 60%),linear-gradient(180deg,#050b1c,#0a1440 70%,#0e2150)}
+.flightsim.show{display:flex;animation:fade .3s}
+.fs-stars{position:absolute;inset:0;background-image:radial-gradient(2px 2px at 20% 30%,#fff,transparent),radial-gradient(2px 2px at 70% 20%,#cfe0ff,transparent),radial-gradient(1px 1px at 40% 60%,#fff,transparent),radial-gradient(2px 2px at 85% 55%,#fff,transparent),radial-gradient(1px 1px at 55% 40%,#9fb2d8,transparent),radial-gradient(2px 2px at 15% 75%,#fff,transparent);opacity:.7}
+.fs-route{position:relative;width:84%;max-width:640px;height:140px;margin-bottom:8px}
+.fs-line{position:absolute;top:50%;left:0;right:0;height:0;border-top:3px dashed rgba(120,160,255,.45);border-radius:2px}
+.fs-prog{position:absolute;top:50%;left:0;height:0;border-top:3px solid var(--cyan);border-radius:2px;box-shadow:0 0 10px var(--cyan);width:0;transition:none;animation:fsprog 3.4s cubic-bezier(.5,0,.5,1) forwards}
+@keyframes fsprog{to{width:100%}}
+.fs-a,.fs-b{position:absolute;top:50%;transform:translateY(-50%);font-size:30px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.5))}
+.fs-a{left:-6px} .fs-b{right:-10px}
+.fs-plane{position:absolute;top:50%;font-size:40px;left:0;transform:translate(-50%,-50%);animation:fsfly 3.4s cubic-bezier(.5,0,.5,1) forwards;filter:drop-shadow(0 4px 8px rgba(34,211,238,.5))}
+@keyframes fsfly{
+  0%{left:2%;transform:translate(-50%,-50%) rotate(-14deg) scale(.8)}
+  15%{transform:translate(-50%,-140%) rotate(-8deg) scale(1)}
+  50%{transform:translate(-50%,-180%) rotate(0deg) scale(1.1)}
+  85%{transform:translate(-50%,-140%) rotate(8deg) scale(1)}
+  100%{left:98%;transform:translate(-50%,-50%) rotate(12deg) scale(.85)}}
+.fs-trail{position:absolute;top:calc(50% - 42px);height:3px;background:linear-gradient(90deg,transparent,rgba(34,211,238,.6));border-radius:2px;width:0;animation:fsprog 3.4s cubic-bezier(.5,0,.5,1) forwards}
+.fs-title{font-size:22px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;text-align:center}
+.fs-sub{font-size:15px;color:var(--dim);margin-top:8px;text-align:center;max-width:440px;line-height:1.4}
+.fs-badge{margin-top:16px;font-size:14px;font-weight:800;color:#2b1600;background:var(--gradA);padding:9px 20px;border-radius:999px;animation:pop .5s .4s both}
+
 /* tutor */
 .tutrow{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;gap:10px}
 .tutrow .ti{font-size:13.5px;font-weight:700} .tutrow .ti small{display:block;color:var(--dim2);font-weight:500;font-size:11.5px}
@@ -238,10 +268,21 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <div class="cm" id="celebMsg"></div>
   <div class="cx" id="celebXp"></div>
 </div>
+<div class="flightsim" id="flightsim">
+  <div class="fs-stars"></div>
+  <div class="fs-route">
+    <div class="fs-line"></div><div class="fs-prog"></div><div class="fs-trail"></div>
+    <div class="fs-a">🛫</div><div class="fs-b">🏁</div>
+    <div class="fs-plane">✈️</div>
+  </div>
+  <div class="fs-title" id="fsTitle"></div>
+  <div class="fs-sub" id="fsSub"></div>
+  <div class="fs-badge" id="fsBadge"></div>
+</div>
 
 <div class="app">
   <div class="topbar">
-    <div class="brand"><span class="logo">✈️</span><span>Academia Piloto IA</span></div>
+    <div class="brand"><span class="logo">✈️</span><span>Capitán Dani IA</span></div>
     <div class="spacer"></div>
     <div class="stat streak" id="streakStat">🔥 0</div>
     <div class="stat xp" id="xpStat">⭐ 0</div>
@@ -574,109 +615,125 @@ const CURRICULUM = {
     xp:50}
   },
 
-  /* ================= NIVEL 3 · PROMPT MASTER ================= */
-  {id:"n3",name:"Prompt Master",tag:"Técnicas pro para prompts",ic:"🧠",skill:"prompts",
+  /* ================= NIVEL 3 · PROMPT MASTER (método de la clase) ================= */
+  {id:"n3",name:"Prompt Master",tag:"Construir prompts efectivos: el método",ic:"🧠",skill:"prompts",
    lessons:[
-    {id:"n3l1",t:"Asignar un rol",d:"'Actúa como…' cambia todo",ex:[
+    {id:"n3l1",t:"Las 5 piezas del prompt",d:"La receta de un prompt efectivo",ex:[
+      {type:"mc",skill:"prompts",q:"¿Qué hace que un prompt sea EFECTIVO?",
+       opts:["Que sea muy corto y rápido","Que tenga piezas claras: rol, contexto, objetivo, formato y tono","Que use muchos emojis","Que esté en inglés"],
+       a:1,ex:"Un prompt efectivo se arma con piezas: quién es la IA (rol), la info de fondo (contexto), la tarea (objetivo), cómo lo quieres (formato) y cómo debe sonar (tono)."},
+      {type:"match",skill:"prompts",q:"Empareja cada pieza del prompt con lo que define:",
+       pairs:[{l:"Rol",r:"Quién es o cómo actúa la IA"},{l:"Contexto",r:"Información de fondo"},{l:"Objetivo",r:"La tarea, con precisión"},{l:"Formato",r:"Cómo quieres la respuesta"}],
+       ex:"Rol, contexto, objetivo y formato. Con el tono y estilo, son las 5 piezas del método."},
+      {type:"order",skill:"prompts",q:"Ordena las piezas para que el prompt fluya:",
+       items:["Rol (actúa como…)","Contexto (mi situación)","Objetivo (la tarea)","Formato (lista, tabla…)","Tono (cómo suena)"],
+       ex:"Rol → contexto → objetivo → formato → tono. Ese orden fluye, aunque lo importante es que estén todas."},
+      {type:"improve",skill:"prompts",q:"¿Cuál prompt usa bien las piezas? (ejemplo de la clase)",
+       opts:["'Necesito una receta de pollo'","'Como chef, dame una receta de pollo fácil y saludable para la cena, con ingredientes comunes, lista en menos de 30 min, con pasos numerados'"],
+       a:1,why:"El segundo tiene rol (chef), objetivo (receta fácil/saludable), contexto (cena, ingredientes comunes) y formato (pasos numerados). Así se arma."},
+      {type:"fill",skill:"prompts",q:"Completa: 'Las 5 piezas son rol, tono, formato, contexto e ______.'",
+       opts:["instrucción / objetivo","precio","color","hora"],a:0,ex:"La instrucción clara u objetivo es el corazón: dice QUÉ tarea quieres, sin rodeos."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: entre más claras las piezas, mejor responde la IA.",
+       a:true,ex:"Verdadero. Cada pieza clara le quita adivinanza a la IA. Un prompt completo = una respuesta a tu medida."},
+      {type:"mc",skill:"etica",eth:true,q:"Al dar CONTEXTO de tu negocio, ¿qué NO debes incluir?",
+       opts:["Que vendes lociones","Que tu público son jóvenes","Cédulas o teléfonos reales de tus clientes","Que vendes por Instagram"],
+       a:2,ex:"Contexto del negocio: sí. Datos personales de personas: nunca. Protege la información privada, tuya y de tus clientes."}
+    ]},
+    {id:"n3l2",t:"Rol y tono",d:"Quién es la IA y cómo suena",ex:[
       {type:"mc",skill:"prompts",q:"¿Qué logra empezar con 'Actúa como DT de Atlético Nacional'?",
        opts:["Nada, es de adorno","Que la IA responda con el estilo y conocimiento de ese rol","Que la IA se vuelva DT de verdad","Que responda en inglés"],
-       a:1,ex:"Darle un rol enfoca la respuesta. 'Actúa como nutricionista', 'como piloto', 'como vendedor'. Cambia el tono y el enfoque."},
-      {type:"improve",skill:"prompts",q:"¿Cuál usa mejor la técnica del rol?",
+       a:1,ex:"El ROL enfoca la respuesta. 'Actúa como nutricionista', 'como piloto', 'como vendedor': cambia el enfoque y la profundidad."},
+      {type:"improve",skill:"prompts",q:"¿Cuál usa mejor el rol para tu negocio?",
        opts:["'consejos de ventas'","'Actúa como un vendedor experto de perfumería y dame 5 consejos para vender lociones a jóvenes'"],
        a:1,why:"El rol ('vendedor experto de perfumería') hace que los consejos salgan enfocados a tu negocio, no genéricos."},
-      {type:"fill",skill:"prompts",q:"Completa la fórmula del rol: 'Actúa como ______ y ayúdame con…'",
-       opts:["[un experto en el tema]","[mi mamá]","[un robot]","[nadie]"],a:0,ex:"Escoge un experto útil: entrenador, nutricionista, piloto, vendedor. El rol correcto = mejor respuesta."},
       {type:"match",skill:"prompts",q:"Empareja tu necesidad con el rol ideal:",
-       pairs:[{l:"Mejorar tu saque",r:"Actúa como entrenador de pádel"},{l:"Vender lociones",r:"Actúa como experto en ventas"},{l:"Entender aviones",r:"Actúa como instructor de vuelo"}],
-       ex:"El rol correcto pone a la IA 'en el papel' que necesitas. Elígelo según tu meta."},
-      {type:"tf",skill:"prompts",q:"Verdadero o falso: puedo combinar rol + contexto + formato en un mismo prompt.",
-       a:true,ex:"Verdadero. Y así se arman los mejores prompts: 'Actúa como X, mi situación es Y, respóndeme en formato Z'."},
-      {type:"mc",skill:"prompts",q:"Quieres consejos de nutrición para deporte. Mejor rol:",
-       opts:["'Actúa como nutricionista deportivo'","'Actúa como cantante'","'Actúa como taxista'","Ninguno, no sirve"],
-       a:0,ex:"El rol debe encajar con el tema. Nutricionista deportivo = respuestas expertas para tu entrenamiento."}
+       pairs:[{l:"Mejorar tu saque de pádel",r:"Actúa como entrenador de pádel"},{l:"Vender lociones",r:"Actúa como experto en ventas"},{l:"Entender aviones",r:"Actúa como instructor de vuelo"}],
+       ex:"El rol correcto pone a la IA en el papel que necesitas. Elígelo según tu meta."},
+      {type:"mc",skill:"prompts",q:"El 'tono y estilo' del prompt sirve para…",
+       opts:["Decir de qué color responde","Decir cómo debe SONAR: formal, informal, técnico, divertido…","Nada","Poner música"],
+       a:1,ex:"Tono y estilo = cómo suena la respuesta. Puedes pedir 'formal', 'juvenil y divertido', 'técnico'. Tú decides la voz."},
+      {type:"fill",skill:"prompts",q:"Completa la fórmula del rol: 'Actúa como ______ y ayúdame con…'",
+       opts:["[un experto útil en el tema]","[mi vecino]","[un robot]","[nadie]"],a:0,ex:"Escoge un experto que encaje: entrenador, nutricionista, vendedor. El rol correcto = mejor respuesta."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: puedo pedir 'lenguaje sencillo y tono divertido' para que un texto conecte con jóvenes.",
+       a:true,ex:"Verdadero. Como en el cuento del conejo de la clase: 'lenguaje sencillo, tono divertido y educativo'. El tono lo pones tú."},
+      {type:"improve",skill:"prompts",q:"Quieres un texto para tus lociones con tono juvenil. ¿Cuál pide mejor?",
+       opts:["'texto para loción'","'Actúa como copywriter juvenil. Escribe un texto corto y fresco para una loción de jóvenes, tono divertido y directo'"],
+       a:1,why:"Rol (copywriter juvenil) + objetivo (texto corto) + tono (divertido y directo). El texto sale con tu vibra, no acartonado."}
     ]},
-    {id:"n3l2",t:"Contexto y datos",d:"Aliméntala con tu realidad",ex:[
-      {type:"mc",skill:"prompts",q:"¿Por qué darle datos concretos mejora el prompt?",
+    {id:"n3l3",t:"Contexto, formato y objetivo",d:"Las tres piezas que aterrizan todo",ex:[
+      {type:"mc",skill:"prompts",q:"¿Por qué darle CONTEXTO y datos concretos mejora el prompt?",
        opts:["Porque se ve más largo","Porque la IA responde ajustada a TU caso, no en general","Porque le gusta leer","No mejora"],
-       a:1,ex:"Datos = respuestas a tu medida. 'Vendo lociones a $30.000, mi cliente es joven' da mejores ideas que 'ayúdame a vender'."},
-      {type:"improve",skill:"prompts",q:"¿Cuál da mejor contexto y datos?",
-       opts:["'ideas para vender'","'Vendo lociones a jóvenes de 15-20 años, precio $30.000, por Instagram. Dame 5 ideas para vender más esta semana.'"],
-       a:1,why:"Producto, público, precio, canal y objetivo. Con esos datos las ideas salen aplicables de una."},
-      {type:"order",skill:"prompts",q:"Ordena de más a menos útil para vender lociones:",
-       items:["Qué vendes (lociones) y a quién (jóvenes)","Tu canal (Instagram) y precio","Tu objetivo (vender más esta semana)"],
-       ex:"Producto+público, luego canal+precio, luego objetivo. Todo suma para un prompt potente."},
-      {type:"fill",skill:"prompts",q:"Completa: 'Entre más ______ le doy, más a mi medida responde.'",
-       opts:["datos útiles","emojis","prisa","silencio"],a:0,ex:"Datos útiles, no relleno. Los que cambian la respuesta: público, precio, objetivo, canal."},
-      {type:"tf",skill:"prompts",eth:true,q:"Seguridad: entre esos datos NO debo poner los teléfonos reales de mis clientes.",
-       a:true,ex:"Verdadero. Dale datos del negocio (precio, público), no información privada de personas. Cuida a tus clientes."},
-      {type:"mc",skill:"prompts",q:"¿Cuál dato es útil para que te dé mejores publicaciones de tus lociones?",
-       opts:["El color favorito del vecino","Que tu público son jóvenes y usan Instagram","Tu clave de WiFi","El clima de ayer"],
-       a:1,ex:"Saber tu público y tu canal es oro para adaptar el contenido. Los datos deben venir al caso."}
+       a:1,ex:"Contexto = tu realidad. 'Vendo lociones a $30.000 a jóvenes por Instagram' da mejores ideas que 'ayúdame a vender'."},
+      {type:"improve",skill:"prompts",q:"¿Cuál da mejor contexto y objetivo?",
+       opts:["'ideas para vender'","'Vendo lociones a jóvenes de 15-20 años, a $30.000, por Instagram. Dame 5 ideas para vender más esta semana.'"],
+       a:1,why:"Producto, público, precio, canal (contexto) y la tarea precisa (objetivo). Las ideas salen aplicables de una."},
+      {type:"mc",skill:"prompts",q:"El FORMATO esperado sirve para…",
+       opts:["Que se vea bonito y sea fácil de usar (lista, tabla, pasos)","Que responda más lento","Gastar más internet","Nada"],
+       a:0,ex:"El formato hace la respuesta usable: lista para repasar, tabla para comparar, pasos para hacer algo. Pídelo claro."},
+      {type:"match",skill:"prompts",q:"Empareja lo que necesitas con el formato ideal:",
+       pairs:[{l:"Comparar 3 lociones",r:"Una tabla"},{l:"Un ejercicio paso a paso",r:"Lista numerada"},{l:"Un mensaje para un cliente",r:"Un párrafo corto"}],
+       ex:"Cada necesidad tiene su formato. Pedirlo te ahorra tiempo y trabajo."},
+      {type:"fill",skill:"prompts",q:"Completa: 'El objetivo o instrucción clara dice ______ quiero que haga la IA.'",
+       opts:["QUÉ","cuándo","dónde duerme","cuánto pago"],a:0,ex:"El objetivo es el QUÉ, sin rodeos: 'resume', 'dame 5 ideas', 'escribe un mensaje'. Preciso y directo."},
+      {type:"order",skill:"prompts",q:"Arma un prompt completo, pieza por pieza:",
+       items:["Actúa como experto en marketing (rol)","Vendo lociones a jóvenes por Instagram (contexto)","Dame 5 ideas de venta (objetivo)","En una lista corta (formato)"],
+       ex:"Rol + contexto + objetivo + formato. Ese es un prompt nivel profesional, Daniel."},
+      {type:"mc",skill:"prompts",q:"También puedes indicar el 'nivel de detalle esperado'. Eso es…",
+       opts:["Decir en cuánto detalle o largo quieres la respuesta","El color de la letra","La marca del computador","Nada útil"],
+       a:0,ex:"'En 3 frases', 'explicación breve', 'a fondo'. Controlar el detalle evita respuestas eternas o demasiado cortas."}
     ]},
-    {id:"n3l3",t:"Ejemplos (few-shot)",d:"Muéstrale lo que quieres",ex:[
-      {type:"mc",skill:"prompts",q:"'Few-shot' significa darle a la IA…",
-       opts:["Pocas palabras","Uno o dos ejemplos de cómo quieres la respuesta","Un disparo","Menos tiempo"],
-       a:1,ex:"Few-shot = darle ejemplos. 'Quiero nombres así: Aero Fresh, Sky Blue. Dame 8 más.' El ejemplo guía el estilo."},
+    {id:"n3l4",t:"Ejemplos y qué NO quieres",d:"Los extras que suben el nivel",ex:[
+      {type:"mc",skill:"prompts",q:"Dar un EJEMPLO en el prompt sirve para…",
+       opts:["Rellenar","Mostrarle a la IA el estilo exacto que quieres","Confundirla","Gastar palabras"],
+       a:1,ex:"Un ejemplo comunica el estilo mejor que describirlo. 'Quiero nombres así: Aero Fresh, Sky Blue.' La IA copia ese estilo."},
       {type:"improve",skill:"prompts",q:"¿Cuál usa ejemplos para guiar mejor?",
-       opts:["'dame nombres de lociones'","'Dame 8 nombres de lociones al estilo de estos ejemplos: Aero Fresh, Sky Blue, Jet Aroma.'"],
-       a:1,why:"Los ejemplos le muestran el estilo exacto que quieres (aviación + inglés corto). Los nuevos nombres saldrán parecidos."},
-      {type:"order",skill:"prompts",q:"Ordena un prompt few-shot:",
-       items:["Di qué quieres (nombres de lociones)","Da 2-3 ejemplos del estilo","Pide cuántos más quieres"],
-       ex:"Pedido + ejemplos + cantidad. El ejemplo es el que fija el estilo."},
-      {type:"fill",skill:"prompts",q:"Completa: 'Un ejemplo vale más que mil explicaciones: le muestro el ______ que quiero.'",
-       opts:["estilo","precio","error","nombre"],a:0,ex:"El ejemplo comunica el estilo mejor que describirlo. Muéstraselo y lo copia."},
-      {type:"tf",skill:"prompts",q:"Verdadero o falso: los ejemplos sirven también para el formato (ej. 'responde así: - punto').",
-       a:true,ex:"Verdadero. Con un mini-ejemplo del formato, la IA copia la estructura exacta que quieres."},
-      {type:"mc",skill:"prompts",q:"Quieres mensajes de venta con cierto tono. ¿Qué haces?",
-       opts:["Le doy 1 ejemplo de un mensaje que me gustó y pido más así","No le explico nada","Le pido que adivine mi tono","Le mando un emoji"],
-       a:0,ex:"Un buen ejemplo del tono que te gusta guía a la IA para clonar ese estilo. Puro few-shot."}
+       opts:["'dame nombres de lociones'","'Dame 8 nombres de lociones al estilo de estos: Aero Fresh, Sky Blue, Jet Aroma'"],
+       a:1,why:"Los ejemplos fijan el estilo (aviación + inglés corto). Los nombres nuevos saldrán parecidos, como tú quieres."},
+      {type:"mc",skill:"prompts",q:"Las 'instrucciones negativas' son decirle a la IA…",
+       opts:["Cosas feas","Qué NO quieres: 'no uses palabras difíciles', 'no te extiendas'","Que no responda","Un insulto"],
+       a:1,ex:"Decir qué evitar afina la respuesta. 'No uses términos técnicos', 'nada de relleno'. La IA respeta esos límites."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: un buen ejemplo vale más que mil explicaciones.",
+       a:true,ex:"Verdadero. Muéstrale el resultado que te gusta y la IA lo imita. Es el truco de los pros (se llama 'few-shot')."},
+      {type:"match",skill:"prompts",q:"Empareja el extra con su frase clave:",
+       pairs:[{l:"Ejemplos",r:"Al estilo de: …"},{l:"Instrucciones negativas",r:"No uses… / evita…"},{l:"Nivel de detalle",r:"En 3 frases…"}],
+       ex:"Reconocer cada extra por su frase te hace un Prompt Master de verdad."},
+      {type:"fill",skill:"prompts",q:"Completa: 'Si no quiero algo, se lo digo con una instrucción ______.'",
+       opts:["negativa","secreta","cara","larga"],a:0,ex:"La instrucción negativa marca los límites: 'sin tecnicismos', 'no más de 5 líneas'. Control total del piloto."}
     ]},
-    {id:"n3l4",t:"Paso a paso e iterar",d:"Piensa despacio, mejora rápido",ex:[
-      {type:"mc",skill:"prompts",q:"¿Qué logra pedir 'explícalo paso a paso'?",
-       opts:["Nada","Que la IA razone en orden y se equivoque menos en cosas con lógica","Que responda más corto","Que use dibujos"],
-       a:1,ex:"Pedir pasos hace que la IA piense en orden. Útil para problemas, cálculos o instrucciones. Menos saltos, menos errores."},
-      {type:"improve",skill:"prompts",q:"Tienes un prompt bueno pero quieres perfeccionarlo. ¿Qué técnica pro usas?",
-       opts:["Lo dejo igual","Le pido a la IA: 'mejora este prompt para que quede más claro' antes de usarlo","Lo borro","Lo escribo en mayúsculas"],
-       a:1,why:"Usar la IA para mejorar tu propio prompt es truco de nivel Master. Ella te sugiere cómo pedir mejor, y luego sí lo usas."},
+    {id:"n3l5",t:"Hacks de piloto",d:"Trucos rápidos: TLDR, EL5, +P",ex:[
+      {type:"mc",skill:"prompts",q:"'Paso a paso y verifica' sirve, sobre todo, para…",
+       opts:["Saludar","Tareas complejas: que analice, identifique lo clave y luego redacte","Elegir color","Nada"],
+       a:1,ex:"En tareas difíciles, pedir 'primero analiza, luego identifica lo clave, luego redacta' hace que la IA piense en orden y falle menos."},
+      {type:"mc",skill:"prompts",q:"'Dividir tareas' es…",
+       opts:["Partir un pedido grande en partes más pequeñas","Cortar el internet","Hacer dos cuentas","Rendirse"],
+       a:0,ex:"Un pedido enorme confunde. Divídelo: 'primero el título; luego los 3 puntos; luego el cierre'. Más control, mejor resultado."},
+      {type:"match",skill:"prompts",q:"Empareja el hack con lo que le pide a la IA:",
+       pairs:[{l:"TLDR",r:"Resúmelo corto y directo"},{l:"EL5",r:"Explícamelo súper fácil"},{l:"Versión 2",r:"Dame otra versión distinta"}],
+       ex:"TLDR (resumen), EL5 (explícalo como a un principiante) y Versión 2 (otra opción). Atajos que usan los que dominan la IA."},
+      {type:"fill",skill:"prompts",q:"Completa el truco mayor: 'Agrego \"+P\" al final y la IA ______ mi prompt.'",
+       opts:["expande y mejora","borra","traduce","esconde"],a:0,ex:"'+P' (Prompt Cowboy) toma tu idea corta y la vuelve un prompt completo y detallado. Tú escribes poco, la IA lo pule."},
+      {type:"mc",skill:"prompts",q:"¿Cuándo te sirve más el '+P'?",
+       opts:["Cuando tengo una idea corta y quiero un prompt profesional sin escribir tanto","Nunca","Solo los domingos","Para apagar el chat"],
+       a:0,ex:"Ideal cuando sabes qué quieres pero no cómo pedirlo: escribes la idea + '+p' y la IA arma el prompt completo por ti."},
       {type:"order",skill:"prompts",q:"Ordena el flujo Prompt Master completo:",
-       items:["Escribo un primer prompt","Le pido a la IA que lo mejore","Uso el prompt mejorado","Itero sobre la respuesta hasta que quede"],
-       ex:"Escribir → mejorar el prompt → usarlo → iterar. Ese es el circuito de un Prompt Master."},
-      {type:"fill",skill:"prompts",q:"Completa: 'Puedo usar la IA para ______ mi prompt antes de usarlo.'",
-       opts:["mejorar","esconder","pagar","borrar"],a:0,ex:"Pídele: '¿cómo mejorarías este prompt?' Te da una versión más clara. Truco pro."},
-      {type:"tf",skill:"prompts",q:"Verdadero o falso: iterar sobre la respuesta es parte de hacer buenos prompts.",
-       a:true,ex:"Verdadero. Un prompt no termina en el primer intento: se ajusta hasta que la respuesta queda fina."},
-      {type:"mc",skill:"prompts",q:"'Piensa paso a paso' es más útil para…",
-       opts:["Un cálculo o un problema con lógica","Elegir un color","Saludar","Nada"],
-       a:0,ex:"Para lógica y problemas, pensar por pasos reduce errores. Para un saludo, no hace falta."}
-    ]},
-    {id:"n3l5",t:"Prompt Master en acción",d:"Junta todas las técnicas",ex:[
-      {type:"order",skill:"prompts",q:"Ordena las técnicas en un prompt de nivel Master:",
-       items:["Actúa como experto (rol)","Mi negocio es X (contexto)","Al estilo de este ejemplo (few-shot)","Respóndeme en lista (formato)"],
-       ex:"Rol, contexto, ejemplo y formato: en ese orden fluye un prompt profesional."},
-      {type:"mc",skill:"prompts",q:"¿Cuál combina MÁS técnicas pro bien usadas?",
-       opts:["'ayúdame con lociones'","'Actúa como experto en marketing. Vendo lociones a jóvenes por Instagram. Dame 5 ideas de publicación al estilo de este ejemplo: \"Huele a victoria ⚽\". En lista, cada una en 1 frase.'"],
-       a:1,ex:"Tiene rol, contexto, ejemplo (few-shot) y formato. Ese es un prompt de nivel profesional, Daniel."},
-      {type:"match",skill:"prompts",q:"Empareja la técnica con su frase clave:",
-       pairs:[{l:"Rol",r:"Actúa como…"},{l:"Formato",r:"En una lista de 5…"},{l:"Ejemplos",r:"Al estilo de: …"}],
-       ex:"Reconocer cada técnica por su frase te hace un Prompt Master de verdad."},
-      {type:"improve",skill:"prompts",q:"Última prueba: ¿cuál es el prompt más completo?",
-       opts:["'Dame un texto para mi negocio'","'Actúa como copywriter. Escribe un texto de venta de 3 frases para una loción juvenil a $30.000, tono fresco y directo, terminando con una llamada a comprar.'"],
-       a:1,why:"Rol + tarea + datos + formato + objetivo. Todo alineado. ¡Estás listo para tu plantilla personal!"},
-      {type:"fill",skill:"prompts",q:"Completa el kit Master: 'Rol + contexto + formato + ejemplos + ______.'",
-       opts:["iterar","dormir","gritar","esperar"],a:0,ex:"Iterar cierra el kit. Con estos cinco, ningún prompt se te resiste."},
-      {type:"tf",skill:"prompts",q:"Verdadero o falso: un buen prompt es reutilizable como plantilla para tu negocio.",
-       a:true,ex:"Verdadero. Ese es justo tu proyecto: crear una plantilla que uses una y otra vez cambiando pocos datos."}
+       items:["Escribo un primer prompt (o una idea + '+p')","La IA me da un prompt mejorado","Lo uso y miro la respuesta","Itero: 'versión 2' o ajusto hasta que quede"],
+       ex:"Escribir → mejorar → usar → iterar. Ese es el circuito de un Prompt Master de verdad."},
+      {type:"improve",skill:"prompts",q:"Juntando TODO, ¿cuál es el prompt más completo?",
+       opts:["'Dame un texto para mi negocio'","'Actúa como copywriter. Vendo lociones juveniles a $30.000 por Instagram. Escribe un texto de venta de 3 frases, tono fresco, sin tecnicismos, terminando con un llamado a comprar. Estilo así: \"Huele a victoria\".'"],
+       a:1,why:"Rol + contexto + objetivo + formato + tono + instrucción negativa + ejemplo. Ese prompt está nivel profesional, Daniel."},
+      {type:"tf",skill:"etica",eth:true,q:"Verdadero o falso: aunque el prompt quede perfecto, debo revisar la respuesta antes de usarla.",
+       a:true,ex:"Verdadero. La IA puede alucinar aunque le pidas bien. Tú eres el capitán: revisas y decides antes de publicar o enviar."}
     ]}
    ],
    project:{id:"n3p",title:"Proyecto: Tu prompt-plantilla del negocio",tag:"Misión de nivel · +50 XP · Insignia Prompt Master",skill:"prompts",
-    intro:"Crea TU prompt-plantilla personal para el negocio de lociones. Una que reúses siempre cambiando pocos datos. Debe tener rol, contexto, formato y un ejemplo.",
+    intro:"Crea TU prompt-plantilla personal para el negocio de lociones, usando las 5 piezas del método. Una que reúses siempre cambiando pocos datos.",
     steps:[
-     "Escribe una plantilla con huecos: 'Actúa como [rol]. Vendo [producto] a [público]. Quiero [objetivo]. Dámelo en [formato], estilo así: [ejemplo].'",
-     "Pruébala en ChatGPT rellenando los huecos con tu negocio real de lociones.",
-     "Pídele a la IA que MEJORE tu plantilla. Ajusta con su sugerencia.",
-     "Guarda tu plantilla final. Felipe la revisa y valida que tenga rol, contexto, formato y ejemplo."
+     "Escribe la plantilla con las piezas: 'Actúa como [rol]. Contexto: vendo [producto] a [público] por [canal]. Objetivo: [tarea]. Formato: [lista/tabla]. Tono: [cómo suena].'",
+     "Pruébala en ChatGPT rellenando los huecos con tu negocio real. Si quieres, agrégale '+p' para que la IA la mejore.",
+     "Itera: pídele a la IA que la mejore, y ajusta con su sugerencia.",
+     "Guarda tu plantilla final. Felipe la revisa y valida que tenga rol, contexto, objetivo, formato y tono."
     ],
-    copy:"Actúa como [experto en marketing]. Vendo [lociones] a [jóvenes en Instagram]. Quiero [más ventas]. Dámelo en [lista de 5 ideas], al estilo de: [\"Huele a victoria ⚽\"].",
+    copy:"Actúa como [experto en marketing]. Contexto: vendo [lociones] a [jóvenes] por [Instagram]. Objetivo: [dame 5 ideas de venta]. Formato: [lista corta]. Tono: [fresco y juvenil]. +p",
     xp:50}
   },
 
@@ -1114,6 +1171,17 @@ const CURRICULUM = {
   ] /* fin levels */
 };
 
+/* Orden de módulos según el Gamma "IA para emprendedores":
+   era de la IA → hablarle → PROMPTS → imágenes → alucinaciones → negocio/agente → constructor(bonus) */
+CURRICULUM.levels = ['n1','n2','n3','n5','n4','n6','n7'].map(id=>CURRICULUM.levels.find(l=>l.id===id));
+(function(){ const T={
+   n1:"La era de la IA: qué es y por qué a veces falla",
+   n2:"Hablarle bien a la IA",
+   n4:"Alucinaciones: cuándo desconfiar y verificar",
+   n5:"Prompts de imagen: estilo, composición y luz",
+   n6:"IA en tu negocio (y modo agente)"};
+  CURRICULUM.levels.forEach(l=>{ if(T[l.id]) l.tag=T[l.id]; }); })();
+
 /* =====================================================================
    3) ENGINE  —  lógica de juego
    ===================================================================== */
@@ -1122,8 +1190,8 @@ const PIN = "2412";
 
 const DEFAULT_STATE = () => ({
   name:"Daniel", xp:0, streak:0, bestStreak:0, lastDay:null,
-  done:{}, projects:{}, badges:{}, skill:{}, ethCount:0,
-  review:[], muted:false, lessonsCount:0, exCount:0, correctCount:0, createdAt:Date.now()
+  done:{}, projects:{}, badges:{}, skill:{}, ethCount:0, moduleDone:{},
+  review:[], muted:false, lessonsCount:0, exCount:0, correctCount:0, createdAt:Date.now(), _t:0
 });
 let S = load();
 let tutorAuthed = false;
@@ -1132,7 +1200,40 @@ function load(){
   try{ const r = localStorage.getItem(LS_KEY); if(r){ return Object.assign(DEFAULT_STATE(), JSON.parse(r)); } }catch(e){}
   return DEFAULT_STATE();
 }
-function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ S._t=Date.now(); saveLocal(); cloudPush(); }
+
+/* ---------- Supabase (respaldo/espejo en la nube; localStorage manda) ----------
+   anon key pública protegida por RLS; sin datos sensibles. Todo defensivo: si falla
+   la red o Supabase, la app sigue 100% con localStorage. */
+const SB_URL="https://lwpshygwlkokxfijhjvu.supabase.co";
+const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3cHNoeWd3bGtva3hmaWpoanZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTIxOTUsImV4cCI6MjEwMDQ2ODE5NX0.LV3OXwK0rm9K0Prq9E8h5_xlZlqaBRLplv3lCBhV6K0";
+const SB_ROW="daniel";
+let cloudOk=null, sbTimer=null;
+function setCloud(ok){ cloudOk=ok; const el=document.getElementById('cloudStat'); if(el) el.textContent = ok?'☁️ Sincronizado con la nube':'☁️ Guardado solo en este equipo'; }
+function cloudPush(){
+  clearTimeout(sbTimer);
+  sbTimer=setTimeout(()=>{
+    try{
+      fetch(SB_URL+"/rest/v1/progreso?on_conflict=id",{method:"POST",
+        headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},
+        body:JSON.stringify([{id:SB_ROW,data:S,updated_at:new Date().toISOString()}])})
+        .then(r=>setCloud(r.ok)).catch(()=>setCloud(false));
+    }catch(e){ setCloud(false); }
+  }, 1500);
+}
+function cloudLoad(){
+  try{
+    fetch(SB_URL+"/rest/v1/progreso?id=eq."+SB_ROW+"&select=data",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}})
+      .then(r=>r.ok?r.json():null).then(j=>{
+        if(Array.isArray(j)&&j.length&&j[0].data){
+          const remote=j[0].data;
+          if((remote._t||0) > (S._t||0)){ S=Object.assign(DEFAULT_STATE(), remote); saveLocal(); refreshTop(); renderPath(); toast("Progreso traído de la nube ☁️"); }
+        }
+        setCloud(true);
+      }).catch(()=>setCloud(false));
+  }catch(e){ setCloud(false); }
+}
 
 /* ---------- fechas (America/Bogota) ---------- */
 function todayBogota(){ return new Date().toLocaleDateString('en-CA',{timeZone:'America/Bogota'}); }
@@ -1149,7 +1250,9 @@ function addXP(n){
 }
 
 /* ---------- desbloqueos ---------- */
-function levelUnlocked(i){ if(i===0) return true; const p=CURRICULUM.levels[i-1].project.id; return !!S.projects[p]; }
+/* Todos los módulos accesibles: es una herramienta de repaso guiada por el tutor.
+   El orden visual del camino se mantiene, pero Felipe puede enviar a Daniel a cualquier módulo. */
+function levelUnlocked(i){ return true; }
 function lessonUnlocked(i,j){ if(!levelUnlocked(i)) return false; if(j===0) return true; return !!S.done[CURRICULUM.levels[i].lessons[j-1].id]; }
 function projectUnlocked(i){ if(!levelUnlocked(i)) return false; return CURRICULUM.levels[i].lessons.every(l=>S.done[l.id]); }
 function levelDoneCount(i){ return CURRICULUM.levels[i].lessons.filter(l=>S.done[l.id]).length; }
@@ -1205,10 +1308,18 @@ function beep(freqs, dur=0.12, type='sine', gain=0.14){
     o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur); t+=dur*0.9;
   });
 }
-const sndGood=()=>beep([660,880,1180],0.11,'sine',0.13);
-const sndWin =()=>beep([523,659,784,1046],0.14,'triangle',0.14);
-const sndBad =()=>beep([180,120],0.16,'sawtooth',0.08);
+function sweep(f1,f2,dur,type,gain){ if(S.muted)return; const c=ac(); if(!c)return; if(c.state==='suspended')c.resume();
+  const o=c.createOscillator(),g=c.createGain(); o.type=type||'sawtooth';
+  o.frequency.setValueAtTime(f1,c.currentTime); o.frequency.exponentialRampToValueAtTime(f2,c.currentTime+dur);
+  g.gain.setValueAtTime(gain||0.08,c.currentTime); g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+  o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+dur); }
+// acierto: arpegio brillante y festivo
+const sndGood=()=>{ beep([659,988,1319,1760],0.085,'triangle',0.15); setTimeout(()=>beep([2093],0.08,'sine',0.09),150); };
+// victoria: fanfarria triunfal
+const sndWin =()=>{ beep([523,659,784,1046,1319],0.12,'triangle',0.15); setTimeout(()=>beep([1046,1319,1568],0.16,'triangle',0.15),360); };
+const sndBad =()=>beep([200,150,110],0.15,'sawtooth',0.07);
 const sndAlert=()=>beep([880,660,880,660],0.18,'square',0.1);
+const sndTakeoff=()=>{ sweep(150,920,0.95,'sawtooth',0.07); setTimeout(()=>beep([784,1046],0.2,'triangle',0.1),700); };
 
 /* ---------- CONFETTI ---------- */
 const cvs=document.getElementById('confetti'); const ctx=cvs.getContext('2d');
@@ -1248,6 +1359,20 @@ function celebrate({icon,title,msg,xp}){
   celebrate._t=setTimeout(()=>elCeleb.classList.remove('show'), 2500);
 }
 function randomCeleb(){ return CELEBS[(Math.random()*CELEBS.length)|0]; }
+
+/* ---------- SIMULACIÓN DE VUELO (fin de módulo) ---------- */
+const elFlight=document.getElementById('flightsim');
+function flightSim(moduleName, subtitle, onDone){
+  document.getElementById('fsTitle').textContent='Módulo completado: '+moduleName;
+  document.getElementById('fsSub').textContent=subtitle||'Ruta despejada. Vas rumbo a Capitán IA, Daniel.';
+  document.getElementById('fsBadge').textContent='✈️ Vuelo registrado en tu bitácora';
+  elFlight.classList.remove('show'); void elFlight.offsetWidth; // reinicia animaciones
+  elFlight.classList.add('show');
+  sndTakeoff();
+  setTimeout(()=>{ burst(200); sndWin(); }, 2700); // confeti + fanfarria al aterrizar
+  clearTimeout(flightSim._t);
+  flightSim._t=setTimeout(()=>{ elFlight.classList.remove('show'); onDone&&onDone(); }, 4300);
+}
 
 /* ---------- TOAST ---------- */
 const elToast=document.getElementById('toast');
@@ -1466,7 +1591,7 @@ function check(){
   answered=true;
   document.getElementById('checkBtn').style.display='none';
   if(correct){
-    sndGood();
+    sndGood(); burst(55); // confeti en cada acierto
     if(CUR.isReview && CUR.exs[CUR.idx].ref){ const rf=CUR.exs[CUR.idx].ref; S.review=S.review.filter(r=>!(r.li===rf.li&&r.lj===rf.lj&&r.ei===rf.ei)); save(); }
     showFeedback(true, e.ok||"¡Correcto!", e.ex||e.why||"", ()=>advance());
   } else {
@@ -1498,10 +1623,18 @@ function finishLesson(){
   checkStandingBadges();
   save(); refreshTop();
   celebrate({icon:"✅",title:"¡Lección completada!",msg:randomCeleb(),xp:"+"+(first?gain:5)+" XP"});
+  const lvl=CURRICULUM.levels[CUR.li];
+  const moduleNow = first && lvl.lessons.every(l=>S.done[l.id]) && !S.moduleDone[lvl.id];
+  if(moduleNow){ S.moduleDone[lvl.id]=true; save(); }
   setTimeout(()=>{
     if(rankUp) celebrate({icon:"🎖️",title:"¡Ascenso de rango!",msg:"Ahora eres "+rankUp+". La torre de control te felicita, Daniel.",xp:""});
   }, 2600);
-  setTimeout(()=>{ renderPath(); show('path'); }, rankUp?3000:1100);
+  const delay = rankUp?3200:1200;
+  if(moduleNow){
+    setTimeout(()=>flightSim(lvl.name, "Completaste todas las lecciones de "+lvl.name+". Ahora haz el proyecto para tu insignia.", ()=>{renderPath();show('path');}), delay);
+  } else {
+    setTimeout(()=>{ renderPath(); show('path'); }, delay);
+  }
 }
 function quitLesson(){ renderPath(); show('path'); }
 
@@ -1580,12 +1713,12 @@ function renderProfile(){
    PANTALLA 4 · SESIÓN (6 bloques de 25 min)
    ========================================================= */
 const BLOCKS=[
-  {t:"Despegue del día",d:"Repaso rápido + meta de hoy con Felipe"},
-  {t:"Lección nueva #1",d:"Avanzas en el camino de la academia"},
-  {t:"Misión real / práctica",d:"Manos a la obra en ChatGPT"},
-  {t:"Lección nueva #2",d:"Otro nodo desbloqueado"},
-  {t:"Proyecto / construir",d:"Aplicas lo aprendido en algo real"},
-  {t:"Torre de control",d:"Muestras logros y Felipe valida misiones"}
+  {t:"Felipe explica el tema",d:"La clase primero: hoy, cómo hacer buenos prompts"},
+  {t:"Jugamos juntos",d:"Abren el módulo del tema y juegan en equipo"},
+  {t:"Vuelo solo (10 min)",d:"Daniel juega solo un ratico; Felipe observa"},
+  {t:"Misión real en ChatGPT",d:"Aplican lo aprendido en la IA de verdad"},
+  {t:"Reto del negocio",d:"Proyecto: lo llevan a las lociones de Daniel"},
+  {t:"Torre de control",d:"Muestra logros, Felipe valida y deja la tarea"}
 ];
 let TM={run:false,rest:false,sec:25*60,block:0,iv:null};
 function renderSession(){
@@ -1673,13 +1806,15 @@ function renderTutor(){
       <button class="btn amber sm" style="flex:1" onclick="APP.bonus(25)">+25</button>
       <button class="btn amber sm" style="flex:1" onclick="APP.bonus(50)">+50</button></div>`;
   // datos
-  h+=`<div class="sectitle">Respaldo y datos</div>
+  h+=`<div class="sectitle">Nube y respaldo</div>
+    <div id="cloudStat" class="muted" style="text-align:center;margin-bottom:10px">${cloudOk===null?'☁️ Conectando…':cloudOk?'☁️ Sincronizado con la nube':'☁️ Guardado solo en este equipo'}</div>
+    <button class="btn ghost sm" style="margin-bottom:8px" onclick="APP.syncNow()">🔄 Sincronizar ahora (nube)</button>
     <button class="btn ghost sm" style="margin-bottom:8px" onclick="APP.exportData()">⬇️ Exportar progreso (JSON)</button>
     <button class="btn ghost sm" style="margin-bottom:8px" onclick="document.getElementById('importFile').click()">⬆️ Importar progreso (JSON)</button>
     <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="APP.importData(event)">
     <button class="btn red sm" style="margin-bottom:8px" onclick="APP.resetData()">🗑️ Resetear todo el progreso</button>
     <button class="btn ghost sm" onclick="APP.lockTutor()">🔒 Salir del modo tutor</button>
-    <div class="muted" style="margin-top:14px;text-align:center">Academia Piloto IA · datos guardados en este dispositivo</div>`;
+    <div class="muted" style="margin-top:14px;text-align:center">Capitán Dani IA · progreso en este equipo + espejo en la nube</div>`;
   document.getElementById('scr-tutor').innerHTML=h;
 }
 function validate(i){ const p=CURRICULUM.levels[i].project; S.projects[p.id]='validated';
@@ -1698,6 +1833,7 @@ function resetData(){ elModal.innerHTML=`<h3>🗑️ Resetear todo</h3><p>Se bor
     <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`; elOv.classList.add('show'); }
 function doReset(){ S=DEFAULT_STATE(); save(); closeOverlay(); refreshTop(); renderTutor(); renderPath(); toast('Progreso reseteado'); }
 function lockTutor(){ tutorAuthed=false; renderPath(); show('path'); }
+function syncNow(){ toast('Sincronizando con la nube…'); cloudPush(); cloudLoad(); }
 
 /* =========================================================
    API pública (para onclick)
@@ -1707,7 +1843,7 @@ const APP={
   openProject, doProject, copyPrompt, review:startReview,
   pick, check, orderPick, orderBack, matchSel, quitLesson,
   tmToggle, tmNext, tmReset,
-  checkPin, closeOverlay, validate, bonus, exportData, importData, resetData, doReset, lockTutor
+  checkPin, closeOverlay, validate, bonus, exportData, importData, resetData, doReset, lockTutor, syncNow
 };
 window.APP=APP;
 
@@ -1727,7 +1863,8 @@ function hideFeedback(){ elFb.classList.remove('show'); }
 renderPath();
 refreshTop();
 show('path');
-console.log('%c✈️ Academia Piloto IA lista','color:#22d3ee;font-weight:bold');
+cloudLoad(); // trae el respaldo de la nube si es más reciente (no bloquea)
+console.log('%c✈️ Capitán Dani IA lista','color:#22d3ee;font-weight:bold');
 </script>
 </body>
 </html>
