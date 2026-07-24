@@ -6,7 +6,8 @@ Felipe enseña, luego juegan; también sirve como tarea de repaso.
 
 ## 🌐 URL pública (verificada)
 
-**https://academia-piloto-ia-mop-modular-crm.vercel.app**
+**https://capitan-dani-ia.vercel.app**  (alias limpio)
+_(la vieja `https://academia-piloto-ia-mop-modular-crm.vercel.app` también funciona; "mop-modular-crm" es el nombre del **equipo de Vercel**, no del proyecto)_
 
 - `curl` → **200**, `<title>Capitán Dani IA</title>`.
 - Navegador real (local y producción): **0 errores de consola**, 7 módulos, 42 nodos, 220 ejercicios, nube conectada (`cloudOk:true`).
@@ -43,7 +44,7 @@ Felipe enseña, luego juegan; también sirve como tarea de repaso.
 - **7 módulos · 35 lecciones · 220 ejercicios · 7 proyectos · 22 de ética** (mín. 1 por módulo).
 - 7 tipos de ejercicio (mín. 4 por lección), respuesta correcta + explicación al fallar + reintento.
 - Mecánicas: XP, rangos (Cadete→Alférez→Teniente→Capitán IA), racha (America/Bogota), 10 insignias, 34 mensajes de celebración, repaso "Simulador de vuelo", copiloto **Capi** (guacamayo).
-- **Modo Tutor PIN 2412:** progreso por tema, validar proyectos (da la insignia), XP bonus, reset, export/import JSON, sincronizar nube.
+- **Modo Tutor PIN 1214:** progreso por tema, validar proyectos (da la insignia), XP bonus, reset, export/import JSON, sincronizar nube.
 
 ## ✅ Verificaciones
 - Validación estática (Node): 7 módulos, 35 lecciones, 220 ejercicios, 22 de ética, 34 celebraciones; respuestas correctas OK; sintaxis JS válida (`node --check`).
