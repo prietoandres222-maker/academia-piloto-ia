@@ -1,0 +1,1733 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a1128">
+<title>Academia Piloto IA</title>
+<style>
+/* ============ RESET / BASE ============ */
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+  --night:#070d20; --night2:#0c1738; --panel:#111f45; --panel2:#16265a;
+  --line:rgba(120,160,255,.16);
+  --cyan:#22d3ee; --cyan2:#0ea5c4; --amber:#fbbf24; --amber2:#f59e0b;
+  --green:#34d399; --greenD:#0f5132; --red:#fb7185; --redD:#4c1d24;
+  --ink:#eaf1ff; --dim:#9fb2d8; --dim2:#6b7ba8;
+  --grad:linear-gradient(135deg,#22d3ee,#3b82f6); --gradA:linear-gradient(135deg,#fbbf24,#f97316);
+  --r:18px; --sh:0 10px 30px rgba(0,0,0,.35);
+}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1200px 700px at 80% -10%,#13245c 0%,transparent 60%),radial-gradient(900px 600px at 0% 10%,#0b2340 0%,transparent 55%),var(--night);
+  color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  user-select:none;
+}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.app{max-width:560px;margin:0 auto;min-height:100vh;position:relative;padding-bottom:84px}
+
+/* ============ TOP BAR ============ */
+.topbar{position:sticky;top:0;z-index:30;background:linear-gradient(180deg,rgba(7,13,32,.96),rgba(7,13,32,.75));
+  backdrop-filter:blur(8px);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.3px}
+.brand .logo{width:30px;height:30px;border-radius:9px;background:var(--grad);display:grid;place-items:center;font-size:17px;box-shadow:0 4px 14px rgba(34,211,238,.4)}
+.stat{display:flex;align-items:center;gap:5px;font-weight:800;font-size:14px;padding:6px 10px;border-radius:999px;background:var(--panel);border:1px solid var(--line)}
+.stat.xp{color:var(--amber)} .stat.streak{color:#ff9d5c}
+.spacer{flex:1}
+.iconbtn{width:38px;height:38px;border-radius:11px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:17px}
+
+/* ============ SCREENS ============ */
+.screen{display:none;padding:16px;animation:fade .35s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ============ RANK CARD ============ */
+.rankcard{background:linear-gradient(135deg,#16265a,#0c1738);border:1px solid var(--line);border-radius:var(--r);padding:16px;display:flex;align-items:center;gap:14px;box-shadow:var(--sh);position:relative;overflow:hidden}
+.rankcard::after{content:"";position:absolute;right:-30px;top:-30px;width:130px;height:130px;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 70%)}
+.avatar{width:60px;height:60px;border-radius:16px;background:var(--gradA);display:grid;place-items:center;font-size:34px;flex-shrink:0;box-shadow:0 6px 18px rgba(245,158,11,.35);animation:bob 3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(2deg)}}
+.rankinfo{flex:1;min-width:0}
+.rankinfo .who{font-size:13px;color:var(--dim)}
+.rankinfo .rank{font-size:20px;font-weight:800;line-height:1.1}
+.rankinfo .rank b{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.progbar{height:9px;border-radius:999px;background:rgba(0,0,0,.35);margin-top:8px;overflow:hidden}
+.progbar i{display:block;height:100%;background:var(--gradA);border-radius:999px;transition:width .8s cubic-bezier(.2,.9,.3,1)}
+.rankinfo .next{font-size:11px;color:var(--dim2);margin-top:4px}
+
+/* ============ CAPI SPEECH ============ */
+.capi{display:flex;gap:11px;align-items:flex-start;margin:16px 0;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 14px;box-shadow:var(--sh)}
+.capi .face{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#22c55e,#0891b2);display:grid;place-items:center;font-size:24px;flex-shrink:0;animation:bob 3.4s ease-in-out infinite}
+.capi .bub{font-size:13.5px;line-height:1.45;color:var(--ink)}
+.capi .bub b{color:var(--cyan)}
+
+/* ============ PATH / MAP ============ */
+.leveltitle{display:flex;align-items:center;gap:10px;margin:22px 2px 6px}
+.leveltitle .num{width:30px;height:30px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:14px;color:var(--cyan)}
+.leveltitle h3{font-size:16px;font-weight:800}
+.leveltitle .sub{font-size:11.5px;color:var(--dim2)}
+.leveltitle.locked{opacity:.55}
+.path{position:relative;padding:6px 0 4px}
+.node{position:relative;display:flex;align-items:center;gap:14px;padding:8px 4px}
+.node .dot{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;font-size:26px;flex-shrink:0;position:relative;transition:transform .15s;border:3px solid transparent}
+.node .dot .ring{position:absolute;inset:-3px;border-radius:50%;border:3px solid var(--line)}
+.node.done .dot{background:linear-gradient(135deg,#34d399,#059669);box-shadow:0 6px 18px rgba(52,211,153,.35)}
+.node.current .dot{background:var(--grad);box-shadow:0 0 0 5px rgba(34,211,238,.18),0 8px 22px rgba(34,211,238,.4);animation:pulse 2s infinite}
+.node.locked .dot{background:var(--panel);color:var(--dim2)}
+.node.project .dot{border-radius:16px;background:linear-gradient(135deg,#fbbf24,#f97316)}
+.node.project.locked .dot{background:var(--panel)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 5px rgba(34,211,238,.18),0 8px 22px rgba(34,211,238,.4)}50%{box-shadow:0 0 0 11px rgba(34,211,238,.05),0 8px 22px rgba(34,211,238,.4)}}
+.node:active .dot{transform:scale(.94)}
+.node .lbl{flex:1;min-width:0}
+.node .lbl .t{font-weight:700;font-size:14.5px}
+.node .lbl .d{font-size:11.5px;color:var(--dim2);margin-top:2px}
+.node.locked .lbl{opacity:.6}
+.node .badgexp{font-size:11px;font-weight:800;color:var(--amber);white-space:nowrap}
+.connector{position:absolute;left:33px;top:64px;width:3px;height:26px;background:var(--line);border-radius:2px}
+.node.done .connector{background:linear-gradient(var(--green),var(--line))}
+
+/* ============ BUTTONS ============ */
+.btn{display:block;width:100%;padding:15px;border-radius:15px;font-weight:800;font-size:16px;text-align:center;transition:transform .12s,filter .2s;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.btn:active{transform:translateY(3px);box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.btn.primary{background:var(--grad);color:#04121f}
+.btn.amber{background:var(--gradA);color:#2b1600}
+.btn.green{background:linear-gradient(135deg,#34d399,#059669);color:#052e1d}
+.btn.ghost{background:var(--panel);border:1px solid var(--line);color:var(--ink);box-shadow:none}
+.btn.red{background:linear-gradient(135deg,#fb7185,#e11d48);color:#2b0410}
+.btn:disabled{opacity:.4;pointer-events:none}
+.btn.sm{padding:11px;font-size:14px}
+
+/* ============ LESSON ============ */
+.lessonhead{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.lessonhead .x{width:36px;height:36px;border-radius:11px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.pbar{flex:1;height:14px;border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden}
+.pbar i{display:block;height:100%;background:var(--grad);border-radius:999px;transition:width .4s}
+.hearts{font-size:14px;font-weight:800;color:var(--red)}
+.qcard{animation:slidein .3s ease}
+@keyframes slidein{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:none}}
+.qtag{display:inline-block;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--cyan);background:rgba(34,211,238,.1);padding:4px 10px;border-radius:999px;margin-bottom:12px}
+.qtag.eth{color:var(--amber);background:rgba(251,191,36,.12)}
+.qtext{font-size:19px;font-weight:800;line-height:1.35;margin-bottom:8px}
+.qsub{font-size:13.5px;color:var(--dim);line-height:1.5;margin-bottom:16px;background:var(--panel);border-left:3px solid var(--cyan);padding:10px 12px;border-radius:8px;white-space:pre-wrap}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;padding:14px 15px;border-radius:14px;background:var(--panel);border:2px solid var(--line);font-size:15px;font-weight:600;line-height:1.35;transition:all .12s;display:flex;align-items:center;gap:11px}
+.opt .k{width:26px;height:26px;border-radius:8px;background:var(--panel2);display:grid;place-items:center;font-size:13px;font-weight:800;flex-shrink:0;color:var(--dim)}
+.opt:active{transform:scale(.98)}
+.opt.sel{border-color:var(--cyan);background:var(--panel2)}
+.opt.correct{border-color:var(--green);background:rgba(52,211,153,.14)} .opt.correct .k{background:var(--green);color:#052e1d}
+.opt.wrong{border-color:var(--red);background:rgba(251,113,133,.12)} .opt.wrong .k{background:var(--red);color:#2b0410}
+.opt.disabled{pointer-events:none}
+.opt.dim{opacity:.45}
+
+/* order exercise */
+.orderzone{min-height:56px;background:rgba(0,0,0,.28);border:2px dashed var(--line);border-radius:14px;padding:10px;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.orderzone:empty::after{content:"Toca las piezas en orden ↓";color:var(--dim2);font-size:13px;font-weight:600;margin:auto}
+.chip{padding:12px 14px;border-radius:12px;background:var(--panel);border:2px solid var(--line);font-size:14.5px;font-weight:600;line-height:1.3;text-align:left;display:flex;gap:9px;align-items:center}
+.chip .n{width:22px;height:22px;border-radius:7px;background:var(--cyan);color:#04121f;display:grid;place-items:center;font-size:12px;font-weight:800;flex-shrink:0}
+.chip.bank{border-style:solid}
+.chip.correct{border-color:var(--green);background:rgba(52,211,153,.14)}
+.chip.wrong{border-color:var(--red);background:rgba(251,113,133,.12)}
+
+/* match exercise */
+.matchrow{display:flex;gap:10px;align-items:center;margin-bottom:11px}
+.matchrow .concept{flex:1;padding:13px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);font-size:14px;font-weight:700}
+.matchrow select{flex:1;padding:13px;border-radius:12px;background:var(--panel);border:2px solid var(--line);color:var(--ink);font-size:14px;font-weight:600;font-family:inherit}
+.matchrow select.correct{border-color:var(--green)} .matchrow select.wrong{border-color:var(--red)}
+
+/* mission card */
+.mission{background:linear-gradient(135deg,#1a2c63,#0c1738);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--sh)}
+.mission .mtag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.6px;color:var(--amber);background:rgba(251,191,36,.13);padding:5px 11px;border-radius:999px;margin-bottom:12px}
+.mission h4{font-size:19px;font-weight:800;margin-bottom:6px}
+.mission .intro{font-size:13.5px;color:var(--dim);line-height:1.5;margin-bottom:14px}
+.steps{display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
+.step{display:flex;gap:11px;align-items:flex-start;font-size:14px;line-height:1.45}
+.step .sn{width:25px;height:25px;border-radius:8px;background:var(--gradA);color:#2b1600;display:grid;place-items:center;font-weight:800;font-size:13px;flex-shrink:0}
+.step b{color:var(--cyan)}
+.copybox{background:#050b1c;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:13px;line-height:1.5;color:#cfe0ff;margin:6px 0 4px;font-family:ui-monospace,Menlo,Consolas,monospace;white-space:pre-wrap;position:relative}
+.copybtn{font-size:11px;font-weight:800;color:var(--cyan);margin-top:6px;padding:6px 10px;background:rgba(34,211,238,.1);border-radius:8px;display:inline-block}
+
+/* feedback bar */
+.fb{position:fixed;left:0;right:0;bottom:0;z-index:40;padding:16px;max-width:560px;margin:0 auto;transform:translateY(120%);transition:transform .32s cubic-bezier(.2,.9,.3,1)}
+.fb.show{transform:none}
+.fb .box{border-radius:16px;padding:15px 16px;box-shadow:0 -8px 30px rgba(0,0,0,.4)}
+.fb.good .box{background:linear-gradient(135deg,#0f5132,#065f46);border:1px solid var(--green)}
+.fb.bad .box{background:linear-gradient(135deg,#4c1d24,#7f1d1d);border:1px solid var(--red)}
+.fb .ft{font-size:16px;font-weight:800;display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.fb.good .ft{color:#a7f3d0} .fb.bad .ft{color:#fecaca}
+.fb .fx{font-size:13.5px;line-height:1.45;color:#e8fff4}
+.fb.bad .fx{color:#ffe4e6}
+.fb .btn{margin-top:12px}
+
+/* ============ PROFILE ============ */
+.sectitle{font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--dim2);margin:20px 2px 10px}
+.statgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.statbox{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.statbox .v{font-size:26px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.statbox .l{font-size:12px;color:var(--dim);margin-top:2px}
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:10px}
+.badge{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center;transition:transform .2s}
+.badge .ic{font-size:30px;filter:grayscale(1);opacity:.32;transition:.3s}
+.badge.on .ic{filter:none;opacity:1;animation:pop .5s}
+.badge .bn{font-size:10.5px;font-weight:700;margin-top:5px;color:var(--dim)}
+.badge.on .bn{color:var(--ink)}
+@keyframes pop{0%{transform:scale(.4)}60%{transform:scale(1.25)}100%{transform:scale(1)}}
+.skill{margin-bottom:12px}
+.skill .sh{display:flex;justify-content:space-between;font-size:13px;font-weight:700;margin-bottom:5px}
+.skill .sh .pct{color:var(--dim)}
+.skbar{height:10px;border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden}
+.skbar i{display:block;height:100%;border-radius:999px;transition:width .8s}
+
+/* ============ SESSION ============ */
+.timerwrap{text-align:center;margin:12px 0 18px}
+.timerbig{font-size:64px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:1px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.timerbig.rest{background:var(--gradA);-webkit-background-clip:text}
+.timerlbl{font-size:14px;color:var(--dim);margin-top:6px;font-weight:700}
+.blocklist{display:flex;flex-direction:column;gap:9px}
+.blk{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 14px}
+.blk.active{border-color:var(--cyan);background:var(--panel2);box-shadow:0 0 0 3px rgba(34,211,238,.12)}
+.blk.done{opacity:.55}
+.blk .bnum{width:34px;height:34px;border-radius:10px;background:var(--panel2);display:grid;place-items:center;font-weight:800;color:var(--cyan);flex-shrink:0}
+.blk.done .bnum{background:var(--green);color:#052e1d}
+.blk .bt{flex:1;font-size:14px;font-weight:700}
+.blk .bt small{display:block;font-weight:500;color:var(--dim2);font-size:11.5px;margin-top:2px}
+
+/* ============ NAV ============ */
+.nav{position:fixed;bottom:0;left:0;right:0;max-width:560px;margin:0 auto;background:rgba(9,16,38,.94);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;padding:6px 6px 8px;z-index:35}
+.navbtn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;color:var(--dim2);font-size:10px;font-weight:700;transition:.15s}
+.navbtn .ni{font-size:21px}
+.navbtn.active{color:var(--cyan)}
+.navbtn.active .ni{transform:translateY(-1px)}
+
+/* ============ MODALS ============ */
+.overlay{position:fixed;inset:0;z-index:60;background:rgba(3,7,18,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.show{display:flex;animation:fade .25s}
+.modal{background:linear-gradient(135deg,#16265a,#0c1738);border:1px solid var(--line);border-radius:20px;padding:22px;max-width:400px;width:100%;box-shadow:var(--sh);animation:pop .35s}
+.modal h3{font-size:19px;font-weight:800;margin-bottom:8px}
+.modal p{font-size:13.5px;color:var(--dim);line-height:1.5;margin-bottom:16px}
+.pininput{width:100%;padding:15px;border-radius:14px;background:#050b1c;border:2px solid var(--line);color:var(--ink);font-size:24px;text-align:center;letter-spacing:12px;font-weight:800;margin-bottom:14px}
+.pininput:focus{outline:none;border-color:var(--cyan)}
+.field{width:100%;padding:12px;border-radius:12px;background:#050b1c;border:2px solid var(--line);color:var(--ink);font-size:14px;margin-bottom:10px;font-family:inherit}
+
+/* ============ CELEBRATION ============ */
+#confetti{position:fixed;inset:0;z-index:70;pointer-events:none;display:none}
+.celebrate{position:fixed;inset:0;z-index:71;display:none;align-items:center;justify-content:center;flex-direction:column;padding:24px;text-align:center;pointer-events:none}
+.celebrate.show{display:flex;animation:fade .3s}
+.celebrate .big{font-size:74px;animation:celebpop .6s cubic-bezier(.2,1.4,.4,1)}
+@keyframes celebpop{0%{transform:scale(0) rotate(-30deg)}70%{transform:scale(1.2) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+.celebrate .ct{font-size:26px;font-weight:800;margin-top:10px;background:var(--gradA);-webkit-background-clip:text;background-clip:text;color:transparent}
+.celebrate .cm{font-size:16px;font-weight:700;color:var(--ink);margin-top:12px;max-width:440px;line-height:1.4}
+.celebrate .cx{font-size:15px;font-weight:800;color:var(--amber);margin-top:14px;background:rgba(251,191,36,.14);padding:8px 18px;border-radius:999px}
+
+/* tutor */
+.tutrow{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:8px;gap:10px}
+.tutrow .ti{font-size:13.5px;font-weight:700} .tutrow .ti small{display:block;color:var(--dim2);font-weight:500;font-size:11.5px}
+.tutrow .tb{font-size:12px;font-weight:800;padding:8px 12px;border-radius:9px;background:var(--panel2);color:var(--cyan);white-space:nowrap}
+.tutrow .tb.done{background:var(--green);color:#052e1d}
+.pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:rgba(34,211,238,.12);color:var(--cyan);margin:2px}
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--panel2);border:1px solid var(--cyan);color:var(--ink);padding:12px 18px;border-radius:12px;font-size:13.5px;font-weight:700;z-index:80;opacity:0;transition:.3s;pointer-events:none;box-shadow:var(--sh)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.muted{color:var(--dim2);font-size:12px}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="celebrate" id="celebrate">
+  <div class="big" id="celebIcon">🎉</div>
+  <div class="ct" id="celebTitle"></div>
+  <div class="cm" id="celebMsg"></div>
+  <div class="cx" id="celebXp"></div>
+</div>
+
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="logo">✈️</span><span>Academia Piloto IA</span></div>
+    <div class="spacer"></div>
+    <div class="stat streak" id="streakStat">🔥 0</div>
+    <div class="stat xp" id="xpStat">⭐ 0</div>
+    <button class="iconbtn" id="soundBtn" title="Sonido">🔊</button>
+  </div>
+
+  <!-- CAMINO -->
+  <section class="screen active" id="scr-path"></section>
+  <!-- LECCIÓN -->
+  <section class="screen" id="scr-lesson"></section>
+  <!-- PERFIL -->
+  <section class="screen" id="scr-profile"></section>
+  <!-- SESIÓN -->
+  <section class="screen" id="scr-session"></section>
+  <!-- TUTOR -->
+  <section class="screen" id="scr-tutor"></section>
+
+  <nav class="nav">
+    <button class="navbtn active" data-nav="path"><span class="ni">🗺️</span>Camino</button>
+    <button class="navbtn" data-nav="session"><span class="ni">⏱️</span>Sesión</button>
+    <button class="navbtn" data-nav="profile"><span class="ni">🎖️</span>Perfil</button>
+    <button class="navbtn" data-nav="tutor"><span class="ni">🔐</span>Tutor</button>
+  </nav>
+</div>
+
+<div class="fb" id="feedback"></div>
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   ACADEMIA PILOTO IA  —  app de una sola página, vanilla JS
+   Estructura:  CURRICULUM (contenido)  +  ENGINE (lógica de juego)
+   Persistencia: localStorage.  PIN tutor: 2412.
+   ===================================================================== */
+
+/* ============================================================
+   1) CELEBRACIONES  (banco de +30 mensajes, no genéricos)
+   ============================================================ */
+const CELEBS = [
+  "¡Despegue perfecto, Daniel! Torre de control autoriza pista libre. 🛫",
+  "¡Ese prompt con rol y formato quedó nivel profesional! Un DT de Nacional lo firmaría.",
+  "¡Golazo en el ángulo! Ni el arquero rival vio venir esa respuesta. ⚽",
+  "¡Vuelo estable a 10.000 pies, Cadete! El copiloto Capi está orgulloso.",
+  "¡Marcaste como delantero de Nacional en el minuto 90! Puro instinto. 🟢",
+  "¡Aterrizaje impecable! Ni una turbulencia en esa respuesta.",
+  "¡Combo perfecto, como un centro y cabezazo bien conectado! ⚽",
+  "¡Eso fue un pase filtrado que rompe líneas! La IA entendió justo lo que querías.",
+  "¡Motores al 100%! Vas volando por esta lección, Daniel.",
+  "¡Nivel FIFA Ultimate Team con ese razonamiento! 🎮",
+  "¡Radar limpio! Detectaste el error antes que cualquier otro piloto.",
+  "¡Instinto de piloto! Elegiste la ruta correcta sin dudar.",
+  "¡Jugada de Nacional en el Atanasio, hinchada de pie! 🟢⚪",
+  "¡Precisión de francotirador! Esa respuesta dio en el blanco.",
+  "¡Vas encendido como delantero en racha goleadora!",
+  "¡Turbina a tope, Daniel! Esta racha no la para nadie.",
+  "¡Maniobra de piloto experto! Controlaste esa pregunta con las dos manos.",
+  "¡Eso fue un hat-trick mental! Tres aciertos y sigues volando. ⚽⚽⚽",
+  "¡Cielo despejado y viento a favor! Tu cerebro está en modo capitán.",
+  "¡Jugaste ese prompt como un 10 clásico: visión, pausa y gol!",
+  "¡La IA te respondió como pediste porque lo pediste bien. Eso es control total!",
+  "¡Reflejos de arquero atajando el ángulo! Frenaste esa alucinación en seco. 🧤",
+  "¡Velocidad de avión de combate procesando esa idea! ✈️",
+  "¡Le pusiste contexto y la respuesta despegó! Nivel Prompt Master.",
+  "¡Timing perfecto, como un offside bien roto en el último minuto!",
+  "¡Ese razonamiento tiene alas propias, Daniel! Vuela solo.",
+  "¡Autoridad total en la cabina! Sabes exactamente qué botón tocar.",
+  "¡Definiste de primera, sin pensarlo dos veces! Killer instinct. ⚽",
+  "¡Altímetro subiendo! Cada acierto te acerca a Capitán IA.",
+  "¡Jugadón de media cancha! Leíste la pregunta como un volante craque.",
+  "¡Torre a Cadete: maniobra ejecutada con precisión quirúrgica! 🛩️",
+  "¡Esa la clavaste al ángulo como tiro libre de crack! ⚽",
+  "¡Piloto seguro y responsable: así se vuela alto sin estrellarse!",
+  "¡Combustible al máximo y rumbo fijo! Nadie te baja de este vuelo."
+];
+const CELEB_ICONS = ["🎉","🛫","⚽","🟢","✈️","🚀","🎯","🔥","🏆","⭐"];
+
+/* ============================================================
+   2) CURRICULUM  —  7 niveles.  Contenido 100% autorado.
+   Tipos de ejercicio:
+     mc     opción múltiple            {q, opts, a, ex, fb?}
+     improve mejora este prompt        {q, opts, a, why}
+     order  ordenar piezas/pasos       {q, items[correcto], ex}
+     fill   completar espacio          {q, opts, a, ex}
+     tf     verdadero/falso            {q, a(bool), ex}
+     match  emparejar                  {q, pairs[{l,r}], ex}
+     detect detecta el error           {q, sub, opts, a, ex}
+     mission misión real (ChatGPT)     {title, intro, steps[], copy?, xp}
+   'eth:true' marca ejercicios de ética/seguridad.
+   'skill' etiqueta el tema para estadísticas.
+   ============================================================ */
+const CURRICULUM = {
+  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:200,ic:"🪶"},{n:"Teniente",xp:500,ic:"🎖️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️"}],
+  badges:[
+    {id:"primerVuelo",ic:"🛫",n:"Primer Vuelo"},
+    {id:"promptCerto",ic:"🎯",n:"Prompt Certero"},
+    {id:"promptMaster",ic:"🧠",n:"Prompt Master"},
+    {id:"detective",ic:"🔎",n:"Detective"},
+    {id:"artista",ic:"🎨",n:"Artista IA"},
+    {id:"emprendedor",ic:"💼",n:"Emprendedor"},
+    {id:"programador",ic:"💻",n:"Programador"},
+    {id:"pilotoSeguro",ic:"🛡️",n:"Piloto Seguro"},
+    {id:"racha7",ic:"🔥",n:"Racha 7"},
+    {id:"capitan",ic:"👨‍✈️",n:"Capitán IA"}
+  ],
+  levels:[
+
+  /* ================= NIVEL 1 · DESPEGUE ================= */
+  {id:"n1",name:"Despegue",tag:"Qué es la IA y por qué a veces falla",ic:"🛫",skill:"fundamentos",
+   lessons:[
+    {id:"n1l1",t:"¿Qué es la IA?",d:"El motor que mueve todo esto",ex:[
+      {type:"mc",skill:"fundamentos",q:"¿Qué es, en el fondo, una IA como ChatGPT?",
+       opts:["Un robot con opiniones propias que piensa como humano","Un programa que predice qué palabra sigue, entrenado con muchísimos textos","Una persona real respondiendo desde otro país","Un buscador que copia y pega páginas de internet"],
+       a:1,ex:"ChatGPT no 'piensa' ni siente: predice la siguiente palabra más probable. Como cuando el teclado de tu celu te sugiere la palabra que sigue, pero muchísimo más potente."},
+      {type:"tf",skill:"fundamentos",q:"Verdadero o falso: ChatGPT entiende lo que dice igual que un profesor de tu colegio.",
+       a:false,ex:"Falso. Arma frases que suenan correctas prediciendo palabras, pero no 'entiende' como un humano. Por eso hay que revisar lo que dice."},
+      {type:"mc",skill:"fundamentos",q:"Le pides a la IA un dato sobre el peso de un bagre. La IA es más como…",
+       opts:["Un pescador experto que agarró ese pez","Alguien que leyó miles de textos sobre pesca y arma una respuesta probable","Una balanza conectada al río","Un video en vivo del río"],
+       a:1,ex:"La IA no vivió nada: aprendió de textos. Puede darte una respuesta útil sobre pesca, pero no 'estuvo ahí'. Siempre verifica los datos."},
+      {type:"fill",skill:"fundamentos",q:"Completa: 'Una IA generativa ______ contenido nuevo (texto, imágenes) a partir de lo que aprendió.'",
+       opts:["borra","crea / genera","imprime","esconde"],a:1,ex:"'Generativa' viene de generar: crea texto o imágenes nuevas, no las copia tal cual de un archivo."},
+      {type:"match",skill:"fundamentos",q:"Empareja cada cosa con lo que es:",
+       pairs:[{l:"ChatGPT",r:"IA que genera texto"},{l:"Un buscador (Google)",r:"Lista páginas que ya existen"},{l:"Generador de imágenes",r:"IA que crea fotos nuevas"}],
+       ex:"El buscador te muestra páginas existentes; la IA generativa arma algo nuevo cada vez."},
+      {type:"mc",skill:"fundamentos",q:"¿Cuál de estas SÍ es inteligencia artificial que usas o podrías usar?",
+       opts:["El recomendador de jugadas de FIFA que sugiere tu alineación","Una calculadora normal","El botón de encender el televisor","Una linterna"],
+       a:0,ex:"Recomendar según tus partidos anteriores es IA (aprende de datos). Una calculadora solo sigue reglas fijas, no aprende."},
+      {type:"tf",skill:"fundamentos",eth:true,q:"Seguridad: como la IA suena muy segura, puedo creerle todo sin revisar.",
+       a:false,ex:"Falso. Sonar seguro no es lo mismo que tener la razón. Tú eres el capitán: la IA asiste, pero tú decides y verificas."}
+    ]},
+    {id:"n1l2",t:"¿Cómo aprende un modelo?",d:"Entrenamiento, en cristiano",ex:[
+      {type:"mc",skill:"fundamentos",q:"¿Cómo 'aprendió' ChatGPT a responder?",
+       opts:["Un profe le explicó cada tema uno por uno","Leyó cantidades gigantescas de textos y encontró patrones","Nació sabiendo todo","Se conecta a tu cerebro"],
+       a:1,ex:"Se entrena con toneladas de texto y detecta patrones: qué palabras suelen ir juntas, cómo se responde una pregunta. Nadie le explicó tema por tema."},
+      {type:"mc",skill:"fundamentos",q:"Entrenar una IA se parece a cuando tú entrenas para el pádel. ¿En qué?",
+       opts:["En que con más práctica (más datos) mejora","En que necesita comer bien","En que juega los domingos","En que usa raqueta"],
+       a:0,ex:"Igual que tú mejoras con más partidos, el modelo mejora con más ejemplos. Práctica = datos."},
+      {type:"fill",skill:"fundamentos",q:"Completa: 'Un ______ es el resultado del entrenamiento; es lo que responde tus preguntas.'",
+       opts:["modelo","cargador","router","teclado"],a:0,ex:"El 'modelo' es el cerebro ya entrenado. GPT, por ejemplo, es un modelo."},
+      {type:"tf",skill:"fundamentos",q:"Verdadero o falso: si la IA se entrenó con textos hasta cierta fecha, puede no saber cosas muy recientes.",
+       a:true,ex:"Verdadero. Tiene una 'fecha de corte'. Por eso a veces no conoce el último fichaje de Nacional de esta semana."},
+      {type:"order",skill:"fundamentos",q:"Ordena cómo nace un modelo de IA, del primer paso al último:",
+       items:["Se juntan muchísimos textos","El modelo busca patrones en esos textos","El modelo queda entrenado","Tú le haces una pregunta y responde"],
+       ex:"Primero se reúnen datos, luego aprende patrones, queda listo, y por fin lo usas."},
+      {type:"mc",skill:"fundamentos",q:"Si entrenas una IA SOLO con textos sobre fútbol, ¿qué pasa si le preguntas de aviación?",
+       opts:["Responde perfecto, sabe de todo","Puede responder mal o inventar, porque casi no vio ese tema","Se apaga","Te llama por teléfono"],
+       a:1,ex:"La IA sabe de lo que vio en su entrenamiento. Poco dato de un tema = respuestas flojas o inventadas."},
+      {type:"mc",skill:"fundamentos",eth:true,q:"Ética: ¿de dónde salen los textos con que se entrena una IA?",
+       opts:["De cosas escritas por millones de personas en internet y libros","De la nada","De un solo señor muy sabio","De tu celular sin permiso mientras duermes"],
+       a:0,ex:"Aprende de lo que escribimos los humanos. Por eso puede repetir tanto aciertos como errores y prejuicios humanos: hay que usar criterio."}
+    ]},
+    {id:"n1l3",t:"Alucinaciones",d:"Cuando la IA inventa con toda seguridad",ex:[
+      {type:"mc",skill:"fundamentos",q:"En IA, una 'alucinación' es cuando…",
+       opts:["La IA ve fantasmas","La IA inventa un dato falso pero lo dice como si fuera verdad","La IA se apaga sola","La IA repite tu pregunta"],
+       a:1,ex:"Alucinar = inventar con seguridad. Puede darte un nombre, fecha o cita que suena real pero es falsa."},
+      {type:"detect",skill:"verificar",q:"Detecta el problema en esta respuesta de la IA:",
+       sub:"'El Atlético Nacional fue fundado en el año 2015 por un grupo de pilotos.'",
+       opts:["Suena bien, la dejo así","Es un dato que hay que verificar: parece inventado y muy específico","La IA nunca se equivoca con fechas","Le creo porque lo dijo seguro"],
+       a:1,ex:"Un dato tan concreto (año + quién) es justo donde la IA alucina. No lo tomes por cierto: verifícalo en una fuente real."},
+      {type:"tf",skill:"fundamentos",q:"Verdadero o falso: entre más segura suena la IA, más segura es que tiene razón.",
+       a:false,ex:"Falso. La IA siempre suena segura, tenga o no la razón. La seguridad no es prueba de verdad."},
+      {type:"mc",skill:"verificar",q:"¿Cuándo debes desconfiar más y verificar?",
+       opts:["Con datos exactos: fechas, cifras, nombres, citas, precios","Cuando te saluda","Cuando te pide que esperes","Nunca, es magia"],
+       a:0,ex:"Los datos duros (fechas, cifras, nombres) son los que más se inventan. Ahí toca verificar sí o sí."},
+      {type:"fill",skill:"verificar",q:"Completa la regla de oro: 'La IA asiste, pero yo ______ antes de creer.'",
+       opts:["verifico","duermo","pago","borro"],a:0,ex:"Verificar es tu superpoder de piloto. Nunca despegues con un dato sin revisar."},
+      {type:"mc",skill:"verificar",q:"Le pides a la IA la ficha técnica de un avión y te da un dato raro. ¿Qué haces?",
+       opts:["Lo publico de una","Lo contrasto con la página oficial del fabricante","Le creo porque quiero ser piloto","Lo memorizo sin más"],
+       a:1,ex:"Contrastar con la fuente oficial es lo profesional. Un futuro piloto no vuela con datos sin confirmar."},
+      {type:"tf",skill:"fundamentos",eth:true,q:"Seguridad: si la IA me da un consejo de salud o dinero, lo sigo sin preguntarle a un adulto.",
+       a:false,ex:"Falso. En salud, dinero o cosas serias, la IA puede equivocarse. Consulta con un adulto de confianza o un experto real."}
+    ]},
+    {id:"n1l4",t:"Qué puede y qué no",d:"Los límites del copiloto",ex:[
+      {type:"match",skill:"fundamentos",q:"Empareja la tarea con si la IA la hace bien o no:",
+       pairs:[{l:"Explicarte una regla del pádel",r:"Sí, lo hace bien"},{l:"Decirte el marcador de HOY en vivo",r:"No en tiempo real"},{l:"Darte ideas para tu negocio",r:"Sí, lo hace bien"}],
+       ex:"La IA es buena explicando y dando ideas, pero no ve resultados en vivo ni datos de última hora por sí sola."},
+      {type:"mc",skill:"fundamentos",q:"¿Cuál de estas es una BUENA tarea para pedirle a la IA?",
+       opts:["'Dime el resultado exacto del partido de Nacional que se juega ahora'","'Explícame en pasos cómo mejorar mi saque de pádel'","'Dime qué estoy pensando'","'Adivíname la lotería de mañana'"],
+       a:1,ex:"Explicar y organizar ideas es su fuerte. Adivinar el futuro o ver partidos en vivo, no."},
+      {type:"tf",skill:"fundamentos",q:"Verdadero o falso: la IA puede ayudarte a ordenar ideas para tu negocio de lociones.",
+       a:true,ex:"Verdadero. Para lluvia de ideas, textos y organizarte es buenísima. El toque final y las decisiones son tuyas."},
+      {type:"mc",skill:"fundamentos",q:"La IA NO puede, por sí sola:",
+       opts:["Escribir un texto","Darte ideas","Sentir emociones de verdad o tener intenciones propias","Explicar un tema"],
+       a:2,ex:"No siente ni quiere nada: solo predice texto. Cuando 'parece' emocionada, está imitando cómo hablamos los humanos."},
+      {type:"fill",skill:"fundamentos",q:"Completa: 'La IA es una ______: te ahorra trabajo, pero el capitán sigues siendo tú.'",
+       opts:["herramienta","persona","amenaza","mascota"],a:0,ex:"Es una herramienta poderosa, como un buen simulador de vuelo. Tú la manejas."},
+      {type:"mc",skill:"fundamentos",q:"¿Cuál es una expectativa realista de la IA?",
+       opts:["Que haga TODO por mí sin que yo revise","Que me dé un primer borrador rápido que yo mejoro","Que nunca se equivoque","Que reemplace pensar"],
+       a:1,ex:"Perfecta para primeros borradores veloces. Tú los revisas y mejoras: así se saca lo mejor."}
+    ]},
+    {id:"n1l5",t:"Vuela seguro",d:"Ética y seguridad del cadete",ex:[
+      {type:"match",skill:"etica",eth:true,q:"Empareja la situación con la decisión segura:",
+       pairs:[{l:"Un chat te pide tu dirección",r:"No la doy y aviso a un adulto"},{l:"La IA da un dato dudoso",r:"Lo verifico antes de creer"},{l:"Tarea del colegio",r:"Aprendo y escribo con mis palabras"}],
+       ex:"Datos privados: no. Dato dudoso: verificar. Tarea: entender y escribir tú. ¡Piloto seguro!"},
+      {type:"mc",skill:"etica",eth:true,q:"Estás usando ChatGPT. ¿Qué NO debes escribirle nunca?",
+       opts:["Una pregunta sobre peces","Tu dirección de casa, teléfono o datos de tu familia","Una idea para tu negocio","Una duda de matemáticas"],
+       a:1,ex:"Nunca compartas datos personales tuyos ni de tu familia. Eres menor: tu información es privada y valiosa."},
+      {type:"tf",skill:"etica",eth:true,q:"Verdadero o falso: si un chat me pide una foto o dónde vivo para 'un premio', debo ignorarlo y avisarle a un adulto.",
+       a:true,ex:"Verdadero. Nadie legítimo te pide datos personales por un premio. Ignóralo y cuéntale a un adulto de confianza."},
+      {type:"mc",skill:"etica",eth:true,q:"Para una tarea del colegio, ¿cómo se usa la IA de forma honesta?",
+       opts:["Copio y pego la respuesta y la entrego como mía","La uso para entender el tema y luego escribo con mis palabras","Le pido que haga toda la tarea siempre","Miento y digo que no la usé"],
+       a:1,ex:"Usarla para aprender y luego escribir tú es lo correcto. Copiar y entregar sin entender no te enseña nada y no es honesto."},
+      {type:"mc",skill:"etica",eth:true,q:"La IA te da una afirmación fuerte sobre una persona real. Antes de repetirla, tú…",
+       opts:["La comparto en redes de una","La verifico en fuentes reales; podría ser falsa y hacer daño","La creo porque la dijo la IA","La exagero para que llame más la atención"],
+       a:1,ex:"Repetir algo falso sobre alguien hace daño real. Verifica siempre antes de compartir. Un piloto responsable no difunde rumores."},
+      {type:"fill",skill:"etica",eth:true,q:"Completa el lema del Piloto Seguro: 'La IA asiste, yo verifico, y ______ decido.'",
+       opts:["yo","ella","internet","nadie"],a:0,ex:"Tú tienes el control final. La IA es el copiloto; el capitán eres tú."},
+      {type:"tf",skill:"fundamentos",q:"Repaso: una alucinación es cuando la IA inventa un dato como si fuera cierto.",
+       a:true,ex:"¡Correcto! Ya dominas la idea clave del Nivel 1. Listo para tu primer proyecto."}
+    ]}
+   ],
+   project:{id:"n1p",title:"Proyecto: Caza-errores",tag:"Misión de nivel · +50 XP",skill:"verificar",
+    intro:"Vas a cazar 3 errores reales de ChatGPT. Esto lo valida Felipe en la sesión. ¡Modo detective activado!",
+    steps:[
+     "Abre ChatGPT y pídele: cinco datos sobre la historia del Atlético Nacional.",
+     "Toma esos 5 datos y verifícalos: búscalos en una fuente real (página oficial, un adulto que sepa).",
+     "Encuentra al menos 3 cosas dudosas o inventadas. Anótalas: qué dijo la IA y qué es lo correcto.",
+     "Guarda tus 3 cazas para mostrárselas a Felipe. Él valida la misión y te da la insignia."
+    ],
+    copy:"Dame 5 datos sobre la historia del Atlético Nacional. Sé específico con fechas y nombres.",
+    xp:50}
+  },
+
+  /* ================= NIVEL 2 · CABINA DE MANDO ================= */
+  {id:"n2",name:"Cabina de mando",tag:"Conversar bien con la IA",ic:"🎛️",skill:"conversar",
+   lessons:[
+    {id:"n2l1",t:"Instrucciones claras",d:"Que la IA entienda a la primera",ex:[
+      {type:"improve",skill:"conversar",q:"¿Cuál instrucción es MEJOR para pedir ayuda con pesca?",
+       opts:["'pesca'","'Dame 3 consejos para pescar bagre en un río de Colombia, para un principiante'"],
+       a:1,why:"La segunda dice qué pez, dónde y para qué nivel. Entre más clara la instrucción, mejor la respuesta. 'pesca' es demasiado vago."},
+      {type:"mc",skill:"conversar",q:"¿Por qué 'ayúdame con mi negocio' da respuestas flojas?",
+       opts:["Porque es muy larga","Porque es muy vaga: la IA no sabe qué negocio ni con qué","Porque tiene tildes","Porque usa la palabra negocio"],
+       a:1,ex:"Sin detalles, la IA adivina. Dile qué negocio (lociones), qué necesitas (ideas, un texto) y para quién."},
+      {type:"order",skill:"conversar",q:"Ordena una buena instrucción, de lo primero a lo último:",
+       items:["Di QUÉ quieres (un plan de entrenamiento)","Da CONTEXTO (juego pádel, soy principiante)","Pide el FORMATO (en pasos numerados)"],
+       ex:"Qué + contexto + formato = instrucción clara. Con eso la IA da en el blanco."},
+      {type:"fill",skill:"conversar",q:"Completa: 'Una buena instrucción responde qué quiero, para ______ y en qué formato.'",
+       opts:["quién/qué contexto","cuánto pago","qué color","qué hora"],a:0,ex:"El contexto (para quién, en qué situación) cambia toda la respuesta."},
+      {type:"tf",skill:"conversar",q:"Verdadero o falso: dar demasiado contexto útil casi siempre mejora la respuesta.",
+       a:true,ex:"Verdadero. Mientras el contexto sea útil (tu nivel, tu objetivo), ayuda. La IA no se cansa de leer."},
+      {type:"mc",skill:"conversar",q:"Quieres ideas de nombres para tus lociones. ¿Cuál pides?",
+       opts:["'nombres'","'Dame 10 nombres cortos y modernos para una marca de lociones para jóvenes en Colombia'"],
+       a:1,ex:"La segunda dice cantidad, estilo, producto y público. Así los nombres salen a tu medida."},
+      {type:"improve",skill:"conversar",q:"¿Cuál pide mejor un resumen?",
+       opts:["'resume esto'","'Resume este texto en 3 frases sencillas para explicárselo a un amigo'"],
+       a:1,why:"Dice en cuántas frases, con qué estilo y para quién. 'resume esto' deja todo al azar."}
+    ]},
+    {id:"n2l2",t:"Dar contexto",d:"La IA no adivina, tú le cuentas",ex:[
+      {type:"mc",skill:"conversar",q:"¿Qué es 'dar contexto' a la IA?",
+       opts:["Escribir con mayúsculas","Contarle los datos de tu situación para que responda a tu medida","Repetir la pregunta 3 veces","Mandarle emojis"],
+       a:1,ex:"Contexto = tu situación real. 'Soy principiante', 'vendo en Medellín', 'tengo 15 años'. Eso cambia la respuesta."},
+      {type:"improve",skill:"conversar",q:"Pides un plan de entrenamiento. ¿Cuál tiene mejor contexto?",
+       opts:["'Hazme un plan de pádel'","'Hazme un plan de pádel de 3 días por semana; soy principiante, tengo 15 años y quiero mejorar mi saque'"],
+       a:1,why:"El segundo da días, nivel, edad y objetivo. Con eso el plan sale realista y a tu medida."},
+      {type:"order",skill:"conversar",q:"Ordena los datos de contexto de más a menos útil para un plan de pádel:",
+       items:["Mi nivel (principiante)","Mi objetivo (mejorar el saque)","Mi disponibilidad (3 días/semana)"],
+       ex:"Nivel, objetivo y tiempo son el trío de oro. Con eso el plan deja de ser genérico."},
+      {type:"tf",skill:"conversar",q:"Verdadero o falso: la IA recuerda tu vida aunque no le cuentes nada.",
+       a:false,ex:"Falso. Solo sabe lo que le escribes en la conversación. Si no le das contexto, responde en general."},
+      {type:"fill",skill:"conversar",q:"Completa: 'Sin contexto, la respuesta es ______; con contexto, es a tu medida.'",
+       opts:["genérica","perfecta","secreta","gratis"],a:0,ex:"Genérica = sirve para cualquiera y para nadie. El contexto la vuelve tuya."},
+      {type:"mc",skill:"conversar",eth:true,q:"Al dar contexto de tu negocio, ¿qué NO debes incluir?",
+       opts:["Que vendes lociones","Tu público (jóvenes)","Tu número de cédula o el de tus clientes","Que estás empezando"],
+       a:2,ex:"Datos personales sensibles (cédulas, teléfonos) no van. Da contexto del negocio, no información privada."}
+    ]},
+    {id:"n2l3",t:"Pedir el formato",d:"Tú decides la forma de la respuesta",ex:[
+      {type:"mc",skill:"conversar",q:"¿Para qué sirve pedir un formato (lista, tabla, pasos)?",
+       opts:["Para que la respuesta se vea bonita y sea fácil de usar","Para nada","Para que responda más lento","Para gastar más internet"],
+       a:0,ex:"El formato hace la respuesta usable: una lista para repasar, una tabla para comparar, pasos para hacer algo."},
+      {type:"match",skill:"conversar",q:"Empareja lo que necesitas con el formato ideal:",
+       pairs:[{l:"Comparar 3 lociones",r:"Una tabla"},{l:"Hacer un ejercicio paso a paso",r:"Lista numerada"},{l:"Un mensaje para un cliente",r:"Un párrafo corto"}],
+       ex:"Cada necesidad tiene su formato. Pedirlo te ahorra tiempo."},
+      {type:"improve",skill:"conversar",q:"¿Cuál pide mejor el formato?",
+       opts:["'Dame info de aviones'","'Dame 5 aviones famosos en una tabla con columnas: nombre y para qué se usa'"],
+       a:1,why:"Pide cantidad, formato de tabla y qué columnas. Recibes justo lo que necesitas, ordenadito."},
+      {type:"fill",skill:"conversar",q:"Completa: 'Puedo pedir la respuesta en lista, en tabla, en pasos o con cierta ______.'",
+       opts:["longitud","temperatura","marca","edad"],a:0,ex:"También puedes pedir longitud: 'en 3 frases', 'máximo 100 palabras'. Tú mandas."},
+      {type:"tf",skill:"conversar",q:"Verdadero o falso: puedo pedirle a la IA que responda como si le hablara a un niño de 10 años.",
+       a:true,ex:"Verdadero. Puedes fijar el tono y el nivel: 'explícamelo fácil', 'usa lenguaje juvenil'. Es parte del formato."},
+      {type:"mc",skill:"conversar",q:"Quieres estudiar 5 conceptos rápido. ¿Qué formato pides?",
+       opts:["Un texto largo de 3 páginas","Una lista de 5 puntos, cada uno en una frase","Un poema","Una sola palabra"],
+       a:1,ex:"Lista corta = micro-contenido fácil de repasar. Perfecto para estudiar sin muros de texto."}
+    ]},
+    {id:"n2l4",t:"Repreguntar e iterar",d:"La primera respuesta no es la final",ex:[
+      {type:"mc",skill:"conversar",q:"La IA te da una respuesta a medias. ¿Qué haces?",
+       opts:["Me rindo","Le repregunto: 'hazlo más corto' o 'dame un ejemplo de pesca'","Cierro la app","Empiezo un chat nuevo desde cero"],
+       a:1,ex:"Conversar es ida y vuelta. Repreguntar y ajustar en el mismo chat es como corregir el rumbo del avión en pleno vuelo."},
+      {type:"order",skill:"conversar",q:"Ordena una buena conversación con la IA:",
+       items:["Haces tu pedido con contexto","La IA responde","Ajustas: 'más corto' o 'con un ejemplo de fútbol'","Recibes la versión final a tu gusto"],
+       ex:"Pedir → recibir → ajustar → mejorar. Iterar es la clave de las buenas respuestas."},
+      {type:"improve",skill:"conversar",q:"La respuesta quedó muy larga. ¿Cuál es la mejor repregunta?",
+       opts:["'mal'","'Está muy largo. Resúmelo en 4 puntos clave, por favor'"],
+       a:1,why:"Le dices qué falló (muy largo) y qué quieres (4 puntos). La IA corrige justo eso."},
+      {type:"tf",skill:"conversar",q:"Verdadero o falso: si sigues en el mismo chat, la IA recuerda lo que ya hablaron.",
+       a:true,ex:"Verdadero. Dentro de la misma conversación tiene memoria del hilo. Por eso puedes decir 'ahora hazlo más corto' sin repetir todo."},
+      {type:"fill",skill:"conversar",q:"Completa: 'Si algo no me sirve, no me rindo: ______ y ajusto.'",
+       opts:["repregunto","me quejo","apago","espero"],a:0,ex:"Repreguntar es de pilotos expertos. La primera respuesta es un borrador, no la meta."},
+      {type:"mc",skill:"conversar",q:"¿Cuál de estas es iterar bien?",
+       opts:["'Ahora dame el mismo plan pero enfocado en resistencia y con 2 ejercicios por día'","'ok'","'gracias'","'no'"],
+       a:0,ex:"Iterar bien es pedir un ajuste concreto sobre lo que ya tienes. Así la respuesta se vuelve tuya."}
+    ]},
+    {id:"n2l5",t:"Cabina segura",d:"Buenas costumbres al conversar",ex:[
+      {type:"match",skill:"conversar",q:"Empareja el ingrediente con su ejemplo:",
+       pairs:[{l:"Instrucción clara",r:"Dame 3 consejos de pesca"},{l:"Contexto",r:"Soy principiante"},{l:"Formato",r:"En una lista corta"}],
+       ex:"Reconocer cada ingrediente en un ejemplo te vuelve experto de cabina."},
+      {type:"mc",skill:"etica",eth:true,q:"Conversando con la IA sobre tu negocio, un buen hábito es:",
+       opts:["Contarle todos mis datos bancarios","Darle contexto del producto pero nunca datos personales o claves","Pedirle que guarde mis contraseñas","Mandarle fotos de mi familia"],
+       a:1,ex:"Contexto del producto: sí. Datos personales, claves o fotos privadas: nunca. Protege tu información."},
+      {type:"tf",skill:"etica",eth:true,q:"Verdadero o falso: aunque la IA me dé un texto, yo debo leerlo antes de enviárselo a un cliente.",
+       a:true,ex:"Verdadero. Tú firmas el mensaje. Revisa que sea correcto y suene a ti antes de mandarlo. La IA asiste, tú decides."},
+      {type:"improve",skill:"conversar",q:"Combina todo lo aprendido. ¿Cuál es el mejor pedido?",
+       opts:["'texto para cliente'","'Escribe un mensaje corto y amable para un cliente que compró una loción, agradeciéndole y ofreciéndole 10% en la próxima. Máximo 3 frases.'"],
+       a:1,why:"Tiene qué (mensaje), contexto (compró loción), formato (corto, amable, 3 frases) y objetivo (fidelizar). ¡Cabina de mando dominada!"},
+      {type:"mc",skill:"conversar",q:"Repaso: los 4 ingredientes de una buena conversación son…",
+       opts:["Gritar, insistir, repetir y esperar","Instrucción clara, contexto, formato y repreguntar","Emojis, mayúsculas, tildes y punto","Suerte, magia, prisa y fe"],
+       a:1,ex:"¡Ese es el kit! Con esos 4 vuelas en cualquier cabina. Listo para el proyecto de nivel."},
+      {type:"fill",skill:"conversar",q:"Completa: 'La primera respuesta es un ______; la buena sale al iterar.'",
+       opts:["borrador","final","error","secreto"],a:0,ex:"Mentalidad de borrador: pide, ajusta, mejora. Así responden los que dominan la IA."}
+    ]}
+   ],
+   project:{id:"n2p",title:"Proyecto: Plan de pádel de verdad",tag:"Misión de nivel · +50 XP",skill:"conversar",
+    intro:"En UNA sola conversación con ChatGPT, consigue un plan de entrenamiento de pádel que de verdad te sirva. Aplica todo: instrucción clara, contexto, formato e iterar.",
+    steps:[
+     "Escríbele con contexto: tu nivel, cuántos días puedes, tu objetivo y pídelo en pasos.",
+     "Lee la respuesta. Si algo no cuadra, repregunta: 'hazlo más corto' o 'agrega calentamiento'.",
+     "Itera hasta que el plan sea realista y lo entiendas completo.",
+     "Guarda la conversación final para mostrársela a Felipe. Él valida que sea un plan útil de verdad."
+    ],
+    copy:"Actúa como entrenador de pádel. Hazme un plan para 3 días por semana. Soy principiante, tengo 15 años y quiero mejorar mi saque. Dámelo en pasos numerados y sencillo.",
+    xp:50}
+  },
+
+  /* ================= NIVEL 3 · PROMPT MASTER ================= */
+  {id:"n3",name:"Prompt Master",tag:"Técnicas pro para prompts",ic:"🧠",skill:"prompts",
+   lessons:[
+    {id:"n3l1",t:"Asignar un rol",d:"'Actúa como…' cambia todo",ex:[
+      {type:"mc",skill:"prompts",q:"¿Qué logra empezar con 'Actúa como DT de Atlético Nacional'?",
+       opts:["Nada, es de adorno","Que la IA responda con el estilo y conocimiento de ese rol","Que la IA se vuelva DT de verdad","Que responda en inglés"],
+       a:1,ex:"Darle un rol enfoca la respuesta. 'Actúa como nutricionista', 'como piloto', 'como vendedor'. Cambia el tono y el enfoque."},
+      {type:"improve",skill:"prompts",q:"¿Cuál usa mejor la técnica del rol?",
+       opts:["'consejos de ventas'","'Actúa como un vendedor experto de perfumería y dame 5 consejos para vender lociones a jóvenes'"],
+       a:1,why:"El rol ('vendedor experto de perfumería') hace que los consejos salgan enfocados a tu negocio, no genéricos."},
+      {type:"fill",skill:"prompts",q:"Completa la fórmula del rol: 'Actúa como ______ y ayúdame con…'",
+       opts:["[un experto en el tema]","[mi mamá]","[un robot]","[nadie]"],a:0,ex:"Escoge un experto útil: entrenador, nutricionista, piloto, vendedor. El rol correcto = mejor respuesta."},
+      {type:"match",skill:"prompts",q:"Empareja tu necesidad con el rol ideal:",
+       pairs:[{l:"Mejorar tu saque",r:"Actúa como entrenador de pádel"},{l:"Vender lociones",r:"Actúa como experto en ventas"},{l:"Entender aviones",r:"Actúa como instructor de vuelo"}],
+       ex:"El rol correcto pone a la IA 'en el papel' que necesitas. Elígelo según tu meta."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: puedo combinar rol + contexto + formato en un mismo prompt.",
+       a:true,ex:"Verdadero. Y así se arman los mejores prompts: 'Actúa como X, mi situación es Y, respóndeme en formato Z'."},
+      {type:"mc",skill:"prompts",q:"Quieres consejos de nutrición para deporte. Mejor rol:",
+       opts:["'Actúa como nutricionista deportivo'","'Actúa como cantante'","'Actúa como taxista'","Ninguno, no sirve"],
+       a:0,ex:"El rol debe encajar con el tema. Nutricionista deportivo = respuestas expertas para tu entrenamiento."}
+    ]},
+    {id:"n3l2",t:"Contexto y datos",d:"Aliméntala con tu realidad",ex:[
+      {type:"mc",skill:"prompts",q:"¿Por qué darle datos concretos mejora el prompt?",
+       opts:["Porque se ve más largo","Porque la IA responde ajustada a TU caso, no en general","Porque le gusta leer","No mejora"],
+       a:1,ex:"Datos = respuestas a tu medida. 'Vendo lociones a $30.000, mi cliente es joven' da mejores ideas que 'ayúdame a vender'."},
+      {type:"improve",skill:"prompts",q:"¿Cuál da mejor contexto y datos?",
+       opts:["'ideas para vender'","'Vendo lociones a jóvenes de 15-20 años, precio $30.000, por Instagram. Dame 5 ideas para vender más esta semana.'"],
+       a:1,why:"Producto, público, precio, canal y objetivo. Con esos datos las ideas salen aplicables de una."},
+      {type:"order",skill:"prompts",q:"Ordena de más a menos útil para vender lociones:",
+       items:["Qué vendes (lociones) y a quién (jóvenes)","Tu canal (Instagram) y precio","Tu objetivo (vender más esta semana)"],
+       ex:"Producto+público, luego canal+precio, luego objetivo. Todo suma para un prompt potente."},
+      {type:"fill",skill:"prompts",q:"Completa: 'Entre más ______ le doy, más a mi medida responde.'",
+       opts:["datos útiles","emojis","prisa","silencio"],a:0,ex:"Datos útiles, no relleno. Los que cambian la respuesta: público, precio, objetivo, canal."},
+      {type:"tf",skill:"prompts",eth:true,q:"Seguridad: entre esos datos NO debo poner los teléfonos reales de mis clientes.",
+       a:true,ex:"Verdadero. Dale datos del negocio (precio, público), no información privada de personas. Cuida a tus clientes."},
+      {type:"mc",skill:"prompts",q:"¿Cuál dato es útil para que te dé mejores publicaciones de tus lociones?",
+       opts:["El color favorito del vecino","Que tu público son jóvenes y usan Instagram","Tu clave de WiFi","El clima de ayer"],
+       a:1,ex:"Saber tu público y tu canal es oro para adaptar el contenido. Los datos deben venir al caso."}
+    ]},
+    {id:"n3l3",t:"Ejemplos (few-shot)",d:"Muéstrale lo que quieres",ex:[
+      {type:"mc",skill:"prompts",q:"'Few-shot' significa darle a la IA…",
+       opts:["Pocas palabras","Uno o dos ejemplos de cómo quieres la respuesta","Un disparo","Menos tiempo"],
+       a:1,ex:"Few-shot = darle ejemplos. 'Quiero nombres así: Aero Fresh, Sky Blue. Dame 8 más.' El ejemplo guía el estilo."},
+      {type:"improve",skill:"prompts",q:"¿Cuál usa ejemplos para guiar mejor?",
+       opts:["'dame nombres de lociones'","'Dame 8 nombres de lociones al estilo de estos ejemplos: Aero Fresh, Sky Blue, Jet Aroma.'"],
+       a:1,why:"Los ejemplos le muestran el estilo exacto que quieres (aviación + inglés corto). Los nuevos nombres saldrán parecidos."},
+      {type:"order",skill:"prompts",q:"Ordena un prompt few-shot:",
+       items:["Di qué quieres (nombres de lociones)","Da 2-3 ejemplos del estilo","Pide cuántos más quieres"],
+       ex:"Pedido + ejemplos + cantidad. El ejemplo es el que fija el estilo."},
+      {type:"fill",skill:"prompts",q:"Completa: 'Un ejemplo vale más que mil explicaciones: le muestro el ______ que quiero.'",
+       opts:["estilo","precio","error","nombre"],a:0,ex:"El ejemplo comunica el estilo mejor que describirlo. Muéstraselo y lo copia."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: los ejemplos sirven también para el formato (ej. 'responde así: - punto').",
+       a:true,ex:"Verdadero. Con un mini-ejemplo del formato, la IA copia la estructura exacta que quieres."},
+      {type:"mc",skill:"prompts",q:"Quieres mensajes de venta con cierto tono. ¿Qué haces?",
+       opts:["Le doy 1 ejemplo de un mensaje que me gustó y pido más así","No le explico nada","Le pido que adivine mi tono","Le mando un emoji"],
+       a:0,ex:"Un buen ejemplo del tono que te gusta guía a la IA para clonar ese estilo. Puro few-shot."}
+    ]},
+    {id:"n3l4",t:"Paso a paso e iterar",d:"Piensa despacio, mejora rápido",ex:[
+      {type:"mc",skill:"prompts",q:"¿Qué logra pedir 'explícalo paso a paso'?",
+       opts:["Nada","Que la IA razone en orden y se equivoque menos en cosas con lógica","Que responda más corto","Que use dibujos"],
+       a:1,ex:"Pedir pasos hace que la IA piense en orden. Útil para problemas, cálculos o instrucciones. Menos saltos, menos errores."},
+      {type:"improve",skill:"prompts",q:"Tienes un prompt bueno pero quieres perfeccionarlo. ¿Qué técnica pro usas?",
+       opts:["Lo dejo igual","Le pido a la IA: 'mejora este prompt para que quede más claro' antes de usarlo","Lo borro","Lo escribo en mayúsculas"],
+       a:1,why:"Usar la IA para mejorar tu propio prompt es truco de nivel Master. Ella te sugiere cómo pedir mejor, y luego sí lo usas."},
+      {type:"order",skill:"prompts",q:"Ordena el flujo Prompt Master completo:",
+       items:["Escribo un primer prompt","Le pido a la IA que lo mejore","Uso el prompt mejorado","Itero sobre la respuesta hasta que quede"],
+       ex:"Escribir → mejorar el prompt → usarlo → iterar. Ese es el circuito de un Prompt Master."},
+      {type:"fill",skill:"prompts",q:"Completa: 'Puedo usar la IA para ______ mi prompt antes de usarlo.'",
+       opts:["mejorar","esconder","pagar","borrar"],a:0,ex:"Pídele: '¿cómo mejorarías este prompt?' Te da una versión más clara. Truco pro."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: iterar sobre la respuesta es parte de hacer buenos prompts.",
+       a:true,ex:"Verdadero. Un prompt no termina en el primer intento: se ajusta hasta que la respuesta queda fina."},
+      {type:"mc",skill:"prompts",q:"'Piensa paso a paso' es más útil para…",
+       opts:["Un cálculo o un problema con lógica","Elegir un color","Saludar","Nada"],
+       a:0,ex:"Para lógica y problemas, pensar por pasos reduce errores. Para un saludo, no hace falta."}
+    ]},
+    {id:"n3l5",t:"Prompt Master en acción",d:"Junta todas las técnicas",ex:[
+      {type:"order",skill:"prompts",q:"Ordena las técnicas en un prompt de nivel Master:",
+       items:["Actúa como experto (rol)","Mi negocio es X (contexto)","Al estilo de este ejemplo (few-shot)","Respóndeme en lista (formato)"],
+       ex:"Rol, contexto, ejemplo y formato: en ese orden fluye un prompt profesional."},
+      {type:"mc",skill:"prompts",q:"¿Cuál combina MÁS técnicas pro bien usadas?",
+       opts:["'ayúdame con lociones'","'Actúa como experto en marketing. Vendo lociones a jóvenes por Instagram. Dame 5 ideas de publicación al estilo de este ejemplo: \"Huele a victoria ⚽\". En lista, cada una en 1 frase.'"],
+       a:1,ex:"Tiene rol, contexto, ejemplo (few-shot) y formato. Ese es un prompt de nivel profesional, Daniel."},
+      {type:"match",skill:"prompts",q:"Empareja la técnica con su frase clave:",
+       pairs:[{l:"Rol",r:"Actúa como…"},{l:"Formato",r:"En una lista de 5…"},{l:"Ejemplos",r:"Al estilo de: …"}],
+       ex:"Reconocer cada técnica por su frase te hace un Prompt Master de verdad."},
+      {type:"improve",skill:"prompts",q:"Última prueba: ¿cuál es el prompt más completo?",
+       opts:["'Dame un texto para mi negocio'","'Actúa como copywriter. Escribe un texto de venta de 3 frases para una loción juvenil a $30.000, tono fresco y directo, terminando con una llamada a comprar.'"],
+       a:1,why:"Rol + tarea + datos + formato + objetivo. Todo alineado. ¡Estás listo para tu plantilla personal!"},
+      {type:"fill",skill:"prompts",q:"Completa el kit Master: 'Rol + contexto + formato + ejemplos + ______.'",
+       opts:["iterar","dormir","gritar","esperar"],a:0,ex:"Iterar cierra el kit. Con estos cinco, ningún prompt se te resiste."},
+      {type:"tf",skill:"prompts",q:"Verdadero o falso: un buen prompt es reutilizable como plantilla para tu negocio.",
+       a:true,ex:"Verdadero. Ese es justo tu proyecto: crear una plantilla que uses una y otra vez cambiando pocos datos."}
+    ]}
+   ],
+   project:{id:"n3p",title:"Proyecto: Tu prompt-plantilla del negocio",tag:"Misión de nivel · +50 XP · Insignia Prompt Master",skill:"prompts",
+    intro:"Crea TU prompt-plantilla personal para el negocio de lociones. Una que reúses siempre cambiando pocos datos. Debe tener rol, contexto, formato y un ejemplo.",
+    steps:[
+     "Escribe una plantilla con huecos: 'Actúa como [rol]. Vendo [producto] a [público]. Quiero [objetivo]. Dámelo en [formato], estilo así: [ejemplo].'",
+     "Pruébala en ChatGPT rellenando los huecos con tu negocio real de lociones.",
+     "Pídele a la IA que MEJORE tu plantilla. Ajusta con su sugerencia.",
+     "Guarda tu plantilla final. Felipe la revisa y valida que tenga rol, contexto, formato y ejemplo."
+    ],
+    copy:"Actúa como [experto en marketing]. Vendo [lociones] a [jóvenes en Instagram]. Quiero [más ventas]. Dámelo en [lista de 5 ideas], al estilo de: [\"Huele a victoria ⚽\"].",
+    xp:50}
+  },
+
+  /* ================= NIVEL 4 · RADAR ================= */
+  {id:"n4",name:"Radar",tag:"Investigar y verificar como un pro",ic:"📡",skill:"verificar",
+   lessons:[
+    {id:"n4l1",t:"No creas de una",d:"El radar siempre encendido",ex:[
+      {type:"mc",skill:"verificar",q:"La IA te da un dato para tu reporte de aviones. Antes de usarlo, tú…",
+       opts:["Lo copio de una","Lo contrasto con una fuente real (página oficial, enciclopedia)","Le creo porque suena técnico","Lo agrando"],
+       a:1,ex:"Contrastar = comparar con otra fuente confiable. Es tu radar. Un dato solo es cierto cuando lo confirmas."},
+      {type:"tf",skill:"verificar",q:"Verdadero o falso: una fuente confiable es mejor que 'lo dijo la IA'.",
+       a:true,ex:"Verdadero. La IA puede alucinar. Una fuente oficial o experta pesa mucho más que 'me lo dijo el chat'."},
+      {type:"detect",skill:"verificar",q:"Detecta el dato sospechoso:",
+       sub:"'El avión más rápido del mundo puede volar de Medellín a Tokio en 4 minutos.'",
+       opts:["Lo creo, suena rápido","Es sospechoso: la cifra es exagerada, hay que verificarla","La IA nunca exagera","Lo comparto ya"],
+       a:1,ex:"4 minutos entre continentes es imposible. Cifras exageradas = alerta roja de alucinación. Verifica siempre."},
+      {type:"fill",skill:"verificar",q:"Completa: 'Verificar es comparar lo que dice la IA con una ______ confiable.'",
+       opts:["fuente","canción","foto","hora"],a:0,ex:"Fuente confiable: página oficial, libro, experto. Ese es el segundo motor de tu radar."},
+      {type:"mc",skill:"verificar",q:"¿Cuál es una fuente MÁS confiable para datos de un pez?",
+       opts:["Un comentario random en un video","La página de una universidad o entidad ambiental","Un meme","Lo primero que salga"],
+       a:1,ex:"Universidades y entidades oficiales son fuentes serias. No todo lo de internet vale igual: elige bien."},
+      {type:"mc",skill:"etica",eth:true,q:"Antes de creer que algo grave es cierto, un piloto responsable…",
+       opts:["Lo comparte para ser el primero","Verifica en fuentes reales; si es falso, no lo difunde","Le cree a la IA sin más","Lo exagera"],
+       a:1,ex:"Difundir algo falso hace daño. Verificar antes de compartir es parte de ser un usuario ético de la IA."}
+    ]},
+    {id:"n4l2",t:"Detectar lo inventado",d:"Cazando datos falsos",ex:[
+      {type:"detect",skill:"verificar",q:"Detecta la señal de alucinación:",
+       sub:"'Según el estudio del Dr. Pérez de 2019, el 87,3% de los bagres prefieren música salsa.'",
+       opts:["Es un dato serio","Cita muy específica + porcentaje raro = probable invento. A verificar.","La IA cita bien siempre","Lo uso en mi reporte"],
+       a:1,ex:"Citas con nombres y porcentajes exactos que no puedes comprobar son clásicas alucinaciones. La IA a veces 'inventa fuentes'."},
+      {type:"mc",skill:"verificar",q:"¿Qué tipo de dato inventa MÁS la IA?",
+       opts:["Cifras exactas, fechas, nombres de estudios y citas","Saludos","La palabra 'hola'","Emojis"],
+       a:0,ex:"Lo específico y comprobable (cifras, fechas, citas) es donde más alucina. Ahí enciende el radar."},
+      {type:"tf",skill:"verificar",q:"Verdadero o falso: si le pido la fuente y me da un link, ese link siempre existe y dice eso.",
+       a:false,ex:"Falso. A veces inventa hasta los links. Ábrelo y comprueba que existe y que de verdad dice lo que la IA afirma."},
+      {type:"fill",skill:"verificar",q:"Completa: 'Si no puedo comprobar un dato en ningún lado, mejor ______ de él.'",
+       opts:["desconfío","me río","me enojo","lo copio"],a:0,ex:"Desconfiar de lo incomprobable te salva de repetir mentiras. Regla de detective."},
+      {type:"mc",skill:"verificar",q:"La IA dice un dato y tú no lo encuentras en NINGUNA fuente. Conclusión:",
+       opts:["Es verdad igual","Probablemente lo inventó; no lo uses como cierto","La IA gana","Lo publico"],
+       a:1,ex:"Sin respaldo, trátalo como no confiable. Un dato sin fuente no entra a tu reporte."},
+      {type:"match",skill:"verificar",q:"Empareja la señal con el nivel de alerta:",
+       pairs:[{l:"Cifra exacta rarísima",r:"Alerta alta: verificar"},{l:"Explicación general de un tema",r:"Alerta baja: suele estar bien"},{l:"Cita de un estudio que no aparece",r:"Alerta alta: posible invento"}],
+       ex:"Lo general suele ir bien; lo súper específico y comprobable es lo que más toca revisar."}
+    ]},
+    {id:"n4l3",t:"Pedir y citar fuentes",d:"Muéstrame de dónde lo sacaste",ex:[
+      {type:"detect",skill:"verificar",q:"Detecta qué le falta a este 'dato' de la IA:",
+       sub:"'El 92% de los pilotos prefiere volar de noche.'",
+       opts:["Nada, está completo","Le falta la fuente: sin decir de dónde salió, no es confiable","Le falta un emoji","Le falta color"],
+       a:1,ex:"Un porcentaje sin fuente es humo. Pide de dónde salió y verifícalo antes de usarlo."},
+      {type:"improve",skill:"verificar",q:"¿Cuál pide mejor que la respuesta sea verificable?",
+       opts:["'háblame de aviones'","'Explícame cómo vuela un avión y dime qué fuentes debería revisar para confirmarlo'"],
+       a:1,why:"Pedir qué fuentes revisar te da un mapa para verificar tú mismo. Es control de piloto sobre la información."},
+      {type:"mc",skill:"verificar",q:"¿Para qué sirve citar la fuente en tu reporte?",
+       opts:["Para rellenar","Para que otros (y tú) puedan comprobar que el dato es real","Para que se vea largo","Para nada"],
+       a:1,ex:"Citar = decir de dónde salió el dato. Da seriedad y permite comprobarlo. Así trabajan los profesionales."},
+      {type:"tf",skill:"etica",eth:true,q:"Verdadero o falso: usar info de otros sin decir de dónde salió y presentarla como 100% mía no es honesto.",
+       a:true,ex:"Verdadero. Reconocer las fuentes es honestidad. En un reporte, cita de dónde sacaste cada dato clave."},
+      {type:"fill",skill:"verificar",q:"Completa: 'Un buen reporte no solo dice qué; también dice ______ lo sabe.'",
+       opts:["de dónde","cuándo duerme","qué color","cuánto vale"],a:0,ex:"'De dónde lo sabe' = la fuente. Eso separa un reporte serio de un rumor."},
+      {type:"mc",skill:"verificar",q:"La IA te da 3 datos. ¿Cuál es tu siguiente paso profesional?",
+       opts:["Publicar los 3","Verificar cada uno en una fuente y marcar cuáles confirmaste","Creerle a 2 y dudar de 1 al azar","Borrarlos"],
+       a:1,ex:"Verificar uno por uno y marcar los confirmados. Así tu reporte 'IA vs realidad' queda blindado."}
+    ]},
+    {id:"n4l4",t:"IA vs. realidad",d:"Arma tu mini-investigación",ex:[
+      {type:"improve",skill:"verificar",q:"¿Cuál pedido ayuda más a verificar tu tema?",
+       opts:["'dime todo sobre el bagre'","'Dame 3 datos del bagre y, para cada uno, dime cómo podría confirmarlo en una fuente real'"],
+       a:1,why:"Pedir cómo confirmar cada dato te da el mapa para verificar. Investigación seria."},
+      {type:"order",skill:"verificar",q:"Ordena los pasos de una mini-investigación seria:",
+       items:["Elijo un tema (peces, aviones o Nacional)","Le pregunto a la IA y anoto lo que dice","Verifico cada dato en fuentes reales","Escribo qué acertó y qué falló la IA"],
+       ex:"Elegir → preguntar → verificar → comparar. Ese es el método 'IA vs realidad'."},
+      {type:"mc",skill:"verificar",q:"En tu reporte 'IA vs realidad', ¿qué es lo más valioso?",
+       opts:["Que la IA nunca falle","Mostrar dónde acertó y dónde se equivocó, con las fuentes","Que sea larguísimo","Copiar la respuesta tal cual"],
+       a:1,ex:"El oro está en comparar: qué dijo la IA vs qué es real. Eso demuestra que sabes verificar."},
+      {type:"tf",skill:"verificar",q:"Verdadero o falso: encontrar un error de la IA en tu reporte es un logro, no un fracaso.",
+       a:true,ex:"Verdadero. Cazar el error prueba que tu radar funciona. Los mejores usuarios de IA son los que la revisan."},
+      {type:"fill",skill:"verificar",q:"Completa: 'La IA me da la pista; la ______ la confirmo yo.'",
+       opts:["verdad","broma","tarea","hora"],a:0,ex:"La IA acelera, tú confirmas la verdad. Equipo perfecto: copiloto + capitán."},
+      {type:"mc",skill:"etica",eth:true,q:"Investigando un tema, la IA da una opinión fuerte sobre un país o grupo. Tú…",
+       opts:["La repito como verdad","La tomo con pinzas: puede tener sesgos; busco datos y varias fuentes","La creo ciegamente","La agrando"],
+       a:1,ex:"La IA puede repetir prejuicios de los textos con que se entrenó. Con temas de personas o grupos, busca varias fuentes y usa criterio."}
+    ]},
+    {id:"n4l5",t:"Radar experto",d:"Consolida tu criterio",ex:[
+      {type:"detect",skill:"verificar",q:"¿Cuál respuesta de IA verificarías SÍ o SÍ?",
+       sub:"'Tu selección jugará la final el 30 de febrero a las 25:00.'",
+       opts:["Ninguna, suena bien","Esta: tiene una fecha y una hora imposibles","La IA no se equivoca con fechas","La comparto ya"],
+       a:1,ex:"30 de febrero y las 25:00 no existen. Datos imposibles = alucinación clara. Radar al máximo."},
+      {type:"improve",skill:"verificar",q:"¿Cuál cierre de reporte es más profesional?",
+       opts:["'lo dijo la IA'","'Dato confirmado en la página oficial; la IA acertó en 2 de 3 puntos'"],
+       a:1,why:"Citar la fuente y comparar IA vs realidad es el sello de un buen detective de datos."},
+      {type:"mc",skill:"verificar",q:"Resumen: ¿cuándo NO hace falta verificar tanto?",
+       opts:["Nunca, todo se verifica igual","Cuando es una explicación general de un concepto conocido","Con cifras exactas","Con citas de estudios"],
+       a:1,ex:"Explicar 'cómo funciona un motor' en general suele estar bien. Lo que toca verificar es lo específico y comprobable."},
+      {type:"tf",skill:"verificar",q:"Verdadero o falso: verificar toma tiempo, pero evita quedar mal con datos falsos.",
+       a:true,ex:"Verdadero. Un minuto verificando te salva de un error público. Los pilotos revisan antes de despegar, siempre."},
+      {type:"match",skill:"verificar",q:"Empareja la acción con su nombre:",
+       pairs:[{l:"Comparar con otra fuente",r:"Contrastar"},{l:"Decir de dónde salió",r:"Citar"},{l:"Dudar de lo incomprobable",r:"Criterio"}],
+       ex:"Contrastar, citar y criterio: los tres pilares de tu radar. ¡Listo para el proyecto!"},
+      {type:"fill",skill:"verificar",q:"Completa el lema del Radar: 'Confía, pero ______.'",
+       opts:["verifica","duerme","paga","corre"],a:0,ex:"'Confía, pero verifica.' Ese es el radar del piloto de información."}
+    ]}
+   ],
+   project:{id:"n4p",title:"Proyecto: Mini-reporte IA vs. realidad",tag:"Misión de nivel · +50 XP · Insignia Detective",skill:"verificar",
+    intro:"Elige UN tema (aviones, peces o Atlético Nacional) y haz un mini-reporte comparando lo que dice la IA con la realidad verificada.",
+    steps:[
+     "Elige tu tema y pídele a ChatGPT 5 datos específicos sobre él.",
+     "Verifica cada dato en fuentes reales (páginas oficiales, un adulto experto).",
+     "Escribe tu reporte: por cada dato, di si la IA acertó o falló, y cita tu fuente.",
+     "Muéstraselo a Felipe. Él valida tu método detective y te da la insignia."
+    ],
+    copy:"Dame 5 datos específicos y verificables sobre [aviones / peces / Atlético Nacional], con fechas o cifras.",
+    xp:50}
+  },
+
+  /* ================= NIVEL 5 · ESTUDIO CREATIVO ================= */
+  {id:"n5",name:"Estudio creativo",tag:"Crear imágenes y contenido con IA",ic:"🎨",skill:"creativo",
+   lessons:[
+    {id:"n5l1",t:"Describir una imagen",d:"Las palabras pintan",ex:[
+      {type:"tf",skill:"creativo",q:"Verdadero o falso: la misma idea descrita con más detalle suele dar mejor imagen.",
+       a:true,ex:"Verdadero. Más detalle útil (color, luz, estilo) guía a la IA a pintar justo lo que imaginas."},
+      {type:"mc",skill:"creativo",q:"Para que una IA cree la imagen que imaginas, tu descripción debe ser…",
+       opts:["Corta y vaga: 'un avión'","Detallada: qué, dónde, estilo, colores, ambiente","En inglés obligatorio","Con una sola palabra"],
+       a:1,ex:"La IA de imágenes pinta lo que describes. 'Un avión' es poco; 'un avión rojo despegando al atardecer, estilo realista' es oro."},
+      {type:"improve",skill:"creativo",q:"¿Cuál descripción dará mejor imagen para tu loción?",
+       opts:["'una loción'","'frasco de loción azul sobre una mesa de madera, luz suave, fondo con aviones de papel, estilo publicitario moderno'"],
+       a:1,why:"Da objeto, color, entorno, luz y estilo. La IA tiene todo para pintar una foto de producto que vende."},
+      {type:"order",skill:"creativo",q:"Ordena una buena descripción de imagen:",
+       items:["Qué es (un guacamayo piloto)","Cómo se ve (con gafas de aviador y bufanda)","Estilo y ambiente (caricatura, cielo azul de fondo)"],
+       ex:"Objeto → detalles → estilo/ambiente. Con esa receta la imagen sale como la imaginas."},
+      {type:"fill",skill:"creativo",q:"Completa: 'En una imagen puedo definir el ______: realista, caricatura, acuarela, 3D…'",
+       opts:["estilo","precio","peso","idioma"],a:0,ex:"El estilo cambia todo. Pídelo claro: 'estilo caricatura', 'foto realista', 'acuarela'."},
+      {type:"mc",skill:"creativo",q:"¿Qué detalle ayuda MÁS a una imagen de producto?",
+       opts:["El día de la semana","La luz y el fondo (dónde está el producto)","Tu edad","El clima de Marte"],
+       a:1,ex:"Luz y fondo definen si se ve profesional o casero. Descríbelos: 'luz suave', 'fondo limpio'."}
+    ]},
+    {id:"n5l2",t:"Estilos y detalles",d:"El mismo objeto, mil looks",ex:[
+      {type:"detect",skill:"creativo",q:"Tu imagen salió sosa. ¿Qué le faltó a tu descripción?",
+       sub:"Pediste: 'un frasco'. Salió un frasco cualquiera, sin gracia.",
+       opts:["Nada, la IA falló","Le faltó estilo, color, fondo y ambiente","Le faltó pagar","Le faltó suerte"],
+       a:1,ex:"'Un frasco' es muy poco. Agrega color, fondo, luz y estilo y la imagen cambia por completo."},
+      {type:"match",skill:"creativo",q:"Empareja el estilo con lo que transmite:",
+       pairs:[{l:"Realista",r:"Parece foto de verdad"},{l:"Caricatura",r:"Divertido y juvenil"},{l:"Minimalista",r:"Limpio y elegante"}],
+       ex:"Elige el estilo según el mensaje. Para lociones juveniles, algo fresco y limpio funciona genial."},
+      {type:"mc",skill:"creativo",q:"Quieres que tu mascota Capi se vea divertida y juvenil. ¿Qué estilo pides?",
+       opts:["Documental aburrido","Caricatura colorida y amigable","Blanco y negro triste","Sin estilo"],
+       a:1,ex:"Caricatura colorida transmite diversión. El estilo debe ir con la sensación que buscas."},
+      {type:"tf",skill:"creativo",q:"Verdadero o falso: puedo pedir la misma idea en varios estilos y elegir el que más me guste.",
+       a:true,ex:"Verdadero. Pide 'esta imagen en estilo realista y también en caricatura'. Comparas y eliges. Puro estudio creativo."},
+      {type:"fill",skill:"creativo",q:"Completa: 'Si no me gusta, la ______: cambio un detalle y pido de nuevo.'",
+       opts:["itero","borro","escondo","vendo"],a:0,ex:"Iterar imágenes es normal: ajusta un detalle (color, fondo, luz) y vuelve a generar."},
+      {type:"improve",skill:"creativo",q:"¿Cuál añade el mejor detalle de estilo?",
+       opts:["'un balón de fútbol'","'un balón de fútbol verde y blanco de Nacional, sobre césped, estilo foto realista con luz de estadio'"],
+       a:1,why:"Colores, entorno y estilo con luz de estadio. La imagen sale con carácter, no genérica."}
+    ]},
+    {id:"n5l3",t:"Iterar la imagen",d:"Del primer intento a la buena",ex:[
+      {type:"improve",skill:"creativo",q:"¿Cuál es la mejor forma de iterar tu imagen?",
+       opts:["'otra'","'Igual pero con el frasco más grande, fondo azul cielo y luz más cálida'"],
+       a:1,why:"Cambios concretos (tamaño, fondo, luz) guían la nueva versión. 'otra' deja todo al azar."},
+      {type:"mc",skill:"creativo",q:"La primera imagen salió casi bien pero el fondo no gusta. ¿Qué haces?",
+       opts:["Me conformo","Pido: 'igual pero con fondo azul cielo y más limpio'","Empiezo de cero sin explicar","La borro y me rindo"],
+       a:1,ex:"Ajustar un detalle y volver a pedir es iterar. No hay que empezar de cero: se refina lo que ya está bien."},
+      {type:"order",skill:"creativo",q:"Ordena cómo iterar una imagen:",
+       items:["Describo la imagen que quiero","Miro el resultado","Detecto qué cambiar (color, fondo, estilo)","Pido la nueva versión con ese cambio"],
+       ex:"Describir → mirar → detectar → ajustar. Igual que un buen prompt de texto, pero con imágenes."},
+      {type:"fill",skill:"creativo",q:"Completa: 'Cada versión me acerca a la imagen que tengo en la ______.'",
+       opts:["cabeza","nevera","maleta","calle"],a:0,ex:"La meta es sacar lo que imaginas. Iterar es el camino para lograrlo."},
+      {type:"tf",skill:"creativo",q:"Verdadero o falso: describir bien desde el inicio ahorra iteraciones.",
+       a:true,ex:"Verdadero. Entre mejor la primera descripción, menos ajustes necesitas. Practica describir con detalle."},
+      {type:"mc",skill:"etica",eth:true,q:"Vas a usar una imagen creada por IA para tu publicidad. Un buen hábito ético es:",
+       opts:["Decir que la tomó un fotógrafo famoso","Ser honesto si te preguntan y no imitar la marca de otra persona","Copiar el logo de otra marca","Fingir que es una foto real de un lugar que no existe"],
+       a:1,ex:"No engañes ni copies marcas ajenas. Crear con IA es genial; usarla para engañar o plagiar, no. Sé honesto."}
+    ]},
+    {id:"n5l4",t:"Contenido que vende",d:"Imagen + texto que conecta",ex:[
+      {type:"match",skill:"creativo",q:"Empareja la parte del anuncio con su función:",
+       pairs:[{l:"La imagen",r:"Llama la atención"},{l:"El texto corto",r:"Convence de comprar"},{l:"El llamado a la acción",r:"Dice qué hacer ya"}],
+       ex:"Imagen que atrae + texto que convence + llamado claro. Ese trío vende."},
+      {type:"mc",skill:"creativo",q:"Una buena pieza publicitaria combina…",
+       opts:["Solo una imagen bonita","Imagen atractiva + un texto corto que dé ganas de comprar","Solo texto larguísimo","Nada, se vende sola"],
+       a:1,ex:"Imagen que llama + frase que convence. Las dos juntas venden. Para lociones: foto fresca + 'huele a victoria'."},
+      {type:"improve",skill:"creativo",q:"¿Cuál texto publicitario es mejor para tu loción?",
+       opts:["'loción en venta'","'Tu aroma, tu jugada. Loción fresca para ganar el día. 😎'"],
+       a:1,why:"El segundo tiene gancho, emoción y personalidad juvenil. 'loción en venta' no emociona a nadie."},
+      {type:"fill",skill:"creativo",q:"Completa: 'Una buena publicidad no describe: hace ______.'",
+       opts:["sentir","dormir","llorar de aburrimiento","frío"],a:0,ex:"La publicidad conecta emociones. Que sienta frescura, confianza, energía. Ahí está la venta."},
+      {type:"tf",skill:"creativo",q:"Verdadero o falso: puedo pedirle a la IA la imagen Y el texto de mi anuncio.",
+       a:true,ex:"Verdadero. Pídele la descripción de imagen y el texto corto. Luego los combinas en tu pieza."},
+      {type:"mc",skill:"creativo",q:"Para que tu anuncio conecte con jóvenes, el tono debe ser…",
+       opts:["Formal y aburrido","Fresco, directo y juvenil (sin ser infantil)","Súper técnico","Larguísimo"],
+       a:1,ex:"Tu público son jóvenes: tono fresco y directo. Ni infantil ni acartonado. Habla como ellos."}
+    ]},
+    {id:"n5l5",t:"Director creativo",d:"Tú diriges, la IA ejecuta",ex:[
+      {type:"order",skill:"creativo",q:"Ordena el trabajo de un director creativo:",
+       items:["Defino el concepto","Describo la imagen a la IA","Reviso e itero","Apruebo la pieza final"],
+       ex:"Concepto → describir → iterar → aprobar. Tú diriges cada paso."},
+      {type:"detect",skill:"etica",eth:true,q:"¿Cuál uso de una imagen IA NO es ético en tu publicidad?",
+       sub:"Vas a promocionar tus lociones.",
+       opts:["Crear un frasco atractivo con IA","Poner el logo de una marca famosa que no es tuya para engañar","Usar un fondo bonito generado","Iterar hasta que quede bien"],
+       a:1,ex:"Usar la marca de otro para engañar es plagio y engaño. Crea lo tuyo, con honestidad."},
+      {type:"mc",skill:"creativo",q:"Como director creativo de tus lociones, tu trabajo es…",
+       opts:["Aceptar lo primero que salga","Decidir el concepto y dirigir a la IA hasta lograrlo","Dejar que la IA decida todo","No opinar"],
+       a:1,ex:"Tú tienes la visión; la IA ejecuta. Diriges: 'más fresco', 'otro fondo', 'este texto'. El estilo lo pones tú."},
+      {type:"improve",skill:"creativo",q:"El brief más completo para tu pieza es:",
+       opts:["'hazme publicidad'","'Crea una pieza para loción juvenil: imagen de frasco azul con ambiente deportivo, estilo moderno, y un texto corto y fresco con llamado a comprar.'"],
+       a:1,why:"Define producto, imagen, estilo, texto y objetivo. Un brief así dirige a la IA con precisión de director."},
+      {type:"tf",skill:"creativo",q:"Verdadero o falso: revisar y ajustar la pieza antes de publicar es parte del trabajo.",
+       a:true,ex:"Verdadero. El director revisa el resultado final. Tú apruebas antes de que salga al público."},
+      {type:"fill",skill:"creativo",q:"Completa el kit creativo: 'Describir + estilo + ______ + revisar.'",
+       opts:["iterar","gritar","copiar","esperar"],a:0,ex:"Describir, elegir estilo, iterar y revisar. Con eso creas piezas de nivel pro."}
+    ]}
+   ],
+   project:{id:"n5p",title:"Proyecto: Pieza publicitaria de tus lociones",tag:"Misión de nivel · +50 XP · Insignia Artista IA",skill:"creativo",
+    intro:"Crea una pieza publicitaria REAL para tus lociones: una imagen con IA + un texto corto que venda. Tú eres el director creativo.",
+    steps:[
+     "Escribe un brief: producto, estilo de imagen, ambiente y el mensaje que quieres transmitir.",
+     "Pídele a una IA de imágenes la foto de producto, describiéndola con detalle.",
+     "Pídele a ChatGPT un texto corto y fresco (máx 2 frases) con llamado a comprar.",
+     "Combina imagen + texto en tu pieza. Muéstrasela a Felipe: él valida y te da la insignia Artista IA."
+    ],
+    copy:"Describe una imagen publicitaria: frasco de loción azul sobre fondo deportivo moderno, luz suave, estilo realista. Después dame un eslogan corto y juvenil con llamado a comprar.",
+    xp:50}
+  },
+
+  /* ================= NIVEL 6 · HANGAR DEL EMPRENDEDOR ================= */
+  {id:"n6",name:"Hangar del emprendedor",tag:"IA para tu negocio de lociones",ic:"💼",skill:"negocio",
+   lessons:[
+    {id:"n6l1",t:"Ideas comerciales",d:"La IA como socio de ideas",ex:[
+      {type:"order",skill:"negocio",q:"Ordena cómo usar la IA como socio de ideas:",
+       items:["Le pido varias ideas con contexto","Elijo la que encaja con mi negocio","La pruebo en la vida real","Reviso si funcionó"],
+       ex:"Pedir → elegir → probar → revisar. La IA propone; tú, el dueño, decides."},
+      {type:"mc",skill:"negocio",q:"¿Para qué es MUY buena la IA en tu negocio?",
+       opts:["Para vender por ti sin que hagas nada","Para darte muchas ideas rápido que tú eliges y aplicas","Para regalarte plata","Para atender tus clientes sin que sepas"],
+       a:1,ex:"La IA es una máquina de ideas: promociones, nombres, mensajes. Tú eliges las buenas y las ejecutas. El negocio sigue siendo tuyo."},
+      {type:"improve",skill:"negocio",q:"¿Cuál pide mejores ideas para vender lociones?",
+       opts:["'ideas'","'Dame 5 ideas de promoción para vender más lociones esta semana entre jóvenes, con poco presupuesto'"],
+       a:1,why:"Dice cuántas, para qué producto, a quién y con qué límite (poco presupuesto). Las ideas salen aplicables de una."},
+      {type:"mc",skill:"negocio",q:"La IA te da 5 ideas. ¿Qué haces con ellas?",
+       opts:["Aplico las 5 sin pensar","Elijo la que más encaje con mi realidad y la pruebo","Las ignoro","Las borro"],
+       a:1,ex:"No todas sirven igual. Tú conoces tu negocio: elige la que mejor encaje y pruébala. Eres el dueño."},
+      {type:"fill",skill:"negocio",q:"Completa: 'La IA propone; yo, que conozco mi negocio, ______.'",
+       opts:["decido","duermo","pago","copio todo"],a:0,ex:"Tú decides. La IA acelera la lluvia de ideas, pero el criterio del negocio es tuyo."},
+      {type:"tf",skill:"negocio",q:"Verdadero o falso: puedo pedirle a la IA ideas de combos o descuentos para mover más producto.",
+       a:true,ex:"Verdadero. Combos, descuentos, temporadas, regalos por compra… La IA te tira decenas de ideas en segundos."}
+    ]},
+    {id:"n6l2",t:"Mensajes a clientes",d:"Textos que suenan a ti",ex:[
+      {type:"match",skill:"negocio",q:"Empareja el cliente con el mensaje ideal:",
+       pairs:[{l:"Acaba de comprar",r:"Gracias + descuento en la próxima"},{l:"No vuelve hace tiempo",r:"Reconecto con algo especial"},{l:"Preguntó pero no compró",r:"Resuelvo su duda y le ofrezco"}],
+       ex:"Cada cliente, su mensaje. La IA te ayuda a escribir el adecuado para cada caso."},
+      {type:"improve",skill:"negocio",q:"¿Cuál pide el mejor mensaje para un cliente?",
+       opts:["'mensaje cliente'","'Escribe un mensaje corto y amable de WhatsApp para un cliente que compró loción, agradeciéndole y ofreciendo 10% en la próxima. Tono juvenil.'"],
+       a:1,why:"Canal (WhatsApp), situación (ya compró), objetivo (fidelizar con descuento), tono y longitud. El mensaje sale listo para enviar."},
+      {type:"mc",skill:"negocio",eth:true,q:"La IA te escribe el mensaje. Antes de enviarlo, tú…",
+       opts:["Lo mando sin leer","Lo leo, verifico que sea verdad (el 10% real) y que suene a mí","Le agrego mentiras para vender más","Lo mando a todo el mundo sin permiso"],
+       a:1,ex:"Revisa que sea honesto (si prometes 10%, cúmplelo) y que suene a ti. Tú firmas el mensaje, la IA solo ayuda."},
+      {type:"tf",skill:"negocio",q:"Verdadero o falso: puedo pedir el mismo mensaje en 3 versiones y elegir la mejor.",
+       a:true,ex:"Verdadero. 'Dame 3 versiones de este mensaje.' Comparas y usas la que más te guste. Puro poder de emprendedor."},
+      {type:"fill",skill:"negocio",q:"Completa: 'Un buen mensaje de venta es corto, amable y suena ______.'",
+       opts:["a mí","a robot","a nadie","a enojo"],a:0,ex:"Debe sonar a ti, no a máquina. Ajusta el tono hasta que parezca escrito por ti."},
+      {type:"mc",skill:"negocio",q:"Un cliente no ha vuelto a comprar. ¿Qué le pides a la IA?",
+       opts:["Un mensaje agresivo","Un mensaje amable para reconectar y ofrecerle algo especial","Que lo bloquee","Nada"],
+       a:1,ex:"Reconectar con amabilidad y una oferta especial recupera clientes. La IA te arma ese mensaje en segundos."}
+    ]},
+    {id:"n6l3",t:"Publicaciones que enganchan",d:"Contenido para tus redes",ex:[
+      {type:"detect",skill:"negocio",q:"Detecta el problema en este post de venta:",
+       sub:"'Compra ya. Producto. Loción.'",
+       opts:["Está perfecto","No tiene gancho ni emoción: no da ganas de comprar","Le falta ser más largo","Está muy creativo"],
+       a:1,ex:"Un post sin gancho no engancha. Pídele a la IA una frase con emoción y personalidad juvenil."},
+      {type:"mc",skill:"negocio",q:"¿Qué le pides a la IA para tu Instagram de lociones?",
+       opts:["Que publique por ti","Ideas de publicaciones + textos con gancho para que TÚ publiques","Tus contraseñas","Que le dé like a todo"],
+       a:1,ex:"Ideas y textos con gancho: eso sí. Publicar y manejar tus cuentas lo haces tú, con tus claves seguras."},
+      {type:"improve",skill:"negocio",q:"¿Cuál da mejor contenido para redes?",
+       opts:["'texto para instagram'","'Dame 3 ideas de post para Instagram de lociones juveniles, cada una con un texto corto con gancho y un emoji, tono fresco'"],
+       a:1,why:"Cantidad, red, producto, formato (texto+emoji) y tono. Recibes 3 posts casi listos para publicar."},
+      {type:"order",skill:"negocio",q:"Ordena cómo crear un post con IA:",
+       items:["Pido ideas de post con contexto de mi negocio","Elijo la que más me gusta","Ajusto el texto para que suene a mí","Lo publico yo mismo"],
+       ex:"Pedir → elegir → ajustar → publicar tú. La IA hace el borrador; el toque final y la publicación son tuyos."},
+      {type:"fill",skill:"negocio",q:"Completa: 'Un buen post engancha en los primeros ______ segundos.'",
+       opts:["3","300","0","1000"],a:0,ex:"El gancho va al inicio: los primeros segundos deciden si te leen o pasan de largo. Pídele a la IA frases con gancho."},
+      {type:"tf",skill:"negocio",eth:true,q:"Verdadero o falso: puedo prometer en un post algo que mi producto NO hace, con tal de vender.",
+       a:false,ex:"Falso. Prometer lo que no cumples engaña al cliente y quema tu marca. Vende de verdad: honestidad ante todo."}
+    ]},
+    {id:"n6l4",t:"Inventario y ventas simples",d:"Ordena tu negocio con IA",ex:[
+      {type:"order",skill:"negocio",q:"Ordena para controlar tu inventario:",
+       items:["Anoto cuántas lociones tengo","Registro cada venta","Reviso qué se vende más","Repongo lo que se agota"],
+       ex:"Contar → registrar → analizar → reponer. Control simple que evita quedarte sin producto."},
+      {type:"mc",skill:"negocio",q:"¿Cómo te ayuda la IA con el control de inventario?",
+       opts:["Cuenta los frascos por ti físicamente","Te arma una tabla o lista simple para llevar cuentas y te explica cómo usarla","Compra más producto sola","Nada"],
+       a:1,ex:"La IA te diseña una tabla de control (producto, cantidad, precio, vendidos) y te enseña a llenarla. Tú pones los datos reales."},
+      {type:"match",skill:"negocio",q:"Empareja la columna con lo que registra:",
+       pairs:[{l:"Producto",r:"Qué loción es"},{l:"Cantidad",r:"Cuántas tienes"},{l:"Vendidas",r:"Cuántas salieron"}],
+       ex:"Con esas columnas ya sabes qué te queda y qué se vende más. Control simple pero poderoso."},
+      {type:"improve",skill:"negocio",q:"¿Cuál pide mejor una herramienta de control?",
+       opts:["'inventario'","'Hazme una tabla simple para controlar el inventario de mis lociones con columnas: producto, cantidad, precio, vendidas y ganancia. Explícame cómo llenarla.'"],
+       a:1,why:"Pide las columnas exactas y que te explique el uso. Recibes una herramienta lista y sabes manejarla."},
+      {type:"tf",skill:"negocio",q:"Verdadero o falso: llevar cuentas simples te ayuda a saber qué loción vender más.",
+       a:true,ex:"Verdadero. Ver qué se vende más te dice dónde enfocarte. Los datos guían tus decisiones de negocio."},
+      {type:"fill",skill:"negocio",q:"Completa: 'Ganancia = precio de venta ______ lo que te costó.'",
+       opts:["menos","más","por","entre cero"],a:0,ex:"Ganancia = venta menos costo. Saber tu ganancia real por loción es clave para no vender a pérdida."}
+    ]},
+    {id:"n6l5",t:"Emprendedor con IA",d:"Junta todo para tu campaña",ex:[
+      {type:"match",skill:"negocio",q:"Empareja la parte de la campaña con su papel:",
+       pairs:[{l:"Objetivo",r:"Vender 10 esta semana"},{l:"Gancho",r:"Frase que atrae"},{l:"Oferta",r:"Motivo para comprar ya"}],
+       ex:"Objetivo, gancho y oferta: los pilares de una campaña que sí vende."},
+      {type:"mc",skill:"negocio",q:"Una mini-campaña de lociones necesita…",
+       opts:["Solo un producto","Un objetivo, un mensaje, dónde publicarlo y una oferta","Nada de plan","Suerte"],
+       a:1,ex:"Objetivo (vender X), mensaje con gancho, canal (Instagram/WhatsApp) y una oferta. La IA te ayuda a armar cada pieza."},
+      {type:"order",skill:"negocio",q:"Ordena tu mini-campaña:",
+       items:["Defino el objetivo (vender 10 lociones esta semana)","Creo el mensaje y la oferta con ayuda de IA","Lo publico en mis redes","Reviso qué funcionó"],
+       ex:"Objetivo → contenido → publicar → medir. Ese es el ciclo de una campaña de verdad."},
+      {type:"improve",skill:"negocio",q:"El pedido más completo para tu campaña es:",
+       opts:["'ayúdame a vender'","'Ayúdame a armar una mini-campaña para vender 10 lociones esta semana entre jóvenes: dame un mensaje con gancho, una oferta y 2 ideas de post para Instagram.'"],
+       a:1,why:"Objetivo medible, público, y pide mensaje + oferta + posts. Con eso tienes tu campaña casi montada."},
+      {type:"tf",skill:"negocio",q:"Verdadero o falso: al final, revisar qué funcionó te ayuda a mejorar la próxima campaña.",
+       a:true,ex:"Verdadero. Medir qué sirvió es de emprendedores pro. Con esos aprendizajes, la próxima campaña vende más."},
+      {type:"fill",skill:"negocio",q:"Completa: 'La IA es mi socio de ideas; el jefe del negocio soy ______.'",
+       opts:["yo","ella","internet","nadie"],a:0,ex:"Tú mandas. La IA aporta ideas y textos; las decisiones y la ejecución son tuyas."}
+    ]}
+   ],
+   project:{id:"n6p",title:"Proyecto: Mini-campaña de lociones",tag:"Misión de nivel · +50 XP · Insignia Emprendedor",skill:"negocio",
+    intro:"Arma y lanza una mini-campaña REAL para vender tus lociones esta semana, usando la IA como socio de ideas.",
+    steps:[
+     "Define tu objetivo concreto (ej: vender 10 lociones esta semana).",
+     "Con ChatGPT, crea un mensaje con gancho, una oferta y 2 ideas de post.",
+     "Ajusta todo para que suene a ti y sea honesto. Publícalo en tus redes tú mismo.",
+     "Anota qué funcionó. Muéstrale la campaña a Felipe: él valida y te da la insignia Emprendedor."
+    ],
+    copy:"Ayúdame a armar una mini-campaña para vender 10 lociones esta semana entre jóvenes. Dame: un mensaje con gancho, una oferta atractiva y 2 ideas de post para Instagram con tono fresco.",
+    xp:50}
+  },
+
+  /* ================= NIVEL 7 · CONSTRUCTOR ================= */
+  {id:"n7",name:"Constructor",tag:"Programar creando con IA",ic:"💻",skill:"codigo",
+   lessons:[
+    {id:"n7l1",t:"¿Qué es el código?",d:"El idioma de las máquinas",ex:[
+      {type:"match",skill:"codigo",q:"Empareja el concepto con su significado:",
+       pairs:[{l:"Programar",r:"Dar instrucciones a la máquina"},{l:"En orden",r:"Paso por paso, sin saltarse"},{l:"Literal",r:"Hace exacto lo que dices"}],
+       ex:"La máquina hace lo que dices, en orden y al pie de la letra. Por eso hay que ser claro."},
+      {type:"mc",skill:"codigo",q:"¿Qué es 'código' o 'programar'?",
+       opts:["Un idioma secreto imposible","Escribir instrucciones para que un computador haga algo","Dibujar","Un videojuego"],
+       a:1,ex:"Programar = darle instrucciones a la máquina, paso a paso, en un lenguaje que entiende. Como la receta de una jugada, pero para el compu."},
+      {type:"mc",skill:"codigo",q:"El computador sigue las instrucciones…",
+       opts:["Como se le antoje","Al pie de la letra, en el orden exacto que le des","Solo si quiere","Adivinando"],
+       a:1,ex:"La máquina es súper obediente pero literal: hace EXACTO lo que dices, en orden. Un error de orden y falla. Por eso hay que ser claro."},
+      {type:"tf",skill:"codigo",q:"Verdadero o falso: la IA puede escribir código por mí y explicármelo.",
+       a:true,ex:"Verdadero. Le pides un programa simple, te lo escribe y te lo explica. Ideal para aprender construyendo."},
+      {type:"fill",skill:"codigo",q:"Completa: 'Un programa es una lista de ______ que la máquina ejecuta en orden.'",
+       opts:["instrucciones","canciones","fotos","precios"],a:0,ex:"Instrucciones en orden. Igual que los pasos de un buen prompt, pero para que el computador actúe."},
+      {type:"mc",skill:"codigo",q:"Un marcador de pádel en pantalla necesitaría, en el fondo, código que…",
+       opts:["Adivine el puntaje","Sume puntos cuando toques un botón y los muestre","No haga nada","Llame al árbitro"],
+       a:1,ex:"'Al tocar +1, suma un punto y muéstralo.' Eso es lógica de programación: acción → resultado. La IA te ayuda a escribirla."}
+    ]},
+    {id:"n7l2",t:"Pedir un programa",d:"Encárgale a la IA tu primer código",ex:[
+      {type:"match",skill:"codigo",q:"Empareja el paso con lo que haces:",
+       pairs:[{l:"Describir",r:"Digo qué programa quiero"},{l:"Probar",r:"Lo abro a ver si sirve"},{l:"Arreglar",r:"Corrijo lo que falla"}],
+       ex:"Describir, probar y arreglar: el ciclo del constructor con IA."},
+      {type:"improve",skill:"codigo",q:"¿Cuál pide mejor un programa a la IA?",
+       opts:["'hazme un programa'","'Hazme una página web simple con un botón que sume 1 a un marcador cada vez que lo toque, para llevar el puntaje de pádel. Explícame el código.'"],
+       a:1,why:"Dice qué (página con botón), para qué (marcador de pádel) y pide explicación. La IA te da algo funcional que además entiendes."},
+      {type:"mc",skill:"codigo",q:"Al pedir código, ¿por qué conviene pedir que te lo EXPLIQUE?",
+       opts:["Para nada","Para aprender qué hace cada parte y poder cambiarlo","Para que sea más largo","Para presumir"],
+       a:1,ex:"Si entiendes el código, puedes modificarlo y arreglarlo. Pedir explicación te convierte en constructor, no en copiador."},
+      {type:"order",skill:"codigo",q:"Ordena cómo construir con IA:",
+       items:["Describo qué programa quiero, con detalle","La IA me da el código","Lo pruebo a ver si funciona","Si falla, le cuento el error y lo arreglamos"],
+       ex:"Describir → recibir → probar → arreglar. Ese es el ciclo del constructor con IA."},
+      {type:"fill",skill:"codigo",q:"Completa: 'Entre más claro describo el programa, mejor me lo ______ la IA.'",
+       opts:["construye","esconde","borra","cobra"],a:0,ex:"Igual que con los prompts: claridad = mejor resultado. Describe qué hace, para qué y cómo se ve."},
+      {type:"tf",skill:"codigo",q:"Verdadero o falso: puedo empezar por algo pequeño (un botón que suma) antes de algo grande.",
+       a:true,ex:"Verdadero. Pasos pequeños. Primero un botón que suma; luego le agregas más. Así se construye sin frustrarse."}
+    ]},
+    {id:"n7l3",t:"Probar y arreglar",d:"Cuando algo no funciona",ex:[
+      {type:"improve",skill:"codigo",q:"Tu botón no funciona. ¿Cuál reporte a la IA ayuda más?",
+       opts:["'no sirve'","'El botón +1 no cambia el número y en pantalla aparece la palabra NaN. ¿Cómo lo arreglo?'"],
+       a:1,why:"Describir el síntoma exacto (qué esperabas, qué pasó) hace que la IA encuentre el bug rapidísimo."},
+      {type:"mc",skill:"codigo",q:"Tu programa no funciona. ¿Qué haces?",
+       opts:["Me rindo","Le cuento a la IA exactamente qué pasó o qué error salió, y me ayuda a arreglarlo","Lo borro todo","Me enojo"],
+       a:1,ex:"Describir el error (qué esperabas vs qué pasó) es clave. Con eso la IA encuentra la falla. Arreglar bugs es parte normal de programar."},
+      {type:"fill",skill:"codigo",q:"Completa: 'A un error de programación se le dice ______; arreglarlo es normal.'",
+       opts:["bug","gol","pez","avión"],a:0,ex:"'Bug' = error. Todos los programadores, hasta los mejores, los tienen. Arreglarlos es el 80% del trabajo."},
+      {type:"order",skill:"codigo",q:"Ordena cómo arreglar un bug con IA:",
+       items:["Noto que algo no funciona","Le describo a la IA qué pasa exactamente","La IA propone un arreglo","Lo pruebo de nuevo"],
+       ex:"Notar → describir → arreglar → probar. Y si sigue fallando, repites. Paciencia de piloto."},
+      {type:"tf",skill:"codigo",q:"Verdadero o falso: mientras más específico soy con el error, más rápido lo arregla la IA.",
+       a:true,ex:"Verdadero. 'No funciona' ayuda poco. 'El botón no suma y sale la palabra NaN' ayuda muchísimo. Detalle = solución rápida."},
+      {type:"mc",skill:"codigo",eth:true,q:"La IA te da código. Antes de usarlo en algo real, es buena idea…",
+       opts:["Confiar ciego","Probarlo y entender qué hace, sin poner datos personales sensibles","Publicarlo con tus claves adentro","Venderlo como tuyo sin revisar"],
+       a:1,ex:"Prueba y entiende el código. Nunca metas contraseñas o datos privados dentro de código que compartes. Seguridad primero."}
+    ]},
+    {id:"n7l4",t:"Mejorar lo que hiciste",d:"De funciona a funciona bien",ex:[
+      {type:"order",skill:"codigo",q:"Ordena cómo mejorar tu programa por capas:",
+       items:["Guardo la versión que ya funciona","Pido un cambio concreto a la IA","Lo pruebo","Si sirve, sigo con la próxima mejora"],
+       ex:"Respaldo → cambio → probar → seguir. Así se construye sin romper lo que ya sirve."},
+      {type:"match",skill:"codigo",q:"Empareja la mejora con lo que hace en tu marcador de pádel:",
+       pairs:[{l:"Botón restar",r:"Corrige un punto de más"},{l:"Botón reiniciar",r:"Vuelve todo a cero"},{l:"Cambiar color al ganar",r:"Avisa que llegaste a la meta"}],
+       ex:"Cada mejora es un pedido nuevo. Capa por capa, tu marcador queda pro."},
+      {type:"mc",skill:"codigo",q:"Tu marcador ya suma. ¿Cómo lo mejoras con IA?",
+       opts:["Lo dejo así para siempre","Pido: 'agrégale un botón para restar y otro para reiniciar a cero'","Lo borro","No se puede mejorar"],
+       a:1,ex:"Se construye por capas: primero suma, luego resta, luego reinicia, luego colores. Cada mejora es un pedido nuevo a la IA."},
+      {type:"improve",skill:"codigo",q:"¿Cuál pide mejor una mejora?",
+       opts:["'mejóralo'","'Al marcador que ya tengo, agrégale un botón de restar y que el número se ponga verde al llegar a 10.'"],
+       a:1,why:"Parte de lo que ya tienes y pide un cambio concreto. La IA sabe exactamente qué agregar. Iterar código, igual que un prompt."},
+      {type:"fill",skill:"codigo",q:"Completa: 'Construir con IA es por ______: pequeño, funciona, mejoro, repito.'",
+       opts:["capas","magia","suerte","gritos"],a:0,ex:"Capa por capa. Nadie hace un programa perfecto de una. Se mejora poquito a poco."},
+      {type:"tf",skill:"codigo",q:"Verdadero o falso: guardar una copia que ya funciona, antes de cambiarla, es buena idea.",
+       a:true,ex:"Verdadero. Si la mejora rompe algo, tienes la versión buena guardada. Los constructores hacen respaldos."}
+    ]},
+    {id:"n7l5",t:"Capitán constructor",d:"Listo para tu proyecto final",ex:[
+      {type:"order",skill:"codigo",q:"Ordena el rol del capitán constructor:",
+       items:["Decido qué construir","La IA escribe el código","Lo pruebo y lo entiendo","Decido las mejoras"],
+       ex:"Tú diriges, la IA ejecuta, tú revisas y decides. Ese es el capitán constructor."},
+      {type:"improve",skill:"codigo",q:"¿Cuál pedido final construye mejor tu proyecto?",
+       opts:["'hazme una app'","'Hazme en un solo archivo HTML un catálogo de mis lociones con nombre, precio y una foto por producto, y explícame cómo cambiar los datos.'"],
+       a:1,why:"Dice formato, contenido y pide explicación para editarlo. Un proyecto real y tuyo. ¡Capitán constructor!"},
+      {type:"mc",skill:"codigo",q:"Resumen del constructor: la IA escribe el código, pero tú…",
+       opts:["No haces nada","Diriges qué construir, lo pruebas, lo entiendes y decides las mejoras","Solo miras","Copias sin entender"],
+       a:1,ex:"Tú eres el arquitecto: decides qué hacer, la IA pone los ladrillos, y tú revisas que quede bien. Ese es el capitán constructor."},
+      {type:"match",skill:"codigo",q:"Empareja el paso con su nombre:",
+       pairs:[{l:"Escribir instrucciones",r:"Programar"},{l:"Un error en el código",r:"Bug"},{l:"Mejorar por partes",r:"Iterar"}],
+       ex:"Programar, bug, iterar: ya hablas el idioma. Estás listo para construir algo real con IA."},
+      {type:"tf",skill:"codigo",q:"Verdadero o falso: puedo hacer un catálogo de mis lociones o un marcador de pádel con ayuda de IA.",
+       a:true,ex:"Verdadero. Un catálogo o un marcador simple son proyectos perfectos para empezar. ¡Ese es tu reto final!"},
+      {type:"fill",skill:"codigo",q:"Completa: 'No necesito saberlo todo: necesito saber ______ pedirlo y probarlo.'",
+       opts:["cómo","cuándo dormir","a quién pagar","dónde esconderme"],a:0,ex:"Saber pedir y probar es el nuevo superpoder. Con la IA, construir está a tu alcance, Daniel."}
+    ]}
+   ],
+   project:{id:"n7p",title:"Proyecto final: Marcador o catálogo funcional",tag:"Misión de nivel · +50 XP · Insignia Programador",skill:"codigo",
+    intro:"Tu misión de graduación: construye con IA algo REAL y funcional. Un marcador de pádel o un catálogo de tus lociones. ¡Modo Capitán Constructor!",
+    steps:[
+     "Elige tu proyecto: marcador de pádel (suma/resta/reinicia) o catálogo de lociones (fotos, nombres, precios).",
+     "Pídele a la IA el código explicándolo, y ábrelo en el navegador para probarlo.",
+     "Si algo falla, describe el error y arréglenlo juntos. Mejóralo por capas.",
+     "Muéstrale a Felipe tu creación funcionando. Él valida y te entrega la insignia Programador. ¡Casi Capitán IA!"
+    ],
+    copy:"Hazme una página web simple, en un solo archivo HTML, con un marcador de pádel: botones de +1, -1 y reiniciar, y el número grande en pantalla. Explícame el código para poder cambiarlo después.",
+    xp:50}
+  }
+
+  ] /* fin levels */
+};
+
+/* =====================================================================
+   3) ENGINE  —  lógica de juego
+   ===================================================================== */
+const LS_KEY = "academiaPilotoIA_v1";
+const PIN = "2412";
+
+const DEFAULT_STATE = () => ({
+  name:"Daniel", xp:0, streak:0, bestStreak:0, lastDay:null,
+  done:{}, projects:{}, badges:{}, skill:{}, ethCount:0,
+  review:[], muted:false, lessonsCount:0, exCount:0, correctCount:0, createdAt:Date.now()
+});
+let S = load();
+let tutorAuthed = false;
+
+function load(){
+  try{ const r = localStorage.getItem(LS_KEY); if(r){ return Object.assign(DEFAULT_STATE(), JSON.parse(r)); } }catch(e){}
+  return DEFAULT_STATE();
+}
+function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
+
+/* ---------- fechas (America/Bogota) ---------- */
+function todayBogota(){ return new Date().toLocaleDateString('en-CA',{timeZone:'America/Bogota'}); }
+function prevDay(iso){ const d=new Date(iso+'T12:00:00'); d.setDate(d.getDate()-1); return d.toLocaleDateString('en-CA'); }
+
+/* ---------- rango / xp ---------- */
+function rankFor(xp){ let r=CURRICULUM.ranks[0]; for(const x of CURRICULUM.ranks){ if(xp>=x.xp) r=x; } return r; }
+function nextRank(xp){ for(const x of CURRICULUM.ranks){ if(xp<x.xp) return x; } return null; }
+function addXP(n){
+  const before = rankFor(S.xp).n;
+  S.xp += n;
+  const after = rankFor(S.xp).n;
+  return before!==after ? after : null;
+}
+
+/* ---------- desbloqueos ---------- */
+function levelUnlocked(i){ if(i===0) return true; const p=CURRICULUM.levels[i-1].project.id; return !!S.projects[p]; }
+function lessonUnlocked(i,j){ if(!levelUnlocked(i)) return false; if(j===0) return true; return !!S.done[CURRICULUM.levels[i].lessons[j-1].id]; }
+function projectUnlocked(i){ if(!levelUnlocked(i)) return false; return CURRICULUM.levels[i].lessons.every(l=>S.done[l.id]); }
+function levelDoneCount(i){ return CURRICULUM.levels[i].lessons.filter(l=>S.done[l.id]).length; }
+
+/* ---------- racha ---------- */
+function bumpStreak(){
+  const t=todayBogota();
+  if(S.lastDay===t) return;
+  if(S.lastDay===prevDay(t)) S.streak++; else S.streak=1;
+  S.lastDay=t;
+  if(S.streak>S.bestStreak) S.bestStreak=S.streak;
+  if(S.streak>=7) grantBadge('racha7');
+}
+
+/* ---------- insignias ---------- */
+function grantBadge(id){
+  if(S.badges[id]) return false;
+  S.badges[id]=true; save();
+  const b=CURRICULUM.badges.find(x=>x.id===id);
+  setTimeout(()=>celebrate({icon:b.ic,title:"¡Insignia desbloqueada!",msg:b.n+" — "+badgeLine(id),xp:""}),300);
+  return true;
+}
+function badgeLine(id){ return ({
+  primerVuelo:"Tu primer despegue en la academia. ✈️",
+  promptCerto:"Elegiste el prompt superior como un pro.",
+  promptMaster:"Dominas rol, contexto, formato y ejemplos.",
+  detective:"Cazaste los datos inventados de la IA.",
+  artista:"Creaste una pieza publicitaria real.",
+  emprendedor:"Lanzaste tu mini-campaña de lociones.",
+  programador:"Construiste algo funcional con IA.",
+  pilotoSeguro:"Usas la IA de forma ética y segura.",
+  racha7:"7 días seguidos volando. ¡Turbina imparable!",
+  capitan:"Alcanzaste el rango máximo: Capitán IA. 👨‍✈️"
+})[id]||""; }
+function checkStandingBadges(){
+  if(S.xp>=1000) grantBadge('capitan');
+  if(S.ethCount>=5) grantBadge('pilotoSeguro');
+  if(S.streak>=7) grantBadge('racha7');
+}
+
+/* ---------- AUDIO (Web Audio API) ---------- */
+let AC=null;
+function ac(){ if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
+function beep(freqs, dur=0.12, type='sine', gain=0.14){
+  if(S.muted) return; const c=ac(); if(!c) return;
+  if(c.state==='suspended') c.resume();
+  let t=c.currentTime;
+  freqs.forEach((f,i)=>{
+    const o=c.createOscillator(), g=c.createGain();
+    o.type=type; o.frequency.value=f;
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(gain,t+0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur); t+=dur*0.9;
+  });
+}
+const sndGood=()=>beep([660,880,1180],0.11,'sine',0.13);
+const sndWin =()=>beep([523,659,784,1046],0.14,'triangle',0.14);
+const sndBad =()=>beep([180,120],0.16,'sawtooth',0.08);
+const sndAlert=()=>beep([880,660,880,660],0.18,'square',0.1);
+
+/* ---------- CONFETTI ---------- */
+const cvs=document.getElementById('confetti'); const ctx=cvs.getContext('2d');
+let parts=[], confAnim=null;
+function sizeCanvas(){ cvs.width=innerWidth; cvs.height=innerHeight; }
+addEventListener('resize',sizeCanvas); sizeCanvas();
+function burst(n=140){
+  sizeCanvas(); cvs.style.display='block';
+  const colors=['#22d3ee','#fbbf24','#34d399','#3b82f6','#f97316','#ffffff','#22c55e'];
+  for(let i=0;i<n;i++){
+    parts.push({x:innerWidth/2+(Math.random()-.5)*140, y:innerHeight*0.38,
+      vx:(Math.random()-.5)*11, vy:Math.random()*-13-4, g:0.32+Math.random()*0.2,
+      s:6+Math.random()*7, r:Math.random()*6, vr:(Math.random()-.5)*0.5,
+      c:colors[(Math.random()*colors.length)|0], life:70+Math.random()*40});
+  }
+  if(!confAnim) confAnim=requestAnimationFrame(stepConf);
+}
+function stepConf(){
+  ctx.clearRect(0,0,cvs.width,cvs.height);
+  parts.forEach(p=>{ p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.r+=p.vr; p.life--;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+    ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6); ctx.restore(); });
+  parts=parts.filter(p=>p.life>0 && p.y<innerHeight+40);
+  if(parts.length){ confAnim=requestAnimationFrame(stepConf); }
+  else { confAnim=null; ctx.clearRect(0,0,cvs.width,cvs.height); cvs.style.display='none'; }
+}
+
+/* ---------- CELEBRACIÓN full-screen ---------- */
+const elCeleb=document.getElementById('celebrate');
+function celebrate({icon,title,msg,xp}){
+  document.getElementById('celebIcon').textContent=icon||CELEB_ICONS[(Math.random()*CELEB_ICONS.length)|0];
+  document.getElementById('celebTitle').textContent=title||"";
+  document.getElementById('celebMsg').textContent=msg||"";
+  const ex=document.getElementById('celebXp'); ex.textContent=xp||""; ex.style.display=xp?'block':'none';
+  elCeleb.classList.add('show'); burst(160); sndWin();
+  clearTimeout(celebrate._t);
+  celebrate._t=setTimeout(()=>elCeleb.classList.remove('show'), 2500);
+}
+function randomCeleb(){ return CELEBS[(Math.random()*CELEBS.length)|0]; }
+
+/* ---------- TOAST ---------- */
+const elToast=document.getElementById('toast');
+function toast(m){ elToast.textContent=m; elToast.classList.add('show'); clearTimeout(toast._t); toast._t=setTimeout(()=>elToast.classList.remove('show'),2200); }
+
+/* ---------- NAVEGACIÓN ---------- */
+function show(scr){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('scr-'+scr).classList.add('active');
+  document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active', b.dataset.nav===scr));
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{
+  const n=b.dataset.nav;
+  if(n==='tutor'){ openTutor(); return; }
+  if(n==='path') renderPath();
+  if(n==='profile') renderProfile();
+  if(n==='session') renderSession();
+  show(n);
+});
+
+/* ---------- TOP BAR ---------- */
+function refreshTop(){
+  document.getElementById('xpStat').textContent='⭐ '+S.xp;
+  document.getElementById('streakStat').textContent='🔥 '+S.streak;
+  document.getElementById('soundBtn').textContent=S.muted?'🔇':'🔊';
+}
+document.getElementById('soundBtn').onclick=()=>{ S.muted=!S.muted; save(); refreshTop(); if(!S.muted) sndGood(); };
+
+/* =========================================================
+   PANTALLA 1 · CAMINO
+   ========================================================= */
+function capiPhrase(){
+  const pct=Math.round(S.xp>0?Math.min(100,S.xp/12):0);
+  const done=S.lessonsCount;
+  if(done===0) return "¡Bienvenido a bordo, Daniel! Soy <b>Capi</b>, tu copiloto. Toca el primer nodo y despegamos. 🦜";
+  if(S.streak>=3) return "¡Racha de <b>"+S.streak+" días</b>! Vas como avión con viento a favor. Sigamos, Daniel. 🔥";
+  if(done<5) return "Buen despegue, cadete. Ya llevas <b>"+done+" lecciones</b>. La cabina es tuya. ✈️";
+  return "Vas volando alto, Daniel. <b>"+S.xp+" XP</b> y subiendo. Rumbo a Capitán IA. 👨‍✈️";
+}
+function renderPath(){
+  const r=rankFor(S.xp), nx=nextRank(S.xp);
+  const pct = nx ? Math.round(((S.xp - r.xp)/(nx.xp - r.xp))*100) : 100;
+  let h=`<div class="rankcard">
+    <div class="avatar">${r.ic}</div>
+    <div class="rankinfo">
+      <div class="who">Cadete Daniel</div>
+      <div class="rank">Rango: <b>${r.n}</b></div>
+      <div class="progbar"><i style="width:${pct}%"></i></div>
+      <div class="next">${nx?('Faltan '+(nx.xp-S.xp)+' XP para '+nx.n):'¡Rango máximo alcanzado! 🏆'}</div>
+    </div></div>
+    <div class="capi"><div class="face">🦜</div><div class="bub">${capiPhrase()}</div></div>
+    <button class="btn ghost sm" style="margin-bottom:4px" onclick="APP.review()">🛩️ Simulador de vuelo (repaso) ${S.review.length?('· '+S.review.length):''}</button>`;
+
+  CURRICULUM.levels.forEach((lv,i)=>{
+    const unlocked=levelUnlocked(i);
+    const dc=levelDoneCount(i), tot=lv.lessons.length;
+    h+=`<div class="leveltitle ${unlocked?'':'locked'}">
+      <div class="num">${unlocked?lv.ic:'🔒'}</div>
+      <div><h3>${lv.name}</h3><div class="sub">${unlocked?(lv.tag+' · '+dc+'/'+tot):'Bloqueado — completa el proyecto anterior'}</div></div></div>`;
+    h+=`<div class="path">`;
+    // nodes lecciones
+    let currentSet=false;
+    lv.lessons.forEach((ls,j)=>{
+      const done=!!S.done[ls.id];
+      const unl=lessonUnlocked(i,j);
+      let cls='locked', ic='🔒';
+      if(done){ cls='done'; ic='✔'; }
+      else if(unl && !currentSet){ cls='current'; ic=String(j+1); currentSet=true; }
+      else if(unl){ cls=''; ic=String(j+1); }
+      h+=`<div class="node ${cls}" ${unl?`onclick="APP.openLesson(${i},${j})"`:''}>
+        <div class="dot">${ic}<span class="ring"></span></div>
+        <div class="lbl"><div class="t">${ls.t}</div><div class="d">${done?'Completada':ls.d}</div></div>
+        ${done?'<div class="badgexp">✓</div>':(unl?'<div class="badgexp">+12 XP</div>':'')}
+        ${j<lv.lessons.length-1||true?'<div class="connector"></div>':''}
+      </div>`;
+    });
+    // nodo proyecto
+    const pUnl=projectUnlocked(i), pSt=S.projects[lv.project.id];
+    let pcls='project locked', pic='🔒';
+    if(pSt==='validated'){ pcls='project done'; pic='🏅'; }
+    else if(pSt==='pending'){ pcls='project done'; pic='⏳'; }
+    else if(pUnl){ pcls='project current'; pic='🎯'; }
+    h+=`<div class="node ${pcls}" ${pUnl||pSt?`onclick="APP.openProject(${i})"`:''}>
+        <div class="dot">${pic}<span class="ring"></span></div>
+        <div class="lbl"><div class="t">${lv.project.title.replace('Proyecto: ','Proyecto: ').replace('Proyecto final: ','Proyecto final: ')}</div>
+        <div class="d">${pSt==='validated'?'Validado por el tutor ✓':pSt==='pending'?'Hecho — pendiente de validar':pUnl?'Misión de nivel · +50 XP':'Completa las lecciones del nivel'}</div></div>
+        <div class="badgexp">${pSt?'':'+50'}</div></div>`;
+    h+=`</div>`;
+  });
+  document.getElementById('scr-path').innerHTML=h;
+  refreshTop();
+}
+
+/* =========================================================
+   MOTOR DE LECCIÓN
+   ========================================================= */
+let CUR=null;
+function startLesson(i,j){
+  const ls=CURRICULUM.levels[i].lessons[j];
+  CUR={li:i,lj:j,exs:ls.ex.map((e,ei)=>({e,ei})),idx:0,mistakes:0,isReview:false,lessonId:ls.id};
+  renderExercise(); show('lesson');
+}
+
+function startReview(){
+  if(!S.review.length){ toast('Radar limpio: sin errores pendientes ✈️'); return; }
+  const exs=S.review.map(ref=>({e:CURRICULUM.levels[ref.li].lessons[ref.lj].ex[ref.ei],ei:ref.ei,ref})).filter(x=>x.e);
+  CUR={li:-1,lj:-1,exs,idx:0,mistakes:0,isReview:true};
+  renderExercise(); show('lesson');
+}
+
+let SEL=null, ORDER=null, MATCH=null, answered=false;
+function renderExercise(){
+  answered=false; SEL=null; ORDER=null; MATCH=null;
+  hideFeedback();
+  const total=CUR.exs.length, cur=CUR.idx;
+  const {e}=CUR.exs[cur];
+  const pct=Math.round((cur/total)*100);
+  let head=`<div class="lessonhead">
+    <button class="x" onclick="APP.quitLesson()">✕</button>
+    <div class="pbar"><i style="width:${pct}%"></i></div>
+    <div class="hearts">${CUR.isReview?'🛩️':'❤ '+Math.max(0,3-CUR.mistakes)}</div></div>`;
+  let body='';
+  const tag = e.eth ? `<span class="qtag eth">🛡️ Seguridad y ética</span>` : `<span class="qtag">${tagName(e.type)}</span>`;
+  if(e.type==='order'){
+    body=`<div class="qcard">${tag}<div class="qtext">${e.q}</div>
+      <div class="orderzone" id="orderzone"></div><div class="opts" id="bank"></div>
+      <button class="btn primary" id="checkBtn" style="margin-top:16px" disabled onclick="APP.check()">Comprobar</button></div>`;
+  } else if(e.type==='match'){
+    body=`<div class="qcard">${tag}<div class="qtext">${e.q}</div><div id="matchbox" style="margin:6px 0 4px"></div>
+      <button class="btn primary" id="checkBtn" style="margin-top:12px" disabled onclick="APP.check()">Comprobar</button></div>`;
+  } else {
+    // choice-like: mc, improve, fill, detect, tf
+    const opts = e.type==='tf' ? ['Verdadero','Falso'] : e.opts;
+    const sub = e.sub ? `<div class="qsub">${e.sub}</div>` : '';
+    let o=opts.map((op,k)=>`<button class="opt" data-k="${k}" onclick="APP.pick(${k})">
+        <span class="k">${e.type==='tf'?(k===0?'V':'F'):String.fromCharCode(65+k)}</span><span>${op}</span></button>`).join('');
+    body=`<div class="qcard">${tag}<div class="qtext">${e.q}</div>${sub}<div class="opts">${o}</div>
+      <button class="btn primary" id="checkBtn" style="margin-top:16px" disabled onclick="APP.check()">Comprobar</button></div>`;
+  }
+  document.getElementById('scr-lesson').innerHTML=head+body;
+  if(e.type==='order') buildOrder(e);
+  if(e.type==='match') buildMatch(e);
+}
+function tagName(t){ return ({mc:'Opción múltiple',improve:'Mejora el prompt',fill:'Completa',tf:'Verdadero o falso',detect:'Detecta el error',order:'Ordena las piezas',match:'Empareja'})[t]||'Ejercicio'; }
+
+/* ----- choice ----- */
+function pick(k){
+  if(answered) return;
+  SEL=k;
+  document.querySelectorAll('#scr-lesson .opt').forEach(o=>o.classList.toggle('sel', +o.dataset.k===k));
+  document.getElementById('checkBtn').disabled=false;
+}
+/* ----- order ----- */
+function buildOrder(e){
+  ORDER={chosen:[], bank:e.items.map((t,idx)=>({t,idx})).sort(()=>Math.random()-0.5)};
+  paintOrder(e);
+}
+function paintOrder(e){
+  const z=document.getElementById('orderzone'), b=document.getElementById('bank');
+  z.innerHTML=ORDER.chosen.map((c,pos)=>`<button class="chip" onclick="APP.orderBack(${pos})"><span class="n">${pos+1}</span>${c.t}</button>`).join('');
+  b.innerHTML=ORDER.bank.map((c,pos)=>`<button class="chip bank" onclick="APP.orderPick(${pos})">${c.t}</button>`).join('');
+  document.getElementById('checkBtn').disabled = ORDER.bank.length!==0;
+}
+function orderPick(pos){ if(answered)return; ORDER.chosen.push(ORDER.bank[pos]); ORDER.bank.splice(pos,1); paintOrder(CUR.exs[CUR.idx].e); }
+function orderBack(pos){ if(answered)return; ORDER.bank.push(ORDER.chosen[pos]); ORDER.chosen.splice(pos,1); paintOrder(CUR.exs[CUR.idx].e); }
+/* ----- match ----- */
+function buildMatch(e){
+  MATCH={}; const opts=e.pairs.map(p=>p.r).sort(()=>Math.random()-0.5);
+  const box=document.getElementById('matchbox');
+  box.innerHTML=e.pairs.map((p,idx)=>`<div class="matchrow"><div class="concept">${p.l}</div>
+    <select data-idx="${idx}" onchange="APP.matchSel(${idx},this.value)">
+      <option value="">— elige —</option>${opts.map(o=>`<option value="${encodeURIComponent(o)}">${o}</option>`).join('')}</select></div>`).join('');
+}
+function matchSel(idx,val){ if(answered)return; MATCH[idx]=decodeURIComponent(val);
+  const e=CUR.exs[CUR.idx].e; document.getElementById('checkBtn').disabled = Object.keys(MATCH).filter(k=>MATCH[k]).length!==e.pairs.length; }
+
+/* ----- comprobar ----- */
+function check(){
+  if(answered && !document.getElementById('checkBtn')) return;
+  const {e,ei}=CUR.exs[CUR.idx];
+  let correct=false, detail='';
+  if(e.type==='order'){
+    correct=ORDER.chosen.every((c,pos)=>c.idx===pos);
+    document.querySelectorAll('#orderzone .chip').forEach((el,pos)=>el.classList.add(ORDER.chosen[pos].idx===pos?'correct':'wrong'));
+  } else if(e.type==='match'){
+    correct=e.pairs.every((p,idx)=>MATCH[idx]===p.r);
+    document.querySelectorAll('#matchbox select').forEach((sel,idx)=>sel.classList.add(MATCH[idx]===e.pairs[idx].r?'correct':'wrong'));
+  } else {
+    const ans = e.type==='tf' ? (e.a?0:1) : e.a;
+    correct = SEL===ans;
+    document.querySelectorAll('#scr-lesson .opt').forEach(o=>{
+      const k=+o.dataset.k; o.classList.add('disabled');
+      if(k===ans) o.classList.add('correct');
+      else if(k===SEL) o.classList.add('wrong');
+      else o.classList.add('dim');
+    });
+  }
+  // stats (solo primer intento)
+  if(!answered){
+    if(!CUR.isReview){
+      const sk=e.skill||'general';
+      S.skill[sk]=S.skill[sk]||{ok:0,total:0}; S.skill[sk].total++;
+      S.exCount++;
+      if(correct){ S.skill[sk].ok++; S.correctCount++; }
+    }
+    if(correct){
+      if(e.eth) S.ethCount++;
+      if(e.type==='improve') grantBadge('promptCerto');
+    } else {
+      // a repaso
+      if(!CUR.isReview){ const ref={li:CUR.li,lj:CUR.lj,ei}; if(!S.review.some(r=>r.li===ref.li&&r.lj===ref.lj&&r.ei===ref.ei)) S.review.push(ref); }
+    }
+    save();
+  }
+  answered=true;
+  document.getElementById('checkBtn').style.display='none';
+  if(correct){
+    sndGood();
+    if(CUR.isReview && CUR.exs[CUR.idx].ref){ const rf=CUR.exs[CUR.idx].ref; S.review=S.review.filter(r=>!(r.li===rf.li&&r.lj===rf.lj&&r.ei===rf.ei)); save(); }
+    showFeedback(true, e.ok||"¡Correcto!", e.ex||e.why||"", ()=>advance());
+  } else {
+    sndBad(); CUR.mistakes++;
+    showFeedback(false, "Casi. Vuelve a intentarlo", e.ex||e.why||"Revisa bien las opciones.", ()=>retry());
+  }
+  checkStandingBadges();
+}
+function retry(){ renderExercise(); }
+function advance(){
+  hideFeedback();
+  CUR.idx++;
+  if(CUR.idx<CUR.exs.length){ renderExercise(); }
+  else finishLesson();
+}
+function finishLesson(){
+  if(CUR.isReview){
+    const gain=8; addXP(gain); bumpStreak(); save(); refreshTop();
+    celebrate({icon:"🛩️",title:"¡Simulación superada!",msg:"Repasaste tus errores como un piloto que corrige el rumbo. Radar afinado.",xp:"+"+gain+" XP"});
+    setTimeout(()=>{ renderPath(); show('path'); },900); return;
+  }
+  const ls=CURRICULUM.levels[CUR.li].lessons[CUR.lj];
+  const first=!S.done[ls.id];
+  const gain = CUR.mistakes===0 ? 15 : 12;
+  if(first){ S.done[ls.id]=true; S.lessonsCount++; }
+  const rankUp=addXP(first?gain:5);
+  bumpStreak();
+  if(S.lessonsCount>=1) grantBadge('primerVuelo');
+  checkStandingBadges();
+  save(); refreshTop();
+  celebrate({icon:"✅",title:"¡Lección completada!",msg:randomCeleb(),xp:"+"+(first?gain:5)+" XP"});
+  setTimeout(()=>{
+    if(rankUp) celebrate({icon:"🎖️",title:"¡Ascenso de rango!",msg:"Ahora eres "+rankUp+". La torre de control te felicita, Daniel.",xp:""});
+  }, 2600);
+  setTimeout(()=>{ renderPath(); show('path'); }, rankUp?3000:1100);
+}
+function quitLesson(){ renderPath(); show('path'); }
+
+/* =========================================================
+   PROYECTOS / MISIONES
+   ========================================================= */
+function openProject(i){
+  const lv=CURRICULUM.levels[i], p=lv.project, st=S.projects[p.id];
+  const stepsH=p.steps.map((s,k)=>`<div class="step"><div class="sn">${k+1}</div><div>${s}</div></div>`).join('');
+  const copyH = p.copy ? `<div style="margin:10px 0"><div class="muted" style="margin-bottom:4px">✏️ Prompt para copiar:</div>
+     <div class="copybox" id="copybox">${p.copy}</div>
+     <button class="copybtn" onclick="APP.copyPrompt()">📋 Copiar prompt</button></div>` : '';
+  let action='';
+  if(st==='validated') action=`<div class="btn green" style="pointer-events:none">🏅 Misión validada por el tutor</div>`;
+  else if(st==='pending') action=`<div class="btn amber" style="pointer-events:none">⏳ Hecha — Felipe la valida en sesión</div>`;
+  else action=`<button class="btn amber" onclick="APP.doProject(${i})">✅ Marcar misión como hecha (+50 XP)</button>`;
+  document.getElementById('scr-lesson').innerHTML=`
+    <div class="lessonhead"><button class="x" onclick="APP.quitLesson()">✕</button>
+      <div class="pbar"><i style="width:100%"></i></div><div class="hearts">🎯</div></div>
+    <div class="mission"><span class="mtag">${p.tag}</span><h4>${p.title}</h4>
+      <div class="intro">${p.intro}</div><div class="steps">${stepsH}</div>${copyH}</div>
+    <div style="margin-top:16px">${action}</div>`;
+  show('lesson');
+}
+function doProject(i){
+  const p=CURRICULUM.levels[i].project;
+  if(S.projects[p.id]) return;
+  S.projects[p.id]='pending';
+  const rankUp=addXP(p.xp); bumpStreak(); checkStandingBadges(); save(); refreshTop();
+  celebrate({icon:"🎯",title:"¡Proyecto completado!",msg:"Misión de nivel cumplida. Guárdala para que Felipe la valide y desbloquee tu insignia. ¡Siguiente nivel abierto!",xp:"+"+p.xp+" XP"});
+  setTimeout(()=>{ if(rankUp) celebrate({icon:"🎖️",title:"¡Ascenso de rango!",msg:"Ahora eres "+rankUp+".",xp:""}); }, 2600);
+  setTimeout(()=>{ renderPath(); show('path'); }, rankUp?3000:1200);
+}
+function copyPrompt(){ const t=document.getElementById('copybox').innerText;
+  if(navigator.clipboard) navigator.clipboard.writeText(t).then(()=>toast('Prompt copiado ✓'),()=>toast('Selecciona y copia manualmente'));
+  else toast('Selecciona y copia manualmente'); }
+
+/* =========================================================
+   PANTALLA 3 · PERFIL / LOGROS
+   ========================================================= */
+const SKILL_NAMES={fundamentos:"Fundamentos IA",conversar:"Conversar con IA",prompts:"Prompts pro",verificar:"Verificar datos",creativo:"Crear con IA",negocio:"IA para negocio",codigo:"Programar",etica:"Ética y seguridad"};
+function renderProfile(){
+  const r=rankFor(S.xp);
+  const totalLes=CURRICULUM.levels.reduce((a,l)=>a+l.lessons.length,0);
+  const projDone=Object.values(S.projects).filter(Boolean).length;
+  const acc = S.exCount? Math.round(S.correctCount/S.exCount*100):0;
+  let h=`<div class="rankcard"><div class="avatar">${r.ic}</div>
+    <div class="rankinfo"><div class="who">Piloto</div><div class="rank"><b>${r.n}</b> · ${S.xp} XP</div>
+    <div class="next">Racha actual: ${S.streak} días · Mejor: ${S.bestStreak}</div></div></div>`;
+  h+=`<div class="sectitle">Estadísticas de vuelo</div>
+    <div class="statgrid">
+      <div class="statbox"><div class="v">${S.lessonsCount}/${totalLes}</div><div class="l">Lecciones</div></div>
+      <div class="statbox"><div class="v">${projDone}/7</div><div class="l">Proyectos</div></div>
+      <div class="statbox"><div class="v">${acc}%</div><div class="l">Aciertos</div></div>
+      <div class="statbox"><div class="v">${S.review.length}</div><div class="l">Por reforzar</div></div>
+    </div>`;
+  // insignias
+  h+=`<div class="sectitle">Insignias</div><div class="badges">`;
+  CURRICULUM.badges.forEach(b=>{ const on=!!S.badges[b.id];
+    h+=`<div class="badge ${on?'on':''}"><div class="ic">${b.ic}</div><div class="bn">${b.n}</div></div>`; });
+  h+=`</div>`;
+  // habilidades
+  h+=`<div class="sectitle">Habilidades: dominadas vs. por reforzar</div>`;
+  const skills=Object.keys(SKILL_NAMES);
+  skills.forEach(sk=>{ const d=S.skill[sk]; if(!d||!d.total) return;
+    const pct=Math.round(d.ok/d.total*100);
+    const col = pct>=80?'linear-gradient(90deg,#34d399,#059669)':pct>=50?'linear-gradient(90deg,#fbbf24,#f59e0b)':'linear-gradient(90deg,#fb7185,#e11d48)';
+    h+=`<div class="skill"><div class="sh"><span>${SKILL_NAMES[sk]}</span><span class="pct">${pct}% (${d.ok}/${d.total})</span></div>
+      <div class="skbar"><i style="width:${pct}%;background:${col}"></i></div></div>`;
+  });
+  if(!Object.values(S.skill).some(x=>x&&x.total)) h+=`<div class="muted" style="padding:6px 2px">Completa lecciones para ver tus habilidades aquí. ✈️</div>`;
+  document.getElementById('scr-profile').innerHTML=h;
+}
+
+/* =========================================================
+   PANTALLA 4 · SESIÓN (6 bloques de 25 min)
+   ========================================================= */
+const BLOCKS=[
+  {t:"Despegue del día",d:"Repaso rápido + meta de hoy con Felipe"},
+  {t:"Lección nueva #1",d:"Avanzas en el camino de la academia"},
+  {t:"Misión real / práctica",d:"Manos a la obra en ChatGPT"},
+  {t:"Lección nueva #2",d:"Otro nodo desbloqueado"},
+  {t:"Proyecto / construir",d:"Aplicas lo aprendido en algo real"},
+  {t:"Torre de control",d:"Muestras logros y Felipe valida misiones"}
+];
+let TM={run:false,rest:false,sec:25*60,block:0,iv:null};
+function renderSession(){
+  let h=`<div class="sectitle">Sesión de 3 horas · 6 bloques de 25 min</div>
+    <div class="timerwrap">
+      <div class="timerbig ${TM.rest?'rest':''}" id="tmDisp">${fmt(TM.sec)}</div>
+      <div class="timerlbl" id="tmLbl">${TM.rest?'☕ Descanso · 5 min':('Bloque '+(TM.block+1)+' · '+BLOCKS[TM.block].t)}</div>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:8px">
+      <button class="btn ${TM.run?'ghost':'primary'} sm" style="flex:1" onclick="APP.tmToggle()">${TM.run?'⏸ Pausar':'▶ Iniciar'}</button>
+      <button class="btn ghost sm" style="flex:1" onclick="APP.tmNext()">⏭ Siguiente</button>
+      <button class="btn ghost sm" style="flex:1" onclick="APP.tmReset()">↺ Reiniciar</button>
+    </div>
+    <div class="blocklist">`;
+  BLOCKS.forEach((b,i)=>{ const cls=i<TM.block?'done':i===TM.block?'active':'';
+    h+=`<div class="blk ${cls}"><div class="bnum">${i<TM.block?'✓':i+1}</div>
+      <div class="bt">${b.t}<small>${b.d}</small></div></div>`; });
+  h+=`</div><div class="capi" style="margin-top:16px"><div class="face">🦜</div>
+    <div class="bub">Tip de Capi: cada bloque son <b>25 minutos</b> de foco y luego <b>5 de descanso</b>. Si te distraes, respira y vuelve. ¡El foco se entrena como el saque! 🎾</div></div>`;
+  document.getElementById('scr-session').innerHTML=h;
+}
+function fmt(s){ const m=(s/60|0),ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
+function tmTick(){
+  TM.sec--;
+  const d=document.getElementById('tmDisp'); if(d) d.textContent=fmt(TM.sec);
+  if(TM.sec<=0){
+    sndAlert();
+    if(!TM.rest){ TM.rest=true; TM.sec=5*60; toast('⏰ ¡Fin del bloque! Descanso de 5 min'); }
+    else { TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; toast('☕ Fin del descanso · Bloque '+(TM.block+1)); }
+    if(TM.block>=BLOCKS.length-1 && !TM.rest && TM.sec===25*60){}
+    renderSession();
+  }
+}
+function tmToggle(){ TM.run=!TM.run; if(TM.run){ ac(); TM.iv=setInterval(tmTick,1000);} else clearInterval(TM.iv); renderSession(); }
+function tmNext(){ clearInterval(TM.iv); TM.run=false; TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; renderSession(); }
+function tmReset(){ clearInterval(TM.iv); TM={run:false,rest:false,sec:25*60,block:0,iv:null}; renderSession(); }
+
+/* =========================================================
+   PANTALLA 5 · MODO TUTOR (PIN 2412)
+   ========================================================= */
+const elOv=document.getElementById('overlay'), elModal=document.getElementById('modal');
+function openTutor(){
+  if(tutorAuthed){ renderTutor(); show('tutor'); return; }
+  elModal.innerHTML=`<h3>🔐 Modo Tutor</h3><p>Panel privado de Felipe. Ingresa el PIN de 4 dígitos.</p>
+    <input class="pininput" id="pinIn" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button class="btn primary" onclick="APP.checkPin()">Entrar</button>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
+  elOv.classList.add('show'); setTimeout(()=>{const p=document.getElementById('pinIn'); if(p)p.focus();},100);
+}
+function checkPin(){ const v=document.getElementById('pinIn').value;
+  if(v===PIN){ tutorAuthed=true; closeOverlay(); renderTutor(); show('tutor'); }
+  else { toast('PIN incorrecto'); document.getElementById('pinIn').value=''; } }
+function closeOverlay(){ elOv.classList.remove('show'); }
+
+function renderTutor(){
+  const r=rankFor(S.xp);
+  let h=`<div class="sectitle">Panel del tutor · Progreso de Daniel</div>
+    <div class="statgrid">
+      <div class="statbox"><div class="v">${S.xp}</div><div class="l">XP · ${r.n}</div></div>
+      <div class="statbox"><div class="v">${S.lessonsCount}</div><div class="l">Lecciones hechas</div></div>
+      <div class="statbox"><div class="v">${S.streak}🔥</div><div class="l">Racha (mejor ${S.bestStreak})</div></div>
+      <div class="statbox"><div class="v">${S.exCount?Math.round(S.correctCount/S.exCount*100):0}%</div><div class="l">Aciertos</div></div>
+    </div>`;
+  // dominio por tema
+  h+=`<div class="sectitle">Dominio por tema</div>`;
+  let any=false;
+  Object.keys(SKILL_NAMES).forEach(sk=>{ const d=S.skill[sk]; if(!d||!d.total) return; any=true;
+    const pct=Math.round(d.ok/d.total*100);
+    const col=pct>=80?'#34d399':pct>=50?'#fbbf24':'#fb7185';
+    h+=`<div class="skill"><div class="sh"><span>${SKILL_NAMES[sk]}</span><span class="pct">${pct}%</span></div>
+      <div class="skbar"><i style="width:${pct}%;background:${col}"></i></div></div>`; });
+  if(!any) h+=`<div class="muted">Aún sin datos.</div>`;
+  // validar proyectos/misiones
+  h+=`<div class="sectitle">Validar proyectos (misiones reales)</div>`;
+  CURRICULUM.levels.forEach((lv,i)=>{ const p=lv.project, st=S.projects[p.id];
+    let btn;
+    if(st==='validated') btn=`<span class="tb done">Validado 🏅</span>`;
+    else if(st==='pending') btn=`<button class="tb" onclick="APP.validate(${i})">Validar +insignia</button>`;
+    else btn=`<span class="tb" style="opacity:.5">Sin entregar</span>`;
+    h+=`<div class="tutrow"><div class="ti">${lv.name}<small>${p.title.replace(/Proyecto.*?: /,'')}</small></div>${btn}</div>`; });
+  // XP bonus
+  h+=`<div class="sectitle">Otorgar XP bonus</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn amber sm" style="flex:1" onclick="APP.bonus(10)">+10</button>
+      <button class="btn amber sm" style="flex:1" onclick="APP.bonus(25)">+25</button>
+      <button class="btn amber sm" style="flex:1" onclick="APP.bonus(50)">+50</button></div>`;
+  // datos
+  h+=`<div class="sectitle">Respaldo y datos</div>
+    <button class="btn ghost sm" style="margin-bottom:8px" onclick="APP.exportData()">⬇️ Exportar progreso (JSON)</button>
+    <button class="btn ghost sm" style="margin-bottom:8px" onclick="document.getElementById('importFile').click()">⬆️ Importar progreso (JSON)</button>
+    <input type="file" id="importFile" accept="application/json,.json" class="hidden" onchange="APP.importData(event)">
+    <button class="btn red sm" style="margin-bottom:8px" onclick="APP.resetData()">🗑️ Resetear todo el progreso</button>
+    <button class="btn ghost sm" onclick="APP.lockTutor()">🔒 Salir del modo tutor</button>
+    <div class="muted" style="margin-top:14px;text-align:center">Academia Piloto IA · datos guardados en este dispositivo</div>`;
+  document.getElementById('scr-tutor').innerHTML=h;
+}
+function validate(i){ const p=CURRICULUM.levels[i].project; S.projects[p.id]='validated';
+  const map={n3p:'promptMaster',n4p:'detective',n5p:'artista',n6p:'emprendedor',n7p:'programador'};
+  if(map[p.id]) grantBadge(map[p.id]); save(); toast('Proyecto validado ✓'); renderTutor(); }
+function bonus(n){ const up=addXP(n); checkStandingBadges(); save(); refreshTop(); toast('+'+n+' XP otorgados');
+  if(up) celebrate({icon:'🎖️',title:'¡Ascenso!',msg:'Daniel ahora es '+up+'.',xp:''}); renderTutor(); }
+function exportData(){ const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+  a.download='academia-piloto-daniel-'+todayBogota()+'.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); toast('Progreso exportado ✓'); }
+function importData(ev){ const f=ev.target.files[0]; if(!f) return; const rd=new FileReader();
+  rd.onload=()=>{ try{ const d=JSON.parse(rd.result); S=Object.assign(DEFAULT_STATE(),d); save(); refreshTop(); renderTutor(); renderPath(); toast('Progreso importado ✓'); }
+    catch(e){ toast('Archivo inválido'); } }; rd.readAsText(f); ev.target.value=''; }
+function resetData(){ elModal.innerHTML=`<h3>🗑️ Resetear todo</h3><p>Se borrará TODO el progreso de Daniel en este dispositivo. Esta acción no se puede deshacer. ¿Seguro?</p>
+    <button class="btn red" onclick="APP.doReset()">Sí, borrar todo</button>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`; elOv.classList.add('show'); }
+function doReset(){ S=DEFAULT_STATE(); save(); closeOverlay(); refreshTop(); renderTutor(); renderPath(); toast('Progreso reseteado'); }
+function lockTutor(){ tutorAuthed=false; renderPath(); show('path'); }
+
+/* =========================================================
+   API pública (para onclick)
+   ========================================================= */
+const APP={
+  openLesson:(i,j)=>{ if(!lessonUnlocked(i,j))return; startLesson(i,j); },
+  openProject, doProject, copyPrompt, review:startReview,
+  pick, check, orderPick, orderBack, matchSel, quitLesson,
+  tmToggle, tmNext, tmReset,
+  checkPin, closeOverlay, validate, bonus, exportData, importData, resetData, doReset, lockTutor
+};
+window.APP=APP;
+
+/* ---------- FEEDBACK BAR ---------- */
+const elFb=document.getElementById('feedback');
+function showFeedback(good, title, ex, onContinue){
+  elFb.className='fb '+(good?'good':'bad');
+  elFb.innerHTML=`<div class="box"><div class="ft">${good?'✅':'🔁'} ${title}</div>
+    <div class="fx">${ex||''}</div>
+    <button class="btn ${good?'green':'red'}" id="fbBtn">${good?'Continuar →':'Reintentar'}</button></div>`;
+  requestAnimationFrame(()=>elFb.classList.add('show'));
+  document.getElementById('fbBtn').onclick=()=>{ onContinue&&onContinue(); };
+}
+function hideFeedback(){ elFb.classList.remove('show'); }
+
+/* ---------- ARRANQUE ---------- */
+renderPath();
+refreshTop();
+show('path');
+console.log('%c✈️ Academia Piloto IA lista','color:#22d3ee;font-weight:bold');
+</script>
+</body>
+</html>
