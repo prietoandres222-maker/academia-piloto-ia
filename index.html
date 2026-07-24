@@ -255,6 +255,22 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(30px);background:var(--panel2);border:1px solid var(--cyan);color:var(--ink);padding:12px 18px;border-radius:12px;font-size:13.5px;font-weight:700;z-index:80;opacity:0;transition:.3s;pointer-events:none;box-shadow:var(--sh)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .muted{color:var(--dim2);font-size:12px}
+/* ===== CONTINÚA AQUÍ + estados de fase ===== */
+.continuecard{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0e7490,#0b5c9c);border:1.5px solid var(--cyan);border-radius:16px;padding:14px 16px;margin:14px 0 12px;cursor:pointer;box-shadow:0 10px 26px rgba(34,211,238,.28);transition:transform .12s}
+.continuecard:active{transform:scale(.985)}
+.continuecard.done{background:linear-gradient(135deg,#0f5132,#065f46);border-color:var(--green);cursor:default}
+.cc-l{flex:1;min-width:0}
+.cc-tag{font-size:11px;font-weight:800;letter-spacing:.7px;color:#c8f5ff}
+.cc-t{font-size:18px;font-weight:800;color:#fff;line-height:1.15;margin-top:3px}
+.cc-s{font-size:12.5px;color:#d9f4ff;margin-top:2px}
+.cc-btn{background:#fff;color:#04121f;font-weight:800;font-size:14.5px;padding:12px 18px;border-radius:12px;white-space:nowrap;flex-shrink:0}
+.mchip{display:inline-block;font-size:10.5px;font-weight:800;padding:2px 9px;border-radius:999px;background:var(--panel2);color:var(--dim);vertical-align:middle;margin-left:7px}
+.mchip.mdone{background:rgba(52,211,153,.2);color:#6ee7b7}
+.mchip.mnow{background:var(--cyan);color:#04121f;animation:railpulse 1.8s infinite}
+.mchip.msoon{background:transparent;border:1px solid var(--line);color:var(--dim2)}
+.leveltitle .ltinfo{min-width:0}
+.leveltitle.moduledone{opacity:.62}
+.leveltitle.modulenow .num{box-shadow:0 0 0 3px rgba(34,211,238,.35)}
 .hidden{display:none!important}
 
 /* ================================================================
@@ -1528,9 +1544,20 @@ function capiPhrase(){
   if(done<5) return "Buen despegue, cadete. Ya llevas <b>"+done+" lecciones</b>. La cabina es tuya. ✈️";
   return "Vas volando alto, Daniel. <b>"+S.xp+" XP</b> y subiendo. Rumbo a Capitán IA. 👨‍✈️";
 }
+function nextTarget(){ // dónde debe continuar Daniel (una sola respuesta global)
+  for(let i=0;i<CURRICULUM.levels.length;i++){
+    const lv=CURRICULUM.levels[i];
+    for(let j=0;j<lv.lessons.length;j++){ if(!S.done[lv.lessons[j].id]) return {i,j,type:'lesson'}; }
+    if(!S.projects[lv.project.id]) return {i,j:-1,type:'project'};
+  }
+  return null; // todo completo
+}
 function renderPath(){
   const r=rankFor(S.xp), nx=nextRank(S.xp);
   const pct = nx ? Math.round(((S.xp - r.xp)/(nx.xp - r.xp))*100) : 100;
+  const nt=nextTarget();
+  const capi = !nt ? "¡Completaste toda la academia, Daniel! Eres <b>Capitán IA</b>. 👨‍✈️🏆"
+    : "Ya superaste la <b>Fase 1</b> (La era de la IA). Hoy sigues en <b>"+CURRICULUM.levels[nt.i].name+"</b>. Toca <b>Continúa aquí</b> 👇🦜";
   let h=`<div class="rankcard">
     <div class="avatar">${r.ic}</div>
     <div class="rankinfo">
@@ -1538,43 +1565,54 @@ function renderPath(){
       <div class="rank">Rango: <b>${r.n}</b></div>
       <div class="progbar"><i style="width:${pct}%"></i></div>
       <div class="next">${nx?('Faltan '+(nx.xp-S.xp)+' XP para '+nx.n):'¡Rango máximo alcanzado! 🏆'}</div>
-    </div></div>
-    <div class="capi"><div class="face">🦜</div><div class="bub">${capiPhrase()}</div></div>
+    </div></div>`;
+  // ===== Tarjeta CONTINÚA AQUÍ (un solo punto claro) =====
+  if(nt){ const lv=CURRICULUM.levels[nt.i]; const isP=nt.type==='project';
+    const t=isP?lv.project.title:lv.lessons[nt.j].t;
+    const click=isP?`APP.openProject(${nt.i})`:`APP.openLesson(${nt.i},${nt.j})`;
+    h+=`<div class="continuecard" onclick="${click}">
+      <div class="cc-l"><div class="cc-tag">▶ CONTINÚA AQUÍ · FASE ${nt.i+1}</div>
+        <div class="cc-t">${t}</div><div class="cc-s">${lv.name}</div></div>
+      <div class="cc-btn">Empezar →</div></div>`;
+  } else {
+    h+=`<div class="continuecard done"><div class="cc-l"><div class="cc-tag">🏆 ¡TODO COMPLETADO!</div><div class="cc-t">Eres Capitán IA, Daniel</div></div></div>`;
+  }
+  h+=`<div class="capi"><div class="face">🦜</div><div class="bub">${capi}</div></div>
     <button class="btn ghost sm" style="margin-bottom:4px" onclick="APP.review()">🛩️ Simulador de vuelo (repaso) ${S.review.length?('· '+S.review.length):''}</button>`;
-  h+=badgeStripHTML(); // recorrido de insignias (franja compacta; se ve en móvil)
+  h+=badgeStripHTML();
 
   CURRICULUM.levels.forEach((lv,i)=>{
-    const unlocked=levelUnlocked(i);
     const dc=levelDoneCount(i), tot=lv.lessons.length;
-    h+=`<div class="leveltitle ${unlocked?'':'locked'}">
-      <div class="num">${unlocked?lv.ic:'🔒'}</div>
-      <div><h3>${lv.name}</h3><div class="sub">${unlocked?(lv.tag+' · '+dc+'/'+tot):'Bloqueado — completa el proyecto anterior'}</div></div></div>`;
+    const allDone = lv.lessons.every(l=>S.done[l.id]) && !!S.projects[lv.project.id];
+    const isNow = nt && nt.i===i;
+    const chip = allDone ? '<span class="mchip mdone">✓ Superada</span>'
+      : isNow ? '<span class="mchip mnow">► Aquí vas</span>'
+      : (dc>0 ? '<span class="mchip">'+dc+'/'+tot+'</span>' : '<span class="mchip msoon">Por venir</span>');
+    h+=`<div class="leveltitle ${allDone?'moduledone':''} ${isNow?'modulenow':''}">
+      <div class="num">${lv.ic}</div>
+      <div class="ltinfo"><h3>Fase ${i+1} · ${lv.name} ${chip}</h3>
+      <div class="sub">${lv.tag} · ${dc}/${tot} lecciones${S.projects[lv.project.id]?' · proyecto ✓':''}</div></div></div>`;
     h+=`<div class="path">`;
-    // nodes lecciones
-    let currentSet=false;
     lv.lessons.forEach((ls,j)=>{
       const done=!!S.done[ls.id];
-      const unl=lessonUnlocked(i,j);
-      let cls='locked', ic='🔒';
-      if(done){ cls='done'; ic='✔'; }
-      else if(unl && !currentSet){ cls='current'; ic=String(j+1); currentSet=true; }
-      else if(unl){ cls=''; ic=String(j+1); }
-      h+=`<div class="node ${cls}" ${unl?`onclick="APP.openLesson(${i},${j})"`:''}>
+      const isNextLesson = nt && nt.type==='lesson' && nt.i===i && nt.j===j;
+      let cls = done ? 'done' : (isNextLesson ? 'current' : '');
+      const ic = done ? '✔' : String(j+1);
+      h+=`<div class="node ${cls}" onclick="APP.openLesson(${i},${j})">
         <div class="dot">${ic}<span class="ring"></span></div>
-        <div class="lbl"><div class="t">${ls.t}</div><div class="d">${done?'Completada':ls.d}</div></div>
-        ${done?'<div class="badgexp">✓</div>':(unl?'<div class="badgexp">+12 XP</div>':'')}
-        ${j<lv.lessons.length-1||true?'<div class="connector"></div>':''}
+        <div class="lbl"><div class="t">${ls.t}</div><div class="d">${done?'Completada ✓':(isNextLesson?'Empieza aquí':ls.d)}</div></div>
+        <div class="badgexp">${done?'✓':'+12 XP'}</div>
+        <div class="connector"></div>
       </div>`;
     });
-    // nodo proyecto
-    const pUnl=projectUnlocked(i), pSt=S.projects[lv.project.id];
-    let pcls='project locked', pic='🔒';
-    if(pSt){ pcls='project done'; pic='🏅'; }
-    else if(pUnl){ pcls='project current'; pic='🎯'; }
-    h+=`<div class="node ${pcls}" ${pUnl||pSt?`onclick="APP.openProject(${i})"`:''}>
+    const pSt=S.projects[lv.project.id];
+    const isNextProject = nt && nt.type==='project' && nt.i===i;
+    let pcls = pSt ? 'project done' : (isNextProject ? 'project current' : 'project');
+    const pic = pSt ? '🏅' : '🎯';
+    h+=`<div class="node ${pcls}" onclick="APP.openProject(${i})">
         <div class="dot">${pic}<span class="ring"></span></div>
         <div class="lbl"><div class="t">${lv.project.title}</div>
-        <div class="d">${pSt?'Completado ✓ · insignia ganada':pUnl?'Misión de nivel · +50 XP':'Completa las lecciones del nivel'}</div></div>
+        <div class="d">${pSt?'Completado ✓ · insignia ganada':(isNextProject?'Tu misión ahora · +50 XP':'Misión de nivel · +50 XP')}</div></div>
         <div class="badgexp">${pSt?'🏅':'+50'}</div></div>`;
     h+=`</div>`;
   });
