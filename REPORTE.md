@@ -1,4 +1,4 @@
-# REPORTE — Capitán Dani IA
+# REPORTE — Capitán EchandIA
 
 App educativa gamificada (tipo Duolingo) para enseñarle IA a **Daniel** (15 años, TDAH),
 temática de academia de pilotos (Cadete → Capitán IA). Se usa como **complemento de clase**:
@@ -9,14 +9,24 @@ Felipe enseña, luego juegan; también sirve como tarea de repaso.
 **https://capitan-dani-ia.vercel.app**  (alias limpio)
 _(la vieja `https://academia-piloto-ia-mop-modular-crm.vercel.app` también funciona; "mop-modular-crm" es el nombre del **equipo de Vercel**, no del proyecto)_
 
-- `curl` → **200**, `<title>Capitán Dani IA</title>`.
+- `curl` → **200**, `<title>Capitán EchandIA</title>`.
 - Navegador real (local y producción): **0 errores de consola**, 7 módulos, 42 nodos, 220 ejercicios, nube conectada (`cloudOk:true`).
 
-**Código:** https://github.com/prietoandres222-maker/academia-piloto-ia (el repo/URL conservan el nombre viejo; la app se llama **Capitán Dani IA**).
+**Código:** https://github.com/prietoandres222-maker/academia-piloto-ia (el repo/URL conservan el nombre viejo; la app se llama **Capitán EchandIA**).
+
+## 🎨 Última actualización (diseño + clase de hoy)
+- **Nombre → Capitán EchandIA** (juego de palabras con el apellido Echandía + IA; la "IA" va resaltada).
+- **Rediseño de escritorio (diseñador experto):** barra superior fija + **barra lateral izquierda** de navegación + **columna de contenido centrada** (~648px). Se acabó lo ancho/angosto/espacio desperdiciado. En **celular** queda a pantalla completa con barra inferior (verificado a 375px, sin scroll horizontal).
+- **Insignias automáticas:** Daniel se las gana solo al completar cada proyecto (ya NO las otorga el tutor).
+- **Modo Tutor = solo métricas para Felipe:** progreso por módulo, temas por reforzar (<70%), aciertos, proyectos e insignias, cola de repaso. Sin botones de validar ni de XP.
+- **Nuevo tema para hoy:** módulo **"Hablar con la IA"** con la lección **"Hablar en vez de escribir"** (modo de voz).
+- **Orden de módulos para HOY** (según la clase): **Prompts → Prompts de imagen → Hablar por voz** → luego Era de la IA, Alucinaciones, Negocio, Constructor. (No se tocan GPTs.)
+- **Auto-actualización para todos:** `vercel.json` con `Cache-Control: max-age=0, must-revalidate` → cada vez que abren la app reciben la última versión, sin limpiar caché. Verificado en el header de producción.
+- Nota: la presentación real "Criminal-1" no fue accesible por la API de Gamma (404); usé los temas que indicaste + tu método de prompts ya establecido.
 
 ## 🆕 Cambios de esta sesión (según lo pedido por Felipe)
 
-1. **Nombre:** ahora es **Capitán Dani IA** (antes "Academia Piloto IA").
+1. **Nombre:** ahora es **Capitán EchandIA** (antes "Academia Piloto IA").
 2. **Orden de módulos = el de tu Gamma "IA para emprendedores"**:
    1) La era de la IA · 2) Hablarle a la IA · 3) **Prompt Master (HOY)** · 4) Prompts de imagen ·
    5) Alucinaciones/verificar · 6) IA en tu negocio (y modo agente) · 7) Constructor (bonus).
@@ -44,7 +54,7 @@ _(la vieja `https://academia-piloto-ia-mop-modular-crm.vercel.app` también func
 - **7 módulos · 35 lecciones · 220 ejercicios · 7 proyectos · 22 de ética** (mín. 1 por módulo).
 - 7 tipos de ejercicio (mín. 4 por lección), respuesta correcta + explicación al fallar + reintento.
 - Mecánicas: XP, rangos (Cadete→Alférez→Teniente→Capitán IA), racha (America/Bogota), 10 insignias, 34 mensajes de celebración, repaso "Simulador de vuelo", copiloto **Capi** (guacamayo).
-- **Modo Tutor PIN 1214:** progreso por tema, validar proyectos (da la insignia), XP bonus, reset, export/import JSON, sincronizar nube.
+- **Modo Tutor PIN 1214:** solo métricas útiles para Felipe (progreso por módulo, qué reforzar, aciertos, proyectos, insignias) + respaldo (sincronizar nube, export/import JSON, reset). Las insignias las gana Daniel solo al avanzar.
 
 ## ✅ Verificaciones
 - Validación estática (Node): 7 módulos, 35 lecciones, 220 ejercicios, 22 de ética, 34 celebraciones; respuestas correctas OK; sintaxis JS válida (`node --check`).
