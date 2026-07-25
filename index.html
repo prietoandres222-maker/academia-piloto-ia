@@ -1325,43 +1325,35 @@ function load(){
 function saveLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(S)); }catch(e){} }
 function save(){ S._t=Date.now(); saveLocal(); cloudPush(); }
 
-/* ---------- Supabase (respaldo/espejo en la nube; localStorage manda) ----------
-   anon key pública protegida por RLS; sin datos sensibles. Todo defensivo: si falla
-   la red o Supabase, la app sigue 100% con localStorage. */
-const SB_URL="https://lwpshygwlkokxfijhjvu.supabase.co";
-const SB_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx3cHNoeWd3bGtva3hmaWpoanZ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ4OTIxOTUsImV4cCI6MjEwMDQ2ODE5NX0.LV3OXwK0rm9K0Prq9E8h5_xlZlqaBRLplv3lCBhV6K0";
-const SB_ROW="daniel";
+/* ---------- Nube: sincronización por Netlify Function + Blobs (localStorage manda) ----------
+   Endpoint propio y aislado (sitio capitan-echandia-sync). Sin datos sensibles.
+   Todo defensivo: si falla la red o el servicio, la app sigue 100% con localStorage. */
+const SYNC_URL="https://capitan-echandia-sync.netlify.app/.netlify/functions/sync";
+const SYNC_ROW="daniel";
 let cloudOk=null, sbTimer=null;
 function setCloud(ok){ cloudOk=ok; const el=document.getElementById('cloudStat'); if(el) el.textContent = ok?'☁️ Sincronizado con la nube':'☁️ Guardado solo en este equipo'; }
 function cloudPush(){
   clearTimeout(sbTimer);
   sbTimer=setTimeout(()=>{
     try{
-      fetch(SB_URL+"/rest/v1/progreso?on_conflict=id",{method:"POST",
-        headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},
-        body:JSON.stringify([{id:SB_ROW,data:S,updated_at:new Date().toISOString()}])})
+      fetch(SYNC_URL+"?id="+SYNC_ROW,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(S)})
         .then(r=>setCloud(r.ok)).catch(()=>setCloud(false));
     }catch(e){ setCloud(false); }
   }, 1500);
 }
 function cloudLoad(){
   try{
-    fetch(SB_URL+"/rest/v1/progreso?id=eq."+SB_ROW+"&select=data",{headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY}})
-      .then(r=>r.ok?r.json():null).then(j=>{
-        if(Array.isArray(j)&&j.length&&j[0].data){
-          const remote=j[0].data;
-          if((remote._t||0) > (S._t||0)){ S=Object.assign(DEFAULT_STATE(), remote); saveLocal(); refreshTop(); renderPath(); toast("Progreso traído de la nube ☁️"); }
-        }
+    fetch(SYNC_URL+"?id="+SYNC_ROW)
+      .then(r=>r.ok?r.json():null).then(remote=>{
+        if(remote && (remote._t||0) > (S._t||0)){ S=Object.assign(DEFAULT_STATE(), remote); saveLocal(); refreshTop(); renderPath(); toast("Progreso traído de la nube ☁️"); }
         setCloud(true);
       }).catch(()=>setCloud(false));
   }catch(e){ setCloud(false); }
 }
-/* Flush inmediato al cerrar/ocultar: garantiza que el último cambio suba a la nube (keepalive) */
+/* Flush inmediato al cerrar/ocultar: garantiza que el último cambio suba (keepalive) */
 function flushCloud(){
   try{ clearTimeout(sbTimer);
-    fetch(SB_URL+"/rest/v1/progreso?on_conflict=id",{method:"POST",keepalive:true,
-      headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},
-      body:JSON.stringify([{id:SB_ROW,data:S,updated_at:new Date().toISOString()}])}); }catch(e){}
+    fetch(SYNC_URL+"?id="+SYNC_ROW,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json"},body:JSON.stringify(S)}); }catch(e){}
 }
 addEventListener('pagehide', flushCloud);
 document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState==='hidden') flushCloud(); });
