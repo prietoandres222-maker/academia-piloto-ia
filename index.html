@@ -453,39 +453,39 @@ const CURRICULUM={
     {id:"e1l1",t:"La IA crece rapidísimo",d:"Crecimiento exponencial",ex:[
       {type:"tf",skill:"capacidades",q:"¿La IA mejora con el tiempo?",a:true,ex:"¡Sí! Y no despacio: cada año da un salto enorme. Vas volando, cadete."},
       {type:"mc",skill:"capacidades",q:"¿Cómo está creciendo la IA?",
-       opts:["Poquito a poco","Rapidísimo, cada vez más rápido (exponencial)","No crece","Va para atrás"],a:1,
-       ex:"Su crecimiento es EXPONENCIAL: cada vez más rápido. Como un avión acelerando en la pista."},
+       opts:["De forma lenta y pareja","Rapidísimo, cada vez más rápido (exponencial)","Rápido al principio y luego se frena","Solo mejora en videojuegos"],a:1,
+       ex:"Su crecimiento es EXPONENCIAL: cada vez más rápido, no parejo ni frenándose. Como un avión acelerando en la pista."},
       {type:"fill",skill:"capacidades",q:"El crecimiento de la IA es ______: cada vez más veloz.",
        opts:["exponencial","lento","normal","de bajada"],a:0,ex:"Exponencial = se dispara. Lo que hoy parece increíble, mañana será normal."},
       {type:"mc",skill:"capacidades",q:"Si la IA crece así de rápido, ¿qué conviene hacer?",
-       opts:["Ignorarla","Aprender a usarla ya, porque avanza sin parar","Esperar 10 años","Nada"],a:1,
-       ex:"Justo por eso Felipe te está entrenando: el que aprende IA hoy, despega antes."},
+       opts:["Esperar a que se estabilice para aprenderla","Aprender a usarla ya, porque avanza sin parar","Aprender solo lo básico una vez y ya","Dejársela a los expertos"],a:1,
+       ex:"Justo por eso Andrés te está entrenando: el que aprende IA hoy, despega antes. Y como cambia tanto, hay que seguir practicando."},
       {type:"tf",skill:"capacidades",q:"Lo que la IA no podía hacer hace poco, hoy ya lo hace.",a:true,
        ex:"Verdadero. Por eso hay que probar seguido: sus límites cambian todo el tiempo."}
     ]},
     {id:"e1l2",t:"El Einstein de todo",d:"Genio... que a veces inventa",ex:[
       {type:"mc",skill:"capacidades",q:"¿A qué se parece la IA como 'cerebro'?",
-       opts:["A Einstein, pero experto en TODAS las áreas, no solo física","A una calculadora","A un diccionario","A nada"],a:0,
-       ex:"Imagina a Einstein que además sabe de fútbol, pesca, negocios y aviación. Así de amplia es."},
+       opts:["A Einstein, pero experto en TODAS las áreas, no solo física","A una enciclopedia que solo repite lo escrito","A un buscador que te muestra páginas","A un experto brillante en un solo tema"],a:0,
+       ex:"No solo repite ni solo busca: razona sobre casi todo. Imagina a Einstein que además sabe de fútbol, pesca, negocios y aviación."},
       {type:"tf",skill:"capacidades",eth:true,q:"Como es un genio de todo, le puedo creer TODO sin revisar.",a:false,
        ex:"¡Falso! Es un genio que a veces habla muy seguro de cosas que NO sabe o inventa. Por eso SIEMPRE se verifica."},
       {type:"fill",skill:"capacidades",eth:true,q:"La IA es un genio, pero a veces inventa; por eso yo ______.",
        opts:["verifico","le creo todo","me duermo","copio"],a:0,ex:"Verificar es tu superpoder de piloto. El genio ayuda; tú confirmas."},
       {type:"mc",skill:"capacidades",q:"¿Qué le puedes pedir a este 'Einstein de todo'?",
-       opts:["Solo física","Ideas de pesca, negocio, fútbol, aviación… casi de todo","Solo sumar","Nada útil"],a:1,
-       ex:"Su fuerte es que sabe un poco de todo. Aprovéchalo para tus temas: lociones, Nacional, aviones."},
+       opts:["Solo temas de ciencia","Ideas de pesca, negocio, fútbol, aviación… casi de todo","Únicamente cosas del colegio","Solo cálculos matemáticos"],a:1,
+       ex:"Su fuerte es que sabe un poco de todo, no solo ciencia ni solo colegio. Aprovéchalo para tus temas: lociones, Nacional, aviones."},
       {type:"detect",skill:"capacidades",eth:true,q:"La IA te dice, muy segura, un dato rarísimo. ¿Qué haces?",
        sub:"'El bagre más grande del mundo pesó 900 kg.'",
-       opts:["Le creo, sonó seguro","Lo verifico: sonar seguro no es lo mismo que tener la razón","Lo comparto ya","Nada"],a:1,
-       ex:"Que suene seguro no lo hace cierto. El genio a veces alucina: verifica antes de creer."}
+       opts:["Le creo, sonó muy seguro","Lo verifico: sonar seguro no es lo mismo que tener la razón","Lo comparto porque es curioso","Lo doy por cierto y sigo"],a:1,
+       ex:"Que suene seguro no lo hace cierto. El genio a veces alucina: verifica antes de creer o compartir."}
     ]},
     {id:"e1l3",t:"¿A qué modelo le hablas?",d:"Razonamiento vs. no razonamiento",ex:[
       {type:"mc",skill:"capacidades",q:"Un 'modelo' de IA es…",
-       opts:["El cerebro entrenado que responde tus preguntas","Una marca de avión","Un tipo de pez","Un botón"],a:0,
-       ex:"El modelo es el cerebro que contesta. Hay varios, y NO todos son igual de inteligentes."},
+       opts:["El cerebro entrenado que responde tus preguntas","La página web donde escribes","La empresa que creó la IA","El internet que la IA usa"],a:0,
+       ex:"El modelo es el cerebro que contesta (no la página ni la empresa). Hay varios, y NO todos son igual de inteligentes."},
       {type:"mc",skill:"capacidades",q:"Un modelo de RAZONAMIENTO es mejor para…",
-       opts:["Saludar","Problemas difíciles: pensar paso a paso, planear, lógica","Nada","Solo dibujar"],a:1,
-       ex:"Los de razonamiento piensan paso a paso: brillan en lo DIFÍCIL. Los otros son rápidos para lo simple."},
+       opts:["Responder saludos y cosas rápidas","Problemas difíciles: pensar paso a paso, planear, lógica","Escribir textos cortos y simples","Buscar una palabra al vuelo"],a:1,
+       ex:"Los de razonamiento piensan paso a paso: brillan en lo DIFÍCIL. Para lo simple y rápido rinde mejor uno veloz."},
       {type:"tf",skill:"capacidades",q:"Para algo difícil, importa MUCHO a qué modelo le preguntas.",a:true,
        ex:"Verdadero. Preguntarle algo difícil al modelo equivocado es como pedirle táctica a alguien que apenas empieza."},
       {type:"fill",skill:"capacidades",q:"Antes de preguntar, miro ______ modelo estoy usando.",
@@ -496,8 +496,8 @@ const CURRICULUM={
     ]},
     {id:"e1l4",t:"Cambio de era",d:"Claude, y por qué esto es enorme",ex:[
       {type:"mc",skill:"capacidades",q:"En julio 2026, ¿qué recomendamos usar para casi todo?",
-       opts:["Claude, en el modelo Opus","Una calculadora","Nada","El buscador viejo"],a:0,
-       ex:"Hoy (jul-2026) recomendamos Claude/Opus para el día a día, y Fable solo para algo muy importante. (Ojo: esto cambia rápido.)"},
+       opts:["Claude, en el modelo Opus","El primer chat que aparezca","El modelo más barato que haya","Siempre el más nuevo, sea cual sea"],a:0,
+       ex:"Hoy (jul-2026) recomendamos Claude/Opus para el día a día, y Fable solo para algo muy importante. No es 'el primero' ni 'el más barato'. (Ojo: esto cambia rápido.)"},
       {type:"tf",skill:"capacidades",q:"Cada vez MÁS gente busca y compra usando IA, y crece rápido.",a:true,
        ex:"Verdadero. La gente ya le pregunta a la IA en vez de buscar como antes, y esa costumbre crece muy rápido."},
       {type:"fill",skill:"capacidades",q:"Frase clave: 'No es una era de cambio, es un ______ de era.'",
@@ -505,10 +505,12 @@ const CURRICULUM={
       {type:"mc",skill:"capacidades",q:"¿Por qué recomendamos Fable solo para lo muy importante?",
        opts:["Porque es el más potente, pero tiene más límites de uso y es más lento","Porque no sirve","Por capricho","Sin razón"],a:0,
        ex:"El más potente no siempre es el mejor para todo: Fable tiene más límites y es más lento, así que lo reservas para lo clave. Lo diario va con Opus. (Ojo: esto cambia rápido.)"},
-      {type:"mission",skill:"capacidades",q:"",title:"Misión: conoce a los modelos",
-       intro:"Tu primera misión real. Ábrelo con Felipe o en casa y márcalo cuando lo hagas.",
-       steps:["Abre Claude y fíjate qué modelo estás usando (arriba suele decir el nombre).","Hazle una pregunta fácil de tu interés (pesca, Nacional o aviación).","Cuéntale a Felipe qué modelo usaste. ¡Misión cumplida!"],
-       copy:"¿Qué modelo eres y para qué tipo de tareas eres mejor? Explícamelo fácil.",xp:30}
+      {type:"mission",skill:"capacidades",q:"",title:"Misión: pon a la IA a pescar por ti",
+       intro:"Vas a ver algo real: le haces a la IA una pregunta de pesca DIFÍCIL (de las que solo un pescador experto sabe) y te la resuelve. Truco de piloto: pregunta difícil = modelo más fuerte.",
+       steps:["Abre Claude. Busca dónde dice el modelo (en el computador suele estar ABAJO, al lado del cuadro de texto; en el celular, arriba). Como esta pregunta es DIFÍCIL, cámbialo al más fuerte (Opus).","Copia el prompt de abajo y pégalo. Cámbiale el pez por el que más te guste pescar.","Lee la tabla que te armó. Fíjate en algo que NO sabías: eso es la IA siendo tu tutor.","Guárdala: escríbele tú mismo 'resúmemela en 5 líneas para mi teléfono' y hazle captura. Esa es tu chuleta de pesca."],
+       objetivo:"que la IA te arme una mini-guía de pesca de nivel experto (hora + carnada + condiciones) que normalmente aprenderías con años.",
+       copy:"Actúa como un pescador deportivo experto de agua dulce en Colombia. Quiero pescar [pavón / bocachico / el pez que más me guste] en un río o embalse de mi región. Explícame, como si tuviera 15 años, cómo influyen la hora del día, la fase de la luna, la temperatura del agua y qué tan turbia está en que el pez PIQUE. Después arma una tabla sencilla que me diga, según cada condición: a qué hora ir, qué señuelo o carnada usar y cómo lanzarlo. Al final dame 3 errores de principiante que debo evitar.",
+       botin:"Tu mini-guía de pesca: una tabla con a qué hora ir + qué carnada usar + 3 errores a evitar. La guardas en el teléfono y la usas la próxima vez que vayas a pescar de verdad.",xp:40}
     ]}
   ]},
 
@@ -574,11 +576,13 @@ const CURRICULUM={
        opts:["'una loción'","'frasco de loción azul sobre fondo deportivo, luz suave, estilo moderno'"],a:1,
        why:"Da objeto, color, fondo, luz y estilo. Con eso la imagen sale como la quieres."},
       {type:"tf",skill:"prompts",q:"Puedo pedirle a ChatGPT que me haga una imagen describiéndola bien.",a:true,
-       ex:"Verdadero. Como el ejemplo que Felipe les mostró: describes con detalle y la IA la crea."},
-      {type:"mission",skill:"prompts",q:"",title:"Misión: tu primer prompt maestro",
-       intro:"Arma un prompt con los dos vitales + rol + tu comando. ¡Modo Navegante!",
-       steps:["Abre Claude o ChatGPT.","Escribe: rol específico + contexto + objetivo (ej: sobre tus lociones o tu pádel).","Si quieres, agrégale tu comando -Marlin al final.","Muéstrale la respuesta a Felipe. ¡Misión cumplida!"],
-       copy:"Como un vendedor experto de perfumería, tengo un negocio de lociones para jóvenes en Instagram. Dame 3 ideas para vender más esta semana. -Marlin",xp:35}
+       ex:"Verdadero. Como el ejemplo que Andrés les mostró: describes con detalle y la IA la crea."},
+      {type:"mission",skill:"prompts",q:"",title:"Misión: un prompt que te vende lociones",
+       intro:"Arma un prompt maestro (rol + contexto + objetivo + tu comando -Marlin) y sácale un plan de ventas real para tu negocio.",
+       steps:["Abre Claude o ChatGPT.","Copia el prompt y cámbiale lo que está entre [corchetes] por lo tuyo real.","Envíalo y lee las 3 ideas que te da.","Escoge la que MÁS te sirva y contéstale tú mismo: 'de esa idea, dame el paso 1 para hacer HOY'. Ese paso es tu tarea de hoy."],
+       objetivo:"que la IA te dé 3 ideas para vender más lociones esta semana, y luego el primer paso concreto de la que elijas.",
+       copy:"Como un vendedor experto de perfumería para jóvenes, tengo un negocio de lociones que vendo por [Instagram / WhatsApp / en el colegio]. Mi público son [amigos y conocidos de 14 a 18 años]. Dame 3 ideas realistas y baratas para vender más esta semana, explicadas fácil. -Marlin",
+       botin:"El paso 1 concreto para vender más lociones HOY. No una teoría: una acción que puedes hacer esta tarde.",xp:35}
     ]}
   ]},
 
@@ -588,8 +592,8 @@ const CURRICULUM={
    lessons:[
     {id:"e3l1",t:"Describir bien",d:"Las palabras pintan",ex:[
       {type:"mc",skill:"imagenes",q:"¿Qué hace mejor una imagen con IA?",
-       opts:["Una descripción con detalle (qué, color, luz, estilo)","Una palabra suelta","Gritar","Nada"],a:0,
-       ex:"Detalle = imagen a tu medida. Objeto, colores, fondo, luz y estilo."},
+       opts:["Una descripción con detalle (qué, color, luz, estilo)","Una sola palabra corta","Escribirla en mayúsculas","Pedir varias a la vez"],a:0,
+       ex:"Detalle = imagen a tu medida. Objeto, colores, fondo, luz y estilo. No importan las mayúsculas ni la cantidad."},
       {type:"order",skill:"imagenes",q:"Ordena una buena descripción de imagen:",
        items:["Qué es (un guacamayo piloto)","Cómo se ve (gafas de aviador, bufanda)","Estilo y ambiente (caricatura, cielo azul)"],
        ex:"Objeto → detalles → estilo. Con esa receta la imagen sale como la imaginas."},
@@ -609,12 +613,12 @@ const CURRICULUM={
        opts:["itero","borro","escondo","vendo"],a:0,ex:"Iterar imágenes es normal: ajusta color, fondo o luz y vuelve a generar."},
       {type:"detect",skill:"imagenes",q:"Tu imagen salió sosa. ¿Qué le faltó?",
        sub:"Pediste: 'un frasco'.",
-       opts:["Nada","Estilo, color, fondo y ambiente","Pagar","Suerte"],a:1,ex:"'Un frasco' es muy poco. Agrega color, fondo, luz y estilo."}
+       opts:["Nada, la IA simplemente falló","Le faltó estilo, color, fondo y ambiente","Le faltó pedir varias","Le faltó pedirla en inglés"],a:1,ex:"'Un frasco' es muy poco. No es culpa del idioma ni de la cantidad: agrega color, fondo, luz y estilo."}
     ]},
     {id:"e3l3",t:"Contenido que vende",d:"Imagen + texto",ex:[
       {type:"mc",skill:"imagenes",q:"Una buena pieza publicitaria combina…",
-       opts:["Solo una imagen","Imagen atractiva + un texto corto que dé ganas de comprar","Solo texto largo","Nada"],a:1,
-       ex:"Imagen que llama + frase que convence. Juntas venden."},
+       opts:["Solo una imagen bonita","Imagen atractiva + un texto corto que dé ganas de comprar","Solo un texto bien largo","Muchos hashtags y emojis"],a:1,
+       ex:"Imagen que llama + frase que convence. Juntas venden. Sola la imagen o solo texto largo se quedan cortos."},
       {type:"improve",skill:"imagenes",q:"¿Cuál texto es mejor para tu loción?",
        opts:["'loción en venta'","'Tu aroma, tu jugada. Fresco para ganar el día. 😎'"],a:1,
        why:"El segundo tiene gancho y personalidad juvenil. 'loción en venta' no emociona."},
@@ -631,20 +635,20 @@ const CURRICULUM={
    lessons:[
     {id:"e4l1",t:"Investigación a fondo",d:"Deep Research",ex:[
       {type:"mc",skill:"investigar",q:"La 'investigación a fondo' (Deep Research) sirve para…",
-       opts:["Que la IA investigue, contraste y te entregue un informe con fuentes","Jugar","Nada","Borrar"],a:0,
-       ex:"Deep Research busca en muchas fuentes, las cruza y te da un reporte ordenado. Como un asistente investigador."},
+       opts:["Que la IA investigue, contraste y te entregue un informe con fuentes","Que la IA invente datos rápido sin revisar","Que guarde tus archivos ordenados","Que traduzca una palabra al inglés"],a:0,
+       ex:"Deep Research busca en muchas fuentes, las cruza y te da un reporte ordenado con fuentes. Como un asistente investigador."},
       {type:"tf",skill:"investigar",q:"Deep Research puede entregar resúmenes con tablas y fuentes.",a:true,
        ex:"Verdadero. Investiga, sintetiza, cita y te entrega algo estructurado. Genial para un reporte."},
       {type:"fill",skill:"investigar",eth:true,q:"Aunque investigue, yo ______ los datos importantes en una fuente real.",
        opts:["verifico","borro","escondo","copio"],a:0,ex:"Verificar sigue siendo tu trabajo. La IA acelera; tú confirmas la verdad."},
       {type:"mc",skill:"investigar",q:"¿Para qué te serviría a ti Deep Research?",
-       opts:["Un mini-reporte de aviones, peces o Nacional con fuentes","Nada","Solo dibujar","Apagar el compu"],a:0,
-       ex:"Elige un tema tuyo y pídele un reporte con fuentes. Aprendes y practicas a verificar."}
+       opts:["Un mini-reporte de aviones, peces o Nacional con fuentes","Escribir un mensaje corto de WhatsApp","Crear una imagen bonita","Corregir la ortografía de un texto"],a:0,
+       ex:"Su fuerte es investigar a fondo con fuentes. Elige un tema tuyo y practica a verificar lo que te da."}
     ]},
     {id:"e4l2",t:"NotebookLM",d:"Tu cuaderno inteligente",ex:[
       {type:"mc",skill:"investigar",q:"NotebookLM es útil para…",
-       opts:["Cargar tus documentos y que la IA te los explique y resuma","Jugar FIFA","Pescar","Nada"],a:0,
-       ex:"Le das tus materiales (apuntes, PDF) y te ayuda a estudiarlos: resúmenes, preguntas, hasta audios."},
+       opts:["Cargar tus documentos y que la IA te los explique y resuma","Buscar cualquier cosa en todo internet","Crear imágenes desde cero","Chatear sin darle ningún material"],a:0,
+       ex:"NotebookLM trabaja con TUS materiales (apuntes, PDF): resúmenes, preguntas, hasta audios. No sale a buscar a todo internet."},
       {type:"tf",skill:"investigar",q:"NotebookLM responde basándose en TUS documentos que le cargaste.",a:true,
        ex:"Verdadero. Por eso es genial para estudiar: trabaja con tu material, no con cualquier cosa."},
       {type:"match",skill:"investigar",q:"Empareja la herramienta con lo que hace:",
@@ -888,10 +892,12 @@ const CURRICULUM={
        ex:"¡Correcto! Uniste las dos ideas clave. Vas nivel Capitán."},
       {type:"fill",skill:"etica",q:"No es una era de cambio, es un ______ de era.",
        opts:["cambio","rato","juego","precio"],a:0,ex:"Cambio de era. Y tú aprendiste a volar en él, Daniel."},
-      {type:"mission",skill:"etica",q:"",title:"Misión final: enséñale a alguien",
-       intro:"El que enseña, aprende doble. Misión de graduación de Capitán.",
-       steps:["Elige a alguien de tu familia.","Explícale UNA cosa que aprendiste (qué es un prompt, o que la IA a veces inventa).","Cuéntale a Felipe a quién le enseñaste. ¡Eres Capitán IA!"],
-       copy:"",xp:50}
+      {type:"mission",skill:"etica",q:"",title:"Misión final: tu Tarjeta de Piloto Responsable",
+       intro:"Un capitán sabe usar la IA sin estrellarse. Crea con la IA tu propia tarjeta de reglas de oro, y enséñale una a tu familia. El que enseña, aprende doble.",
+       steps:["Abre Claude. Copia el prompt y pídele tu Tarjeta de Piloto Responsable.","Léela y quítale o cámbiale lo que no te suene. TÚ decides; la IA solo ayuda (y a veces se equivoca).","Guárdala: hazle captura o pásala a una nota en tu teléfono.","Con la tarjeta en la mano, enséñale UNA regla a alguien de tu familia."],
+       objetivo:"que la IA te arme TU tarjeta con 5 reglas de oro para usar la IA de forma segura (no dar datos personales, verificar porque a veces inventa, decidir tú).",
+       copy:"Actúa como mi entrenador de uso responsable de la IA. Tengo 15 años. Hazme una 'Tarjeta de Piloto Responsable' con 5 reglas de oro, cortas y fáciles de recordar, para usar la IA de forma segura: qué datos personales NUNCA dar, por qué debo verificar lo que me dice (a veces inventa) y por qué la decisión final siempre es mía. Ponlas como lista numerada para memorizarlas rápido.",
+       botin:"Tu Tarjeta de Piloto Responsable: 5 reglas para usar la IA sin meterte en problemas. Te sirve de por vida y ya sabes enseñarla.",xp:50}
     ]}
   ]}
 ]
@@ -1219,8 +1225,10 @@ function renderExercise(){ answered=false; SEL=null; ORDER=null; MATCH=null; hid
   showCheck('Comprobar','primary','APP.check()',true);
 }
 function renderMission(e){ const stepsH=e.steps.map((s,k)=>`<div class="step"><div class="sn">${k+1}</div><div>${s}</div></div>`).join('');
-  const copyH=e.copy?`<div style="margin:10px 0"><div class="muted" style="margin-bottom:4px">✏️ Para copiar:</div><div class="copybox" id="copybox">${e.copy}</div><button class="copybtn" onclick="APP.copyPrompt()">📋 Copiar</button></div>`:'';
-  return `<div class="mission"><span class="mtag">MISIÓN REAL · +${e.xp} XP</span><h4>${e.title}</h4><div class="intro">${e.intro}</div><div class="steps">${stepsH}</div>${copyH}</div>`; }
+  const objH=e.objetivo?`<div class="muted" style="margin-bottom:5px">🎯 Para qué sirve este prompt: ${e.objetivo}</div>`:'';
+  const copyH=e.copy?`<div style="margin:10px 0">${objH}<div class="copybox" id="copybox">${e.copy}</div><button class="copybtn" onclick="APP.copyPrompt()">📋 Copiar prompt</button></div>`:'';
+  const botinH=e.botin?`<div style="margin-top:12px;background:rgba(34,211,238,.08);border:1px solid var(--line);border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--cyan);font-size:12px;margin-bottom:4px">🎒 TE LLEVAS (tu botín)</div><div style="font-size:13px;color:#cfe0ff;line-height:1.5">${e.botin}</div></div>`:'';
+  return `<div class="mission"><span class="mtag">MISIÓN REAL · +${e.xp} XP</span><h4>${e.title}</h4><div class="intro">${e.intro}</div><div class="steps">${stepsH}</div>${copyH}${botinH}</div>`; }
 function showCheck(label,cls,onclick,disabled){ elCheck.innerHTML=`<button class="btn ${cls}" id="checkBtn" ${disabled?'disabled':''} onclick="${onclick}">${label}</button>`; elCheck.classList.add('show'); }
 function hideCheck(){ elCheck.classList.remove('show'); }
 function enableCheck(){ const b=document.getElementById('checkBtn'); if(b)b.disabled=false; }
@@ -1271,9 +1279,9 @@ function finishLesson(){
 }
 function rankReward(rk){ const rw=CFG.rewards&&CFG.rewards[rk]; if(rw) return "Nuevo rango: "+rk+". 🎁 Premio: "+rw; return "Nuevo rango: "+rk+". ¡Vas más cerca del simulador real, "+pilotName()+"!"; }
 function quitLesson(){ hideCheck(); hideFeedback(); renderPath(); show('path'); }
-function doMission(){ const {e}=CUR.exs[CUR.idx]; addXP(e.xp||30); toast("¡Misión marcada! +"+(e.xp||30)+" XP · muéstrasela a Felipe"); save(); refreshTop();
-  answered=true; hideCheck(); celebrate({icon:"🎯",title:"¡Misión cumplida!",msg:"Guárdala para mostrársela a Felipe. ¡Sigue volando, "+pilotName()+"!",xp:"+"+(e.xp||30)+" XP"});
-  setTimeout(()=>advance(),1300); }
+function doMission(){ const {e}=CUR.exs[CUR.idx]; addXP(e.xp||30); toast("¡Botín conseguido! +"+(e.xp||30)+" XP"); save(); refreshTop();
+  answered=true; hideCheck(); celebrate({icon:"🎒",title:"¡Botín conseguido!",msg:"¡Hiciste algo que ayer no sabías hacer, "+pilotName()+"! Guarda tu botín: eso es tuyo y te sirve de verdad. 🦜",xp:"+"+(e.xp||30)+" XP"});
+  setTimeout(()=>advance(),1500); }
 function copyPrompt(){ const t=(document.getElementById('copybox')||{}).innerText||""; if(navigator.clipboard) navigator.clipboard.writeText(t).then(()=>toast('Copiado ✓'),()=>toast('Selecciona y copia')); else toast('Selecciona y copia'); }
 /* feedback */
 function showFeedback(good,title,ex,onCont){ hideCheck(); elFb.className='fb '+(good?'good':'bad');
@@ -1289,6 +1297,19 @@ function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.level
   const acc=S.exCount?Math.round(S.correctCount/S.exCount*100):0; const p=activeProfile();
   let h=`<div class="rankcard"><div class="avatar">${p?p.avatar:'🎓'}</div><div class="rankinfo"><div class="who">Piloto <b>${pilotName()}</b>${p&&p.callsign?(' «'+p.callsign+'»'):''}</div>
     <div class="rank"><b>${r.n}</b> · ${S.xp} XP</div><div class="next">Racha: ${S.streak} días 🔥 · Escudos: ${S.streakShield||0} 🛡️</div></div></div>`;
+  const pctCap=Math.min(100,Math.round(S.xp/1000*100));
+  h+=`<div class="sectitle">Ruta a Capitán IA 👨‍✈️</div>
+    <div class="statbox" style="padding:16px 14px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:7px"><span><b style="color:var(--amber)">${S.xp} XP</b></span><span>Meta: 1000 XP</span></div>
+      <div style="height:14px;border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden"><i style="display:block;height:100%;width:${pctCap}%;background:var(--gradA);border-radius:999px;transition:width .8s"></i></div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px">${CURRICULUM.ranks.map(rk=>{const on=S.xp>=rk.xp;const cur=rankFor(S.xp).n===rk.n;return `<div style="text-align:center;flex:1"><div style="font-size:22px;filter:${on?'none':'grayscale(1)'};opacity:${on?1:.4}">${rk.ic}</div><div style="font-size:8.5px;font-weight:800;margin-top:2px;color:${cur?'var(--cyan)':on?'var(--green)':'var(--dim2)'}">${rk.n}</div></div>`;}).join('')}</div>
+      <div class="muted" style="text-align:center;margin-top:10px">${nextRank(S.xp)?('Te faltan <b style="color:var(--cyan)">'+(nextRank(S.xp).xp-S.xp)+' XP</b> para '+nextRank(S.xp).n):'¡Llegaste a Capitán IA! 🏆'}</div></div>`;
+  h+=`<div class="sectitle">Tu premio de graduación</div>
+    <div class="prizehero" style="margin-bottom:0"><div class="sky" style="height:96px"><div style="position:absolute;inset:0;background:linear-gradient(180deg,#0a1b3e,#123c6e)"></div><div style="position:absolute;bottom:0;left:0;right:0;height:26px;background:linear-gradient(180deg,#0e2a52,#0a1024)"></div><div style="position:absolute;bottom:22px;left:8%;font-size:30px">🛩️</div>
+      <div class="plabel"><span class="ptag">🏆 AL LLEGAR A CAPITÁN</span><div class="pt">Volar un A320 real, con pilotos de verdad</div></div></div>
+      <div class="pbody"><div class="pdesc">${esc(CFG.prizeText)}</div>
+        <div class="runway" style="margin-top:10px"><div class="rline"></div><span class="rv1">V1</span><span class="rplane" style="left:${8+prizePct()*0.82}%">✈️</span><span class="rgoal">🎯</span></div>
+        <div class="pprog">Vas <b>${prizePct()}%</b> del camino · ${badgesEarned()}/${CURRICULUM.levels.length} insignias</div></div></div>`;
   h+=`<div class="sectitle">Estadísticas de vuelo</div><div class="statgrid">
     <div class="statbox"><div class="v">${S.lessonsCount}/${totalLes}</div><div class="l">Lecciones</div></div>
     <div class="statbox"><div class="v">${badgesEarned()}/${CURRICULUM.levels.length}</div><div class="l">Insignias</div></div>
@@ -1309,17 +1330,34 @@ function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.level
 /* =========================================================
    PANTALLA 4 · SESIÓN
    ========================================================= */
-const BLOCKS=[{t:"Felipe explica el tema",d:"La clase primero"},{t:"Jugamos juntos",d:"Abren la etapa del día en el juego"},{t:"Vuelo solo (10 min)",d:"Daniel juega solo; Felipe observa"},{t:"Misión real en la IA",d:"Aplican lo aprendido"},{t:"Reto del negocio",d:"Lo llevan a las lociones o su mundo"},{t:"Torre de control",d:"Muestra logros y deja la tarea"}];
+/* Campana reconocible de fin de bloque (triple ding) */
+function sndBell(){ if(S.muted)return; const c=ac(); if(!c)return; if(c.state==='suspended')c.resume(); let t=c.currentTime;
+  for(let i=0;i<3;i++){ [1568,1047].forEach(f=>{ const o=c.createOscillator(),g=c.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.2,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.5); o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+.5); }); t+=.38; } }
+/* Plan de la próxima clase (Sesión 3: imágenes). Cada bloque: cómo hacerlo + ejemplo real + tip TDAH */
+const BLOCKS=[
+ {t:"Despegue: la etapa de hoy",como:"Proyecta la etapa nueva del juego y JUÉGUENLA JUNTOS, tú narrando. Engancha y repasa. Cierra con la pregunta del día en voz alta.",ej:"Juegan juntos la etapa de imágenes; entre todos escriben el prompt que pide el juego y ven cómo cambia el dibujo.",tdah:"Arranca con la pantalla ya prendida, sin sermón. Meta visible: «hoy cada uno sale con 3 imágenes suyas»."},
+ {t:"¿Cómo ve la IA? De palabras a dibujo",como:"10 min explicando cómo el modelo convierte texto en imagen (sin tecnicismos) + 15 min generando EN VIVO, pensando el prompt en voz alta.",ej:"Generas «un guacamayo con gorra de piloto, estilo caricatura»; cambias una palabra (gorra→casco) y muestran cómo cambia.",tdah:"Máx 10 min hablando seguido. Deja que Daniel diga la siguiente palabra a cambiar."},
+ {t:"El prompt que sí funciona",como:"Receta del buen prompt de imagen: sujeto + estilo + detalle + fondo. Ellos escriben el suyo; corriges 2-3 en vivo.",ej:"Cada uno el prompt del escudo de su «marca». Daniel: etiqueta de lociones o guacamayo-piloto de Nacional. Corriges: «fondo blanco, estilo logo plano».",tdah:"⏸️ Descanso de 5 min ANTES de este bloque (llevan 55'). Tarea de una sola frase."},
+ {t:"Manos a la obra: tu primera imagen",como:"Cada uno genera su imagen. Tú rotas ayudando. Máximo 3 intentos por imagen (que no se enganchen infinito).",ej:"Daniel genera la etiqueta de su loción o el guacamayo-piloto. Guardan el mejor resultado.",tdah:"El tope de 3 intentos es clave. Cronómetro visible. Celebra al primero con algo usable."},
+ {t:"Arréglala: segunda versión",como:"Enseña a iterar: tomar SU imagen y mejorarla cambiando 1-2 cosas. Comparan v1 vs v2 en pantalla.",ej:"El escudo salió con colores raros → «verde y blanco del Atlético Nacional, escudo limpio». Ven antes/después lado a lado.",tdah:"⏸️ Segundo descanso de 5 min ANTES (llevan ~1h55). Comparar v1/v2 da recompensa visual inmediata."},
+ {t:"Muestra y despega",como:"Mini-galería: cada uno muestra su mejor imagen y dice su prompt (10 min). Cierras con el «para la casa».",ej:"Daniel presenta su etiqueta y su guacamayo-piloto. Tarea: volver a jugar la etapa en casa y traer una imagen nueva libre.",tdah:"Terminar mostrando lo propio deja subidón de logro. El juego como tarea cierra sin comerse la clase."}
+];
 let TM={run:false,rest:false,sec:25*60,block:0,iv:null};
-function renderSession(){ let h=`<div class="sectitle">Sesión de 3 horas · 6 bloques de 25 min</div>
-  <div class="timerwrap"><div class="timerbig ${TM.rest?'rest':''}" id="tmDisp">${fmt(TM.sec)}</div><div class="timerlbl">${TM.rest?'☕ Descanso · 5 min':('Bloque '+(TM.block+1)+' · '+BLOCKS[TM.block].t)}</div></div>
-  <div style="display:flex;gap:10px;margin-bottom:8px"><button class="btn ${TM.run?'ghost':'primary'} sm" style="flex:1" onclick="APP.tmToggle()">${TM.run?'⏸ Pausar':'▶ Iniciar'}</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmNext()">⏭ Siguiente</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmReset()">↺ Reiniciar</button></div><div class="blocklist">`;
-  BLOCKS.forEach((b,i)=>{ const cls=i<TM.block?'done':i===TM.block?'active':''; h+=`<div class="blk ${cls}"><div class="bnum">${i<TM.block?'✓':i+1}</div><div class="bt">${b.t}<small>${b.d}</small></div></div>`; });
-  h+=`</div><div class="capi" style="margin-top:16px"><div class="face">${CAPI_SVG}</div><div class="bub">Tip: 25 min de foco y 5 de descanso. El foco se entrena como el saque. 🎾</div></div>`;
+function renderSession(){ const b=BLOCKS[TM.block];
+  let h=`<div class="sectitle">Sesión de 3 horas · 6 bloques de 25 min</div>
+  <div class="capi" style="margin-bottom:12px"><div class="face">${CAPI_SVG}</div><div class="bub"><b>Cómo usar el juego en clase:</b> jueguen la etapa nueva <b>juntos, una vez</b> (proyectada, ~10 min) para encender el tema; luego tú enseñas y el <b>proyecto real</b> lo fija. Repetir el juego = tarea o descanso. Nunca todos en pantallas separadas.</div></div>
+  <div class="timerwrap"><div class="timerbig ${TM.rest?'rest':''}" id="tmDisp">${fmt(TM.sec)}</div><div class="timerlbl">${TM.rest?'☕ Descanso · 5 min':('Bloque '+(TM.block+1)+' · '+b.t)}</div></div>
+  <div style="display:flex;gap:10px;margin-bottom:14px"><button class="btn ${TM.run?'ghost':'primary'} sm" style="flex:1" onclick="APP.tmToggle()">${TM.run?'⏸ Pausar':'▶ Iniciar'}</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmNext()">⏭ Siguiente</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmReset()">↺ Reiniciar</button></div>
+  <div class="sectitle">Plan sugerido · próxima clase: Imágenes con IA</div><div class="blocklist">`;
+  BLOCKS.forEach((bl,i)=>{ const cls=i<TM.block?'done':i===TM.block?'active':'';
+    h+=`<div class="blk ${cls}" style="flex-direction:column;align-items:stretch;gap:0">
+      <div style="display:flex;gap:12px;align-items:center"><div class="bnum">${i<TM.block?'✓':i+1}</div><div class="bt">${bl.t}</div></div>
+      <div style="font-size:12px;line-height:1.55;margin-top:8px"><span style="color:var(--cyan);font-weight:800">Cómo:</span> <span style="color:var(--dim)">${bl.como}</span><br><span style="color:var(--amber);font-weight:800">Ejemplo:</span> <span style="color:var(--dim)">${bl.ej}</span><br><span style="color:#6ee7b7;font-weight:800">TDAH:</span> <span style="color:var(--dim)">${bl.tdah}</span></div></div>`; });
+  h+=`</div><div class="muted" style="text-align:center;margin-top:12px">Descansos de 5 min tras el bloque 2 (min 55) y tras el bloque 4 (min 1h55).</div>`;
   document.getElementById('scr-session').innerHTML=h; }
 function fmt(s){ const m=(s/60|0),ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
 function tmTick(){ TM.sec--; const d=document.getElementById('tmDisp'); if(d)d.textContent=fmt(TM.sec);
-  if(TM.sec<=0){ sndAlert(); if(!TM.rest){ TM.rest=true; TM.sec=5*60; toast('⏰ ¡Fin del bloque! Descanso de 5 min'); } else { TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; toast('☕ Fin del descanso · Bloque '+(TM.block+1)); } renderSession(); } }
+  if(TM.sec<=0){ if(!TM.rest){ sndBell(); TM.rest=true; TM.sec=5*60; toast('🔔 ¡25 minutos! Fin del bloque · descanso de 5 min'); } else { sndAlert(); TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; toast('☕ Fin del descanso · Bloque '+(TM.block+1)); } renderSession(); } }
 function tmToggle(){ TM.run=!TM.run; if(TM.run){ ac(); TM.iv=setInterval(tmTick,1000);} else clearInterval(TM.iv); renderSession(); }
 function tmNext(){ clearInterval(TM.iv); TM.run=false; TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; renderSession(); }
 function tmReset(){ clearInterval(TM.iv); TM={run:false,rest:false,sec:25*60,block:0,iv:null}; renderSession(); }
@@ -1330,7 +1368,7 @@ function tmReset(){ clearInterval(TM.iv); TM={run:false,rest:false,sec:25*60,blo
 const elOv=document.getElementById('overlay'), elModal=document.getElementById('modal');
 let tutorAuthed=false;
 function openTutor(){ if(tutorAuthed){ renderTutor(); show('tutor'); return; }
-  elModal.innerHTML=`<h3>🎖️ Modo Comandante</h3><p>Panel de Felipe (quien instruye a los futuros capitanes). Ingresa el PIN de 4 dígitos.</p>
+  elModal.innerHTML=`<h3>🎖️ Modo Comandante</h3><p>Panel de Andrés (quien instruye a los futuros capitanes). Ingresa el PIN de 4 dígitos.</p>
     <input class="pininput" id="pinIn" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
     <button class="btn primary" onclick="APP.checkPin()">Entrar</button><button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
   elOv.classList.add('show'); setTimeout(()=>{const p=document.getElementById('pinIn');if(p)p.focus();},100); }
@@ -1352,7 +1390,7 @@ function renderTutor(){ const r=rankFor(S.xp);
     <div class="flabel">🎁 Premio al llegar a Alférez (220 XP)</div><input class="field" id="rwA" value="${(CFG.rewards.Alférez||'').replace(/"/g,'&quot;')}" placeholder="Ej: una salida de pesca">
     <div class="flabel">🎁 Premio al llegar a Teniente (520 XP)</div><input class="field" id="rwT" value="${(CFG.rewards.Teniente||'').replace(/"/g,'&quot;')}" placeholder="Ej: el nuevo FIFA">
     <div class="flabel">🎁 Premio al llegar a Primer Oficial (780 XP)</div><input class="field" id="rwP" value="${(CFG.rewards['Primer Oficial']||'').replace(/"/g,'&quot;')}" placeholder="Ej: ir a un partido de Nacional">
-    <div class="flabel">✍️ Carta del papá (aparece en el premio grande)</div><input class="field" id="dadL" value="${(CFG.dadLetter||'').replace(/"/g,'&quot;')}" placeholder="Ej: Yo, papá Vélez, te llevo a volar cuando seas Capitán.">
+    <div class="flabel">✍️ Carta del papá (aparece en el premio grande)</div><input class="field" id="dadL" value="${(CFG.dadLetter||'').replace(/"/g,'&quot;')}" placeholder="Ej: Yo, Andrés, te llevo a volar de verdad cuando seas Capitán.">
     <div class="flabel">💛 Mensaje de la familia (aparece en el Camino)</div><input class="field" id="famN" value="${(CFG.familyNote||'').replace(/"/g,'&quot;')}" placeholder="Ej: ¡Vamos Dani, tú puedes!">
     <button class="btn amber sm" onclick="APP.saveCfg()">Guardar premios y mensajes</button>`;
   h+=`<div class="sectitle">Nube y respaldo</div>
