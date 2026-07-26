@@ -265,8 +265,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .pilotcard .pnm{font-size:13px;font-weight:800;line-height:1.15}
 .pilotcard .pcs{font-size:10.5px;color:var(--cyan);font-weight:700;margin-top:2px}
 .pilotcard.add .pav{background:transparent;border-style:dashed;border-color:var(--line);color:var(--dim2)}
-.pilotcard .del{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:8px;background:rgba(0,0,0,.4);font-size:12px;display:none;place-items:center}
-.pilotcard:hover .del{display:grid}
+.pilotcard .del,.pilotcard .edt{position:absolute;top:4px;width:22px;height:22px;border-radius:8px;background:rgba(0,0,0,.45);font-size:11px;display:grid;place-items:center;opacity:.7}
+.pilotcard .del{right:4px}.pilotcard .edt{left:4px}
 .avapick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .avaopt{width:44px;height:44px;border-radius:12px;background:var(--panel);border:2px solid var(--line);display:grid;place-items:center;font-size:22px;cursor:pointer}
 .avaopt.sel{border-color:var(--cyan);background:var(--panel2)}
@@ -444,7 +444,7 @@ const CAPI_TIPS=[
    2) CURRICULUM — 10 ETAPAS DE VUELO (cada una da una insignia)
    ===================================================================== */
 const CURRICULUM={
-  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️"}],
+  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Primer Oficial",xp:780,ic:"🛩️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️"}],
   levels:[
   /* ===== ETAPA 1 · DESPEGUE — Capacidades de la IA ===== */
   {id:"e1",etapa:1,name:"Despegue",tag:"Qué tan capaz es la IA hoy",ic:"🛫",skill:"capacidades",
@@ -503,8 +503,8 @@ const CURRICULUM={
       {type:"fill",skill:"capacidades",q:"Frase clave: 'No es una era de cambio, es un ______ de era.'",
        opts:["cambio","rato","color","precio"],a:0,ex:"Cambio de era: el mundo se está reorganizando alrededor de la IA. Y tú llegas temprano."},
       {type:"mc",skill:"capacidades",q:"¿Por qué recomendamos Fable solo para lo muy importante?",
-       opts:["Porque es el más potente y lo reservas para lo que de verdad pesa","Porque no sirve","Porque es lento siempre","Sin razón"],a:1,
-       ex:"Fable es de máxima inteligencia: úsalo cuando la tarea es clave. Para lo diario, Opus rinde perfecto."},
+       opts:["Porque es el más potente, pero tiene más límites de uso y es más lento","Porque no sirve","Por capricho","Sin razón"],a:0,
+       ex:"El más potente no siempre es el mejor para todo: Fable tiene más límites y es más lento, así que lo reservas para lo clave. Lo diario va con Opus. (Ojo: esto cambia rápido.)"},
       {type:"mission",skill:"capacidades",q:"",title:"Misión: conoce a los modelos",
        intro:"Tu primera misión real. Ábrelo con Felipe o en casa y márcalo cuando lo hagas.",
        steps:["Abre Claude y fíjate qué modelo estás usando (arriba suele decir el nombre).","Hazle una pregunta fácil de tu interés (pesca, Nacional o aviación).","Cuéntale a Felipe qué modelo usaste. ¡Misión cumplida!"],
@@ -619,7 +619,7 @@ const CURRICULUM={
        opts:["'loción en venta'","'Tu aroma, tu jugada. Fresco para ganar el día. 😎'"],a:1,
        why:"El segundo tiene gancho y personalidad juvenil. 'loción en venta' no emociona."},
       {type:"tf",skill:"imagenes",eth:true,q:"Está bien poner el logo de otra marca en mi anuncio para engañar.",a:false,
-       ex:"Falso. Usar marcas ajenas para engañar es plagio. Crea lo tuyo, con honestidad."},
+       ex:"Falso. Usar la marca de otro para engañar es deshonesto y hasta ilegal. Crea lo tuyo, con honestidad."},
       {type:"fill",skill:"imagenes",q:"Una buena publicidad no describe: hace ______.",
        opts:["sentir","dormir","frío","nada"],a:0,ex:"La publicidad conecta emociones: frescura, energía, confianza. Ahí está la venta."}
     ]}
@@ -906,11 +906,13 @@ const PIN="1214";
 const MAX_PILOTOS=5;
 const AVATARS=["🐦","✈️","🦅","🛩️","🚀","🦜","🐊","🎣","⚽","🏆","🦈","🐆"];
 const CALLSIGNS=["Halcón","Cóndor","Rayo","Tiburón","Marlin","Águila","Turbo","Trueno","Meteoro","Fénix"];
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function genCode(){ const AB="ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; let c; do{ c=""; for(let i=0;i<6;i++)c+=AB[(Math.random()*AB.length)|0]; }while(PROFILES.some(p=>p.id===c)); return c; }
 
 /* ---------- config global (premios, carta del papá) ---------- */
 function loadConfig(){ try{const r=localStorage.getItem(CONFIG_KEY);if(r)return Object.assign(defConfig(),JSON.parse(r));}catch(e){} return defConfig(); }
 function defConfig(){ return {
-  rewards:{Alférez:"",Teniente:""},
+  rewards:{Alférez:"",Teniente:"","Primer Oficial":""},
   prizeText:"Cuando llegues a Capitán IA, vuelas de verdad: 1 hora en un simulador de Airbus A320 con pilotos reales en V1 Aviation Center (Medellín).",
   dadLetter:"", familyNote:"" }; }
 let CFG=loadConfig();
@@ -1045,11 +1047,13 @@ function renderProfiles(){
   h+=`<div class="psub">${PROFILES.length?'¿Quién va a volar hoy?':'¡Bienvenido a bordo! Crea tu piloto para empezar.'}</div>`;
   h+=`<div class="pilotgrid">`;
   PROFILES.forEach(p=>{ h+=`<div class="pilotcard" onclick="APP.pickPilot('${p.id}')">
+    <button class="edt" onclick="event.stopPropagation();APP.editPilot('${p.id}')">✏️</button>
     <button class="del" onclick="event.stopPropagation();APP.delPilot('${p.id}')">🗑</button>
-    <div class="pav">${p.avatar}</div><div class="pnm">${p.name}</div><div class="pcs">${p.callsign?('«'+p.callsign+'»'):''}</div></div>`; });
+    <div class="pav">${p.avatar}</div><div class="pnm">${esc(p.name)}</div><div class="pcs">${p.callsign?('«'+esc(p.callsign)+'»'):''}</div></div>`; });
   if(PROFILES.length<MAX_PILOTOS){ h+=`<div class="pilotcard add" onclick="APP.newPilot()"><div class="pav">＋</div><div class="pnm">Crear piloto</div></div>`; }
   h+=`</div>`;
-  if(PROFILES.length>=MAX_PILOTOS) h+=`<div class="muted" style="margin-top:14px">Máximo ${MAX_PILOTOS} pilotos por familia.</div>`;
+  h+=`<button class="btn ghost sm" style="margin-top:16px;max-width:280px" onclick="APP.recoverPilot()">🔑 Recuperar piloto de otro equipo</button>`;
+  if(PROFILES.length>=MAX_PILOTOS) h+=`<div class="muted" style="margin-top:12px">Máximo ${MAX_PILOTOS} pilotos por familia.</div>`;
   scrProfiles.innerHTML=h;
 }
 let newAva=AVATARS[0], newCs="";
@@ -1063,18 +1067,46 @@ function newPilot(){ newAva=AVATARS[(Math.random()*AVATARS.length)|0]; newCs="";
     <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
   elOv.classList.add('show'); setTimeout(()=>{const n=document.getElementById('npName');if(n)n.focus();},100);
 }
+function editPilot(id){ const p=PROFILES.find(x=>x.id===id); if(!p)return; newAva=p.avatar; newCs=p.callsign||"";
+  elModal.innerHTML=`<h3>✏️ Editar piloto</h3>
+    <div class="flabel">Nombre</div><input class="field" id="npName" maxlength="16" value="${esc(p.name)}">
+    <div class="flabel">Avatar</div><div class="avapick" id="avapick">${AVATARS.map(a=>`<div class="avaopt ${a===newAva?'sel':''}" onclick="APP.pickAva('${a}',this)">${a}</div>`).join('')}</div>
+    <div class="flabel">Indicativo (callsign)</div><input class="field" id="npCs" maxlength="14" value="${esc(p.callsign||'')}">
+    <div class="csopts">${CALLSIGNS.map(c=>`<span class="csopt" onclick="APP.pickCs('${c}',this)">${c}</span>`).join('')}</div>
+    <button class="btn primary" onclick="APP.saveEdit('${id}')">Guardar</button>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
+  elOv.classList.add('show'); }
+function saveEdit(id){ const p=PROFILES.find(x=>x.id===id); if(!p)return; const nm=(document.getElementById('npName').value||"").trim(); if(!nm){toast("Escribe el nombre");return;}
+  p.name=nm; p.callsign=(document.getElementById('npCs').value||"").trim(); p.avatar=newAva; saveProfiles(PROFILES);
+  if(activeId===id){ syncMeta(); save(); refreshTop(); } closeOverlay(); renderProfiles(); toast("Piloto actualizado ✓"); }
 function pickAva(a,el){ newAva=a; document.querySelectorAll('#avapick .avaopt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
 function pickCs(c,el){ newCs=c; document.getElementById('npCs').value=c; document.querySelectorAll('.csopt').forEach(x=>x.classList.remove('sel')); el.classList.add('sel'); }
 function createPilot(){ const nm=(document.getElementById('npName').value||"").trim(); const cs=(document.getElementById('npCs').value||"").trim();
   if(!nm){ toast("Escribe tu nombre, piloto"); return; }
   if(PROFILES.length>=MAX_PILOTOS){ toast("Ya hay 5 pilotos"); return; }
-  const id="p"+Date.now().toString(36)+Math.floor(Math.random()*1000);
+  const id=genCode();
   PROFILES.push({id,name:nm,callsign:cs,avatar:newAva,created:Date.now()}); saveProfiles(PROFILES);
   closeOverlay(); pickPilot(id);
 }
-function pickPilot(id){ activeId=id; localStorage.setItem(ACTIVE_KEY,id); S=loadState(); if(!S.createdAt){S.createdAt=Date.now();saveLocal();}
+function syncMeta(){ const p=activeProfile(); if(p){ S._meta={name:p.name,callsign:p.callsign,avatar:p.avatar}; } }
+function pickPilot(id){ activeId=id; localStorage.setItem(ACTIVE_KEY,id); S=loadState(); if(!S.createdAt){S.createdAt=Date.now();} syncMeta(); saveLocal();
   cloudReady=false; cloudOk=null; refreshTop(); renderPath(); show('path'); hideProfiles();
-  cloudLoad(()=>{ renderPath(); }); }
+  cloudLoad(()=>{ syncMeta(); renderPath(); }); }
+/* recuperar piloto en otro equipo con su código */
+function recoverPilot(){ newAva=AVATARS[0];
+  elModal.innerHTML=`<h3>🔑 Recuperar piloto</h3><p>¿Ya tienes un piloto en otro equipo? Escribe su <b>código</b> (lo ves en Modo Comandante) para traer tu progreso desde la nube.</p>
+    <input class="field" id="recCode" maxlength="6" style="text-transform:uppercase;letter-spacing:4px;text-align:center;font-weight:800" placeholder="CÓDIGO">
+    <button class="btn primary" onclick="APP.doRecover()">Recuperar</button>
+    <button class="btn ghost sm" style="margin-top:8px" onclick="APP.closeOverlay()">Cancelar</button>`;
+  elOv.classList.add('show'); setTimeout(()=>{const r=document.getElementById('recCode');if(r)r.focus();},100); }
+function doRecover(){ const code=(document.getElementById('recCode').value||"").trim().toUpperCase(); if(code.length<4){ toast("Escribe el código"); return; }
+  if(PROFILES.some(p=>p.id===code)){ toast("Ese piloto ya está aquí"); closeOverlay(); pickPilot(code); return; }
+  if(PROFILES.length>=MAX_PILOTOS){ toast("Ya hay 5 pilotos, borra uno"); return; }
+  toast("Buscando en la nube…");
+  fetch(SYNC_URL+"?id=cve_"+code).then(r=>r.ok?r.json():null).then(remote=>{
+    if(remote && remote._meta){ const m=remote._meta; PROFILES.push({id:code,name:m.name||"Piloto",callsign:m.callsign||"",avatar:m.avatar||"✈️",created:Date.now()}); saveProfiles(PROFILES); closeOverlay(); pickPilot(code); toast("¡Piloto recuperado! ✈️"); }
+    else { toast("No encontré ese código en la nube"); }
+  }).catch(()=>toast("Sin conexión: intenta luego")); }
 function delPilot(id){ const p=PROFILES.find(x=>x.id===id); if(!p)return;
   elModal.innerHTML=`<h3>🗑 Borrar a ${p.name}</h3><p>Se borrará el progreso de <b>${p.name}</b> en este equipo. Esto no se puede deshacer. ¿Seguro?</p>
     <button class="btn red" onclick="APP.doDelPilot('${id}')">Sí, borrar</button>
@@ -1107,19 +1139,20 @@ function renderPath(){
     <div class="pbody"><div class="pdesc">${CFG.prizeText.replace('Airbus A320','<b>Airbus A320</b>').replace('V1 Aviation Center (Medellín)','<b>V1 Aviation Center · Medellín</b>')}</div>
       <div class="runway"><div class="rline"></div><span class="rv1">V1</span><span class="rplane" style="left:${planeLeft}%">✈️</span><span class="rgoal">🎯</span></div>
       <div class="pprog">Camino a la cabina real: <b>${pz}%</b> · ${badgesEarned()}/${CURRICULUM.levels.length} insignias</div>
-      ${CFG.dadLetter?`<div class="pdesc" style="margin-top:8px;font-style:italic;border-top:1px solid var(--line);padding-top:8px">✍️ ${CFG.dadLetter}</div>`:''}
+      ${CFG.dadLetter?`<div class="pdesc" style="margin-top:8px;font-style:italic;border-top:1px solid var(--line);padding-top:8px">✍️ ${esc(CFG.dadLetter)}</div>`:''}
     </div></div>`;
   h+=`<div class="rankcard"><div class="avatar">${p?p.avatar:'🎓'}</div>
     <div class="rankinfo"><div class="who">Piloto <b>${pilotName()}</b>${p&&p.callsign?(' «'+p.callsign+'»'):''}</div>
       <div class="rank">Rango: <b>${r.n}</b></div><div class="progbar"><i style="width:${pct}%"></i></div>
-      <div class="next">${nx?('Faltan '+(nx.xp-S.xp)+' XP para '+nx.n):'¡Rango máximo! 🏆'}</div></div></div>`;
+      <div class="next">${nx?('Faltan '+(nx.xp-S.xp)+' XP para '+nx.n+(CFG.rewards&&CFG.rewards[nx.n]?' → 🎁 '+esc(CFG.rewards[nx.n]):'')):'¡Rango máximo! 🏆'}</div></div></div>`;
   if(nt){ const lv=CURRICULUM.levels[nt.i]; const t=lv.lessons[nt.j].t;
     h+=`<div class="continuecard" onclick="APP.openLesson(${nt.i},${nt.j})"><div class="cc-l"><div class="cc-tag">▶ CONTINÚA AQUÍ · ETAPA ${lv.etapa}</div>
       <div class="cc-t">${t}</div><div class="cc-s">${lv.name}</div></div><div class="cc-btn">Volar →</div></div>`;
   } else { h+=`<div class="continuecard done"><div class="cc-l"><div class="cc-tag">🏆 ¡TODO COMPLETADO!</div><div class="cc-t">Eres Capitán IA, ${pilotName()}</div></div></div>`; }
   h+=`<div class="capi"><div class="face">${CAPI_SVG}</div><div class="bub">${capiLine(nt)}</div></div>`;
   if(S.review.length) h+=`<button class="btn ghost sm" style="margin-bottom:6px" onclick="APP.review()">🛩️ Simulador de repaso · ${S.review.length} por reforzar</button>`;
-  if(CFG.familyNote) h+=`<div class="capi" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3)"><div class="face" style="display:grid;place-items:center;font-size:24px">💛</div><div class="bub"><b>Mensaje de tu familia:</b> ${CFG.familyNote}</div></div>`;
+  if(S.lessonsCount>0) h+=`<button class="btn ghost sm" style="margin-bottom:6px" onclick="APP.choosePractice()">🎯 Elige un tema para practicar</button>`;
+  if(CFG.familyNote) h+=`<div class="capi" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3)"><div class="face" style="display:grid;place-items:center;font-size:24px">💛</div><div class="bub"><b>Mensaje de tu familia:</b> ${esc(CFG.familyNote)}</div></div>`;
   h+=badgeStripHTML();
   CURRICULUM.levels.forEach((lv,i)=>{
     const dc=lv.lessons.filter(l=>S.done[l.id]).length, tot=lv.lessons.length;
@@ -1158,6 +1191,14 @@ function badgeStripHTML(){ const {order,nextId,earned}=badgeData();
 let CUR=null, SEL=null, ORDER=null, MATCH=null, answered=false;
 const elCheck=document.getElementById('checkbar'), elFb=document.getElementById('feedback');
 function startLesson(i,j){ const ls=CURRICULUM.levels[i].lessons[j]; CUR={li:i,lj:j,exs:ls.ex.map((e,ei)=>({e,ei})),idx:0,mistakes:0,isReview:false,counted:{}}; renderExercise(); show('lesson'); }
+function choosePractice(){ const started=CURRICULUM.levels.filter(l=>l.lessons.some(ls=>S.done[ls.id]));
+  if(!started.length){ toast("Primero completa alguna lección"); return; }
+  let h=`<h3>🎯 Práctica libre</h3><p>Elige el tema que quieras repasar. Ganas XP y puede caer un jackpot. ¡Tú decides!</p>`;
+  started.forEach(l=>{ const i=CURRICULUM.levels.indexOf(l); h+=`<button class="btn ghost sm" style="margin-bottom:8px;text-align:left" onclick="APP.startPractice(${i})">${l.ic} Etapa ${l.etapa}: ${esc(l.name)}</button>`; });
+  h+=`<button class="btn ghost sm" onclick="APP.closeOverlay()">Cancelar</button>`; elModal.innerHTML=h; elOv.classList.add('show'); }
+function startPractice(i){ closeOverlay(); const lv=CURRICULUM.levels[i]; const exs=[];
+  lv.lessons.forEach(ls=>ls.ex.forEach((e,ei)=>{ if(e.type!=='mission') exs.push({e,ei:lv.id+'-'+ls.id+'-'+ei}); }));
+  exs.sort(()=>Math.random()-.5); CUR={li:-1,lj:-1,exs:exs.slice(0,8),idx:0,mistakes:0,isReview:true,counted:{}}; renderExercise(); show('lesson'); }
 function startReview(){ if(!S.review.length){ toast('Radar limpio: sin errores pendientes ✈️'); return; }
   const exs=S.review.map(ref=>({e:(CURRICULUM.levels[ref.li]&&CURRICULUM.levels[ref.li].lessons[ref.lj]&&CURRICULUM.levels[ref.li].lessons[ref.lj].ex[ref.ei]),ei:ref.ei,ref})).filter(x=>x.e);
   CUR={li:-1,lj:-1,exs,idx:0,mistakes:0,isReview:true,counted:{}}; renderExercise(); show('lesson'); }
@@ -1194,7 +1235,7 @@ function orderBack(pos){ if(answered)return; ORDER.bank.push(ORDER.chosen[pos]);
 function buildMatch(e){ MATCH={}; const opts=e.pairs.map(p=>p.r).sort(()=>Math.random()-.5);
   document.getElementById('matchbox').innerHTML=e.pairs.map((p,idx)=>`<div class="matchrow"><div class="concept">${p.l}</div><select data-idx="${idx}" onchange="APP.matchSel(${idx},this.value)"><option value="">— elige —</option>${opts.map(o=>`<option value="${encodeURIComponent(o)}">${o}</option>`).join('')}</select></div>`).join(''); }
 function matchSel(idx,val){ if(answered)return; MATCH[idx]=decodeURIComponent(val); const e=CUR.exs[CUR.idx].e; const btn=document.getElementById('checkBtn'); if(btn) btn.disabled=Object.keys(MATCH).filter(k=>MATCH[k]).length!==e.pairs.length; }
-function check(){ const {e,ei}=CUR.exs[CUR.idx]; let correct=false;
+function check(){ if(answered)return; const {e,ei}=CUR.exs[CUR.idx]; let correct=false;
   if(e.type==='order'){ correct=ORDER.chosen.every((c,pos)=>c.idx===pos); document.querySelectorAll('#orderzone .chip').forEach((el,pos)=>el.classList.add(ORDER.chosen[pos].idx===pos?'correct':'wrong')); }
   else if(e.type==='match'){ correct=e.pairs.every((p,idx)=>MATCH[idx]===p.r); document.querySelectorAll('#matchbox select').forEach((sel,idx)=>sel.classList.add(MATCH[idx]===e.pairs[idx].r?'correct':'wrong')); }
   else { const ans=e.type==='tf'?(e.a?0:1):e.a; correct=SEL===ans; document.querySelectorAll('#scr-lesson .opt').forEach(o=>{ const k=+o.dataset.k; o.classList.add('disabled'); if(k===ans)o.classList.add('correct'); else if(k===SEL)o.classList.add('wrong'); else o.classList.add('dim'); }); }
@@ -1208,9 +1249,10 @@ function check(){ const {e,ei}=CUR.exs[CUR.idx]; let correct=false;
 function retry(){ renderExercise(); }
 function advance(){ hideFeedback(); CUR.idx++; if(CUR.idx<CUR.exs.length) renderExercise(); else finishLesson(); }
 function finishLesson(){
-  if(CUR.isReview){ const gain=8; addXP(gain); bumpStreak(); save(); refreshTop();
-    celebrate({icon:"🛩️",title:"¡Simulación superada!",msg:"Repasaste tus errores como un piloto que corrige el rumbo.",xp:"+"+gain+" XP"});
-    setTimeout(()=>{renderPath();show('path');},900); return; }
+  if(CUR.isReview){ const jp=Math.random()<0.16; const gain=jp?16:8; addXP(gain); bumpStreak(); save(); refreshTop();
+    if(jp) celebrate({icon:"🎰",title:"¡JACKPOT de repaso!",msg:fillN(CELEB_JACKPOT[(Math.random()*CELEB_JACKPOT.length)|0]),xp:"+"+gain+" XP",jackpot:true});
+    else celebrate({icon:"🛩️",title:"¡Repaso superado!",msg:"Corregiste el rumbo como un piloto experto, "+pilotName()+".",xp:"+"+gain+" XP"});
+    setTimeout(()=>{renderPath();show('path');},jp?2400:900); return; }
   const ls=CURRICULUM.levels[CUR.li].lessons[CUR.lj]; const first=!S.done[ls.id];
   const jackpot=first&&Math.random()<0.16;
   let gain=CUR.mistakes===0?14:11; if(jackpot)gain*=2;
@@ -1304,14 +1346,19 @@ function renderTutor(){ const r=rankFor(S.xp);
   Object.keys(SKILL_NAMES).forEach(sk=>{ const d=S.skill[sk]; if(!d||!d.total)return; any=true; const pct=Math.round(d.ok/d.total*100); const col=pct>=80?'#34d399':pct>=50?'#fbbf24':'#fb7185';
     h+=`<div class="skill"><div class="sh"><span>${SKILL_NAMES[sk]}</span><span class="pct">${pct}%</span></div><div class="skbar"><i style="width:${pct}%;background:${col}"></i></div></div>`; });
   if(!any) h+=`<div class="muted">Aún sin datos: ${pilotName()} apenas empieza.</div>`;
-  h+=`<div class="sectitle">Premios (los defines tú)</div>
-    <div class="muted" style="margin-bottom:8px">Estos premios reales tú los prometes y cumples. Aparecen en el juego para motivar.</div>
+  h+=`<div class="sectitle">Premios y cartas (los defines tú)</div>`;
+  if(!CFG.dadLetter||!CFG.familyNote) h+=`<div style="background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4);border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;line-height:1.5;color:var(--amber)"><b>⭐ Antes de mostrarle el juego a Daniel:</b> escribe abajo la <b>Carta del papá</b> y el <b>Mensaje de la familia</b>. Eso es lo que le pone alma al premio y hace que sienta que el simulador real es de verdad suyo.</div>`;
+  h+=`<div class="muted" style="margin-bottom:8px">Estos premios reales tú los prometes y cumples. Aparecen en el juego para motivar.</div>
     <div class="flabel">🎁 Premio al llegar a Alférez (220 XP)</div><input class="field" id="rwA" value="${(CFG.rewards.Alférez||'').replace(/"/g,'&quot;')}" placeholder="Ej: una salida de pesca">
     <div class="flabel">🎁 Premio al llegar a Teniente (520 XP)</div><input class="field" id="rwT" value="${(CFG.rewards.Teniente||'').replace(/"/g,'&quot;')}" placeholder="Ej: el nuevo FIFA">
+    <div class="flabel">🎁 Premio al llegar a Primer Oficial (780 XP)</div><input class="field" id="rwP" value="${(CFG.rewards['Primer Oficial']||'').replace(/"/g,'&quot;')}" placeholder="Ej: ir a un partido de Nacional">
     <div class="flabel">✍️ Carta del papá (aparece en el premio grande)</div><input class="field" id="dadL" value="${(CFG.dadLetter||'').replace(/"/g,'&quot;')}" placeholder="Ej: Yo, papá Vélez, te llevo a volar cuando seas Capitán.">
     <div class="flabel">💛 Mensaje de la familia (aparece en el Camino)</div><input class="field" id="famN" value="${(CFG.familyNote||'').replace(/"/g,'&quot;')}" placeholder="Ej: ¡Vamos Dani, tú puedes!">
     <button class="btn amber sm" onclick="APP.saveCfg()">Guardar premios y mensajes</button>`;
   h+=`<div class="sectitle">Nube y respaldo</div>
+    <div style="background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:11px 13px;margin-bottom:10px;text-align:center">
+      <div class="muted" style="margin-bottom:4px">🔑 Código de piloto de ${esc(pilotName())} (para recuperar su progreso en otro equipo):</div>
+      <div style="font-size:22px;font-weight:800;letter-spacing:4px;color:var(--cyan)">${activeId||'—'}</div></div>
     <div id="cloudStat" class="muted" style="text-align:center;margin-bottom:10px">${cloudOk===null?'☁️ Conectando…':cloudOk?'☁️ Sincronizado con la nube':'☁️ Guardado en este equipo'}</div>
     <button class="btn ghost sm" style="margin-bottom:8px" onclick="APP.syncNow()">🔄 Sincronizar ahora</button>
     <button class="btn ghost sm" style="margin-bottom:8px" onclick="APP.exportData()">⬇️ Exportar progreso (JSON)</button>
@@ -1322,7 +1369,7 @@ function renderTutor(){ const r=rankFor(S.xp);
     <div class="muted" style="margin-top:14px;text-align:center;line-height:1.5">🛡️ Nota para papás: Capi solo dice frases pregrabadas del juego; NO es una IA en vivo chateando con tu hijo. Las misiones piden usar la IA con supervisión.</div>`;
   document.getElementById('scr-tutor').innerHTML=h;
 }
-function saveCfg(){ CFG.rewards.Alférez=document.getElementById('rwA').value.trim(); CFG.rewards.Teniente=document.getElementById('rwT').value.trim();
+function saveCfg(){ CFG.rewards.Alférez=document.getElementById('rwA').value.trim(); CFG.rewards.Teniente=document.getElementById('rwT').value.trim(); CFG.rewards['Primer Oficial']=document.getElementById('rwP').value.trim();
   CFG.dadLetter=document.getElementById('dadL').value.trim(); CFG.familyNote=document.getElementById('famN').value.trim(); saveConfig(); toast('Guardado ✓'); }
 function bonus(){}
 function exportData(){ const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='capitan-'+pilotName()+'-'+todayBogota()+'.json'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000); toast('Exportado ✓'); }
@@ -1334,17 +1381,17 @@ function syncNow(){ toast('Sincronizando…'); flushCloud(); cloudReady=false; c
 function switchPilot(){ flushCloud(); showProfiles(); }
 
 /* ---------- API pública ---------- */
-const APP={ openLesson:(i,j)=>startLesson(i,j), review:startReview, pick, check, orderPick, orderBack, matchSel, quitLesson, doMission, copyPrompt,
+const APP={ openLesson:(i,j)=>startLesson(i,j), review:startReview, choosePractice, startPractice, pick, check, orderPick, orderBack, matchSel, quitLesson, doMission, copyPrompt,
   tmToggle, tmNext, tmReset, checkPin, closeOverlay, exportData, importData, resetData, doReset, lockTutor, syncNow, saveCfg, switchPilot,
-  newPilot, pickAva, pickCs, createPilot, pickPilot, delPilot, doDelPilot };
+  newPilot, pickAva, pickCs, createPilot, pickPilot, delPilot, doDelPilot, recoverPilot, doRecover, editPilot, saveEdit };
 window.APP=APP;
 
 /* ---------- ARRANQUE ---------- */
 function boot(){
   if(PROFILES.length===0){ showProfiles(); return; }
   if(activeId && PROFILES.find(p=>p.id===activeId)){
-    S=loadState(); if(!S.createdAt){S.createdAt=Date.now();saveLocal();}
-    refreshTop(); renderPath(); show('path'); hideProfiles(); cloudLoad(()=>renderPath());
+    S=loadState(); if(!S.createdAt){S.createdAt=Date.now();} syncMeta(); saveLocal();
+    refreshTop(); renderPath(); show('path'); hideProfiles(); cloudLoad(()=>{ syncMeta(); renderPath(); });
   } else { showProfiles(); }
 }
 boot();
