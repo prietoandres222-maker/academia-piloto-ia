@@ -6,7 +6,13 @@
 <meta name="theme-color" content="#070d20">
 <title>Tripulación Vélez EchandIA</title>
 <link rel="icon" id="favicon" href="">
-<link rel="apple-touch-icon" id="favicon2" href="">
+<!-- App en el celular (pantalla de inicio, sin barras del navegador) -->
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EchandIA">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :root{
@@ -1438,7 +1444,7 @@ window.APP=APP;
 
 /* ---------- ARRANQUE ---------- */
 function boot(){
-  try{ if(LOGO_URI&&LOGO_URI.indexOf('data:')===0){ document.getElementById('favicon').href=LOGO_URI; document.getElementById('favicon2').href=LOGO_URI; } }catch(e){}
+  try{ if(LOGO_URI&&LOGO_URI.indexOf('data:')===0){ document.getElementById('favicon').href=LOGO_URI; } }catch(e){}
   if(PROFILES.length===0){ showProfiles(); return; }
   if(activeId && PROFILES.find(p=>p.id===activeId)){
     S=loadState(); if(!S.createdAt){S.createdAt=Date.now();} syncMeta(); saveLocal();
