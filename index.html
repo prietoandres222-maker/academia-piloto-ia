@@ -454,7 +454,7 @@ const CAPI_TIPS=[
    2) CURRICULUM — 10 ETAPAS DE VUELO (cada una da una insignia)
    ===================================================================== */
 const CURRICULUM={
-  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Primer Oficial",xp:780,ic:"🛩️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️"}],
+  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Primer Oficial",xp:780,ic:"🛩️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️",logo:true}],
   levels:[
   /* ===== ETAPA 1 · DESPEGUE — Capacidades de la IA ===== */
   {id:"e1",etapa:1,name:"Despegue",tag:"Qué tan capaz es la IA hoy",ic:"🛫",skill:"capacidades",
@@ -868,7 +868,7 @@ const CURRICULUM={
 
   /* ===== ETAPA 10 · COMANDO — Uso responsable y repaso ===== */
   {id:"e10",etapa:10,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
-   insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA"},
+   insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA",logo:true},
    lessons:[
     {id:"e10l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
       {type:"mc",skill:"etica",eth:true,q:"Una 'alucinación' de la IA es…",
@@ -1176,7 +1176,7 @@ function renderPath(){
     const allDone=!!S.moduleDone[lv.id]; const isNow=nt&&nt.i===i;
     const chip=allDone?'<span class="mchip mdone">✓ Superada</span>':isNow?'<span class="mchip mnow">► Aquí vas</span>':(dc>0?'<span class="mchip">'+dc+'/'+tot+'</span>':'<span class="mchip msoon">Por venir</span>');
     h+=`<div class="leveltitle ${allDone?'moduledone':''} ${isNow?'modulenow':''}"><div class="num">${lv.ic}</div>
-      <div class="ltinfo"><h3>Etapa ${lv.etapa} · ${lv.name} ${chip}</h3><div class="sub">${lv.tag} · gana la insignia ${lv.insignia.ic} ${lv.insignia.n}</div></div></div>`;
+      <div class="ltinfo"><h3>Etapa ${lv.etapa} · ${lv.name} ${chip}</h3><div class="sub">${lv.tag} · gana la insignia ${icH(lv.insignia,18)} ${lv.insignia.n}</div></div></div>`;
     h+=`<div class="path">`;
     lv.lessons.forEach((ls,j)=>{ const done=!!S.done[ls.id]; const isNext=nt&&nt.i===i&&nt.j===j;
       let cls=done?'done':(isNext?'current':''); const ic=done?'✔':(ls.ex[0]&&ls.ex[0].type==='mission'?'🎯':String(j+1));
@@ -1189,17 +1189,18 @@ function renderPath(){
   refreshTop();
 }
 /* riel de insignias */
+function icH(obj,px){ if(obj&&obj.logo&&typeof LOGO_URI!=='undefined'&&LOGO_URI){ return `<img src="${LOGO_URI}" alt="${(obj.n||'insignia')}" style="width:${px}px;height:${px}px;object-fit:contain;display:inline-block;vertical-align:middle;filter:drop-shadow(0 2px 5px rgba(212,175,55,.55))">`; } return obj?obj.ic:''; }
 function badgeData(){ const order=allBadges(); let nextId=null; for(let i=0;i<CURRICULUM.levels.length;i++){ if(!S.moduleDone[CURRICULUM.levels[i].id]){ nextId=CURRICULUM.levels[i].insignia.id; break; } } return {order,nextId,earned:badgesEarned()}; }
 function badgeRailHTML(){ const {order,nextId,earned}=badgeData(); const r=rankFor(S.xp);
   const items=order.slice().reverse().map(b=>{ const on=!!S.moduleDone['e'+order.indexOf(b)]; const done=isBadgeOn(b.id); const isNext=b.id===nextId;
-    return `<div class="brail-item ${done?'on':''} ${isNext?'next':''}"><div class="brail-ic">${b.ic}</div><div class="brail-nm">${b.n}${isNext?'<span class="brail-you">◄ vas aquí</span>':''}</div></div>`; }).join('');
+    return `<div class="brail-item ${done?'on':''} ${isNext?'next':''}"><div class="brail-ic">${icH(b,30)}</div><div class="brail-nm">${b.n}${isNext?'<span class="brail-you">◄ vas aquí</span>':''}</div></div>`; }).join('');
   return `<aside class="badgerail"><div class="brail-head"><div class="brail-title">🏅 Ruta a Capitán</div>
-    <div class="brail-rank">${r.ic} ${r.n} · ${earned}/${order.length}</div><div class="brail-sub">Cada insignia te acerca al simulador real</div></div>
+    <div class="brail-rank">${icH(r,20)} ${r.n} · ${earned}/${order.length}</div><div class="brail-sub">Cada insignia te acerca al simulador real</div></div>
     <div class="brail-track">${items}</div></aside>`; }
 function isBadgeOn(id){ const lv=CURRICULUM.levels.find(l=>l.insignia.id===id); return lv&&!!S.moduleDone[lv.id]; }
 function badgeStripHTML(){ const {order,nextId,earned}=badgeData();
   const items=order.map(b=>{ const done=isBadgeOn(b.id); const isNext=b.id===nextId;
-    return `<div class="bstrip-item ${done?'on':''} ${isNext?'next':''}"><div class="bstrip-ic">${b.ic}</div><div class="bstrip-n">${b.n}</div></div>`; }).join('');
+    return `<div class="bstrip-item ${done?'on':''} ${isNext?'next':''}"><div class="bstrip-ic">${icH(b,38)}</div><div class="bstrip-n">${b.n}</div></div>`; }).join('');
   return `<div class="badgestrip"><div class="bstrip-h">🏅 Insignias ${earned}/${order.length} · <b>rumbo a Capitán</b></div><div class="bstrip-track">${items}</div></div>`; }
 
 /* =========================================================
@@ -1313,7 +1314,7 @@ function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.level
     <div class="statbox" style="padding:16px 14px">
       <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--dim);margin-bottom:7px"><span><b style="color:var(--amber)">${S.xp} XP</b></span><span>Meta: 1000 XP</span></div>
       <div style="height:14px;border-radius:999px;background:rgba(0,0,0,.35);overflow:hidden"><i style="display:block;height:100%;width:${pctCap}%;background:var(--gradA);border-radius:999px;transition:width .8s"></i></div>
-      <div style="display:flex;justify-content:space-between;margin-top:12px">${CURRICULUM.ranks.map(rk=>{const on=S.xp>=rk.xp;const cur=rankFor(S.xp).n===rk.n;return `<div style="text-align:center;flex:1"><div style="font-size:22px;filter:${on?'none':'grayscale(1)'};opacity:${on?1:.4}">${rk.ic}</div><div style="font-size:8.5px;font-weight:800;margin-top:2px;color:${cur?'var(--cyan)':on?'var(--green)':'var(--dim2)'}">${rk.n}</div></div>`;}).join('')}</div>
+      <div style="display:flex;justify-content:space-between;margin-top:12px">${CURRICULUM.ranks.map(rk=>{const on=S.xp>=rk.xp;const cur=rankFor(S.xp).n===rk.n;return `<div style="text-align:center;flex:1"><div style="font-size:22px;filter:${on?'none':'grayscale(1)'};opacity:${on?1:.4}">${icH(rk,26)}</div><div style="font-size:8.5px;font-weight:800;margin-top:2px;color:${cur?'var(--cyan)':on?'var(--green)':'var(--dim2)'}">${rk.n}</div></div>`;}).join('')}</div>
       <div class="muted" style="text-align:center;margin-top:10px">${nextRank(S.xp)?('Te faltan <b style="color:var(--cyan)">'+(nextRank(S.xp).xp-S.xp)+' XP</b> para '+nextRank(S.xp).n):'¡Llegaste a Capitán IA! 🏆'}</div></div>`;
   h+=`<div class="sectitle">Tu premio de graduación</div>
     <div class="prizehero" style="margin-bottom:0"><div class="sky" style="height:96px"><div style="position:absolute;inset:0;background:linear-gradient(180deg,#0a1b3e,#123c6e)"></div><div style="position:absolute;bottom:0;left:0;right:0;height:26px;background:linear-gradient(180deg,#0e2a52,#0a1024)"></div><div style="position:absolute;bottom:22px;left:8%;font-size:30px">🛩️</div>
@@ -1327,7 +1328,7 @@ function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.level
     <div class="statbox"><div class="v">${acc}%</div><div class="l">Aciertos</div></div>
     <div class="statbox"><div class="v">${S.review.length}</div><div class="l">Por reforzar</div></div></div>`;
   h+=`<div class="sectitle">Insignias de vuelo</div><div class="badges">`;
-  allBadges().forEach(b=>{ const on=isBadgeOn(b.id); h+=`<div class="badge ${on?'on':''}"><div class="ic">${b.ic}</div><div class="bn">${b.n}</div></div>`; });
+  allBadges().forEach(b=>{ const on=isBadgeOn(b.id); h+=`<div class="badge ${on?'on':''}"><div class="ic">${icH(b,42)}</div><div class="bn">${b.n}</div></div>`; });
   h+=`</div>`;
   h+=`<div class="sectitle">Habilidades: dominadas vs. por reforzar</div>`;
   let any=false; Object.keys(SKILL_NAMES).forEach(sk=>{ const d=S.skill[sk]; if(!d||!d.total)return; any=true; const pct=Math.round(d.ok/d.total*100);

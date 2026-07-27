@@ -4,7 +4,7 @@ App educativa gamificada (tipo Duolingo) para enseñarle IA a **Daniel** (15, TD
 complemento de las clases de Felipe. Un único `index.html` vanilla.
 
 ## 🌐 URL pública (verificada)
-**https://capitan-dani-ia.vercel.app** · código en https://github.com/prietoandres222-maker/academia-piloto-ia
+**https://tripulacion-echandia.vercel.app** · código en https://github.com/prietoandres222-maker/academia-piloto-ia
 
 ## Estado actual (rediseño con loop de excelencia)
 - **Nombre:** Capitán Velez EchandIA (con el apellido Vélez del papá + "IA").
