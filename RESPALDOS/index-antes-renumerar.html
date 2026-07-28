@@ -546,7 +546,7 @@ const CURRICULUM={
       {type:"fill",skill:"capacidades",q:"Frase clave: 'No es una era de cambio, es un ______ de era.'",
        opts:["cambio","rato","color","precio"],a:0,ex:"Cambio de era: el mundo se está reorganizando alrededor de la IA. Y tú llegas temprano."},
       {type:"mc",skill:"capacidades",q:"¿Por qué recomendamos Fable solo para lo muy importante?",
-       opts:["Porque es el más potente, pero tiene más límites de uso y es más lento","Porque cuesta más caro por cada mensaje que se envía","Porque solo sirve para escribir textos largos","Porque no se puede usar desde el celular"],a:0,
+       opts:["Porque es el más potente, pero tiene más límites de uso y es más lento","Porque no sirve","Por capricho","Sin razón"],a:0,
        ex:"El más potente no siempre es el mejor para todo: Fable tiene más límites y es más lento, así que lo reservas para lo clave. Lo diario va con Opus. (Ojo: esto cambia rápido.)"},
       {type:"mission",skill:"capacidades",q:"",title:"Misión: pon a la IA a pescar por ti",
        intro:"Vas a ver algo real: le haces a la IA una pregunta de pesca DIFÍCIL (de las que solo un pescador experto sabe) y te la resuelve. Truco de piloto: pregunta difícil = modelo más fuerte.",
@@ -635,7 +635,7 @@ const CURRICULUM={
    lessons:[
     {id:"e3l1",t:"Describir bien",d:"Las palabras pintan",ex:[
       {type:"mc",skill:"imagenes",q:"¿Qué hace mejor una imagen con IA?",
-       opts:["Una descripción con detalle (qué, color, luz, estilo)","Un nombre corto y dejar que la IA complete lo demás","Escribir la descripción toda en mayúsculas","Pedir muchas versiones y quedarse con la mejor"],a:0,
+       opts:["Una descripción con detalle (qué, color, luz, estilo)","Una sola palabra corta","Escribirla en mayúsculas","Pedir varias a la vez"],a:0,
        ex:"Detalle = imagen a tu medida. Objeto, colores, fondo, luz y estilo. No importan las mayúsculas ni la cantidad."},
       {type:"order",skill:"imagenes",q:"Ordena una buena descripción de imagen:",
        items:["Qué es (un guacamayo piloto)","Cómo se ve (gafas de aviador, bufanda)","Estilo y ambiente (caricatura, cielo azul)"],
@@ -660,7 +660,7 @@ const CURRICULUM={
     ]},
     {id:"e3l3",t:"Contenido que vende",d:"Imagen + texto",ex:[
       {type:"mc",skill:"imagenes",q:"Una buena pieza publicitaria combina…",
-       opts:["Una imagen bonita, que ya habla por sí sola","Imagen atractiva + un texto corto que dé ganas de comprar","Un texto largo que explique todo el producto","Muchos hashtags para que llegue a más gente"],a:1,
+       opts:["Solo una imagen bonita","Imagen atractiva + un texto corto que dé ganas de comprar","Solo un texto bien largo","Muchos hashtags y emojis"],a:1,
        ex:"Imagen que llama + frase que convence. Juntas venden. Sola la imagen o solo texto largo se quedan cortos."},
       {type:"improve",skill:"imagenes",q:"¿Cuál texto es mejor para tu loción?",
        opts:["'loción en venta'","'Tu aroma, tu jugada. Fresco para ganar el día. 😎'"],a:1,
@@ -720,7 +720,7 @@ const CURRICULUM={
     {id:"e3l8",t:"Verificar y citar",d:"El radar del piloto",ex:[
       {type:"detect",skill:"investigar",q:"Detecta la señal de alerta:",
        sub:"'Según un estudio, el 87,3% de los peces prefieren salsa.'",
-       opts:["Es un dato serio: viene de un estudio","Cifra rarísima + fuente que no puedo comprobar = a verificar","Está bien, porque trae un porcentaje exacto","Se puede publicar citando que lo dijo la IA"],a:1,
+       opts:["Dato serio","Cifra rarísima + fuente que no puedo comprobar = a verificar","Le creo","Lo publico"],a:1,
        ex:"Cifras exactas raras que no puedes comprobar son clásicas alucinaciones. Verifica."},
       {type:"mc",skill:"investigar",eth:true,q:"En tu reporte, citar la fuente sirve para…",
        opts:["Que la respuesta se vea más profesional","Que otros (y tú) comprueben que el dato es real","Que la IA responda más rápido la próxima vez","Que la respuesta ocupe menos espacio"],a:1,
@@ -732,11 +732,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 4 · COPILOTO — Claude Cowork ===== */
-  {id:"e4",etapa:4,name:"Copiloto",tag:"La IA que trabaja en tu computador",ic:"🤝",skill:"cowork",
-   insignia:{id:"e4",ic:"🤝",n:"Copiloto de a bordo"},
+  /* ===== ETAPA 5 · COPILOTO — Claude Cowork ===== */
+  {id:"e5",etapa:5,name:"Copiloto",tag:"La IA que trabaja en tu computador",ic:"🤝",skill:"cowork",
+   insignia:{id:"e5",ic:"🤝",n:"Copiloto de a bordo"},
    lessons:[
-    {id:"e4l1",t:"¿Qué es Cowork?",d:"La IA con tus archivos",ex:[
+    {id:"e5l1",t:"¿Qué es Cowork?",d:"La IA con tus archivos",ex:[
       {type:"mc",skill:"cowork",q:"Claude Cowork es una IA que…",
        opts:["Trabaja con tus archivos y te entrega cosas listas","Responde en un chat, pero no puede tocar tus archivos","Busca en internet y te muestra una lista de enlaces","Genera imágenes a partir de una descripción"],a:0,
        ex:"Cowork es el asistente que trabaja con tus carpetas: lee, ordena y genera archivos listos para usar."},
@@ -748,7 +748,7 @@ const CURRICULUM={
        opts:["'Lee estas facturas y arma un resumen de gastos'","'Dime cuánto va a subir el dólar el mes que viene'","'Entra a mi banco y paga esta factura'","'Hazme una foto realista de mi loción nueva'"],a:0,
        ex:"Tareas con archivos: resumir, ordenar, analizar. Ahí Cowork brilla."}
     ]},
-    {id:"e4l2",t:"Genera cosas listas",d:"Reportes y análisis",ex:[
+    {id:"e5l2",t:"Genera cosas listas",d:"Reportes y análisis",ex:[
       {type:"mc",skill:"cowork",q:"Cowork puede generar…",
        opts:["Reportes, análisis y archivos listos para usar","Solo respuestas en el chat, nada que puedas descargar","Solo imágenes y videos","Correos, pero hay que copiarlos y pegarlos a mano"],a:0,
        ex:"Le pides un reporte de competidores o un análisis y te lo entrega hecho. Como un analista de a bordo."},
@@ -760,7 +760,7 @@ const CURRICULUM={
       {type:"fill",skill:"cowork",q:"Cowork es como un ______ que trabaja con tus carpetas.",
        opts:["analista","mensajero","vendedor","diseñador"],a:0,ex:"Un analista de a bordo: ordena, analiza y entrega. Tú diriges."}
     ]},
-    {id:"e4l3",t:"Se enseña una vez",d:"Tareas programadas",ex:[
+    {id:"e5l3",t:"Se enseña una vez",d:"Tareas programadas",ex:[
       {type:"mc",skill:"cowork",q:"Las 'tareas programadas' sirven para…",
        opts:["Que Cowork repita una tarea solo, cada día o cada semana","Que Cowork trabaje más rápido una sola vez","Que Cowork recuerde de qué hablaron ayer","Que Cowork le pida permiso a otra persona antes de actuar"],a:0,
        ex:"Lo describes UNA vez y Cowork lo hace solo cada vez que toque, hasta que tú lo apagues: un resumen diario, un reporte semanal."},
@@ -774,11 +774,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 5 · CONTROLES — Claude en Chrome ===== */
-  {id:"e5",etapa:5,name:"Controles",tag:"Las manos dentro de tus páginas web",ic:"🕹️",skill:"chrome",
-   insignia:{id:"e5",ic:"🕹️",n:"Manos de Cabina"},
+  /* ===== ETAPA 6 · CONTROLES — Claude en Chrome ===== */
+  {id:"e6",etapa:6,name:"Controles",tag:"Las manos dentro de tus páginas web",ic:"🕹️",skill:"chrome",
+   insignia:{id:"e6",ic:"🕹️",n:"Manos de Cabina"},
    lessons:[
-    {id:"e5l1",t:"¿Qué es Claude en Chrome?",d:"Opera la web por ti",ex:[
+    {id:"e6l1",t:"¿Qué es Claude en Chrome?",d:"Opera la web por ti",ex:[
       {type:"mc",skill:"chrome",q:"Claude en Chrome es como…",
        opts:["Unas manos que operan las páginas web que tú usas","Un buscador que te devuelve una lista de enlaces","Un programa que ordena los archivos de tu computador","Un bloqueador de anuncios para el navegador"],a:0,
        ex:"Trabaja en TU navegador, con TUS sesiones ya abiertas: ve lo que tú ves y opera portales, tiendas y formularios. Lo de plata (pagar, transferir) lo haces tú."},
@@ -790,7 +790,7 @@ const CURRICULUM={
       {type:"fill",skill:"chrome",q:"Chrome trabaja en TU navegador, con ______ accesos.",
        opts:["tus","nuevos","prestados","públicos"],a:0,ex:"Con tus propios accesos: ve lo mismo que tú, sin instalar nada raro."}
     ]},
-    {id:"e5l2",t:"Ejemplos reales",d:"Portales y reseñas",ex:[
+    {id:"e6l2",t:"Ejemplos reales",d:"Portales y reseñas",ex:[
       {type:"mc",skill:"chrome",q:"Un buen ejemplo para Claude en Chrome:",
        opts:["'Abre mi tienda y revisa qué productos no tienen precio'","'Ordena por fecha las fotos de mi carpeta de Descargas'","'Dime quién va a ganar el partido del Nacional el domingo'","'Escribe la canción del comercial de mi loción'"],a:0,
        ex:"Tareas en páginas: revisar, descargar, comparar, llenar. Ahí Chrome es un crack."},
@@ -802,7 +802,7 @@ const CURRICULUM={
       {type:"fill",skill:"chrome",q:"Chrome ______ de las páginas; Cowork organiza.",
        opts:["recoge","depende","desconfía","aprende"],a:0,ex:"Chrome trae los datos de la web; Cowork los ordena. Buen equipo."}
     ]},
-    {id:"e5l3",t:"Poder con cuidado",d:"Seguridad",ex:[
+    {id:"e6l3",t:"Poder con cuidado",d:"Seguridad",ex:[
       {type:"mc",skill:"chrome",eth:true,q:"Regla de oro de seguridad con Claude en Chrome:",
        opts:["Que primero lea y descargue; TÚ apruebas lo sensible (pagar, enviar)","Darle todos los permisos de una vez para que no te interrumpa","Guardarle tus contraseñas para que entre solo a los portales","Usarlo únicamente en páginas que no pidan iniciar sesión"],a:0,
        ex:"Trátalo como a un empleado nuevo: empieza por lo seguro (leer, descargar). Lo delicado lo apruebas tú."},
@@ -815,11 +815,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 6 · BITÁCORA — Claude en Excel y documentos ===== */
-  {id:"e6",etapa:6,name:"Bitácora",tag:"Claude en Excel y documentos",ic:"📊",skill:"oficina",
-   insignia:{id:"e6",ic:"📊",n:"Bitácora"},
+  /* ===== ETAPA 7 · BITÁCORA — Claude en Excel y documentos ===== */
+  {id:"e7",etapa:7,name:"Bitácora",tag:"Claude en Excel y documentos",ic:"📊",skill:"oficina",
+   insignia:{id:"e7",ic:"📊",n:"Bitácora"},
    lessons:[
-    {id:"e6l1",t:"Claude en Excel",d:"El copiloto de la hoja",ex:[
+    {id:"e7l1",t:"Claude en Excel",d:"El copiloto de la hoja",ex:[
       {type:"mc",skill:"oficina",q:"Claude en Excel te ayuda a…",
        opts:["Revisar, explicar y construir tus hojas de cálculo","Imprimir la hoja con mejor calidad","Convertir la hoja en una imagen","Guardar la hoja en internet para que no se pierda"],a:0,
        ex:"Le preguntas '¿por qué esto no cuadra?' y revisa las hojas y te explica. Un copiloto de números."},
@@ -831,7 +831,7 @@ const CURRICULUM={
        opts:["Llevar inventario y ventas y que te expliquen los números","Diseñar la etiqueta y el frasco de la loción","Escribir los textos de tus publicaciones de Instagram","Elegir el aroma que más le gusta a la gente"],a:0,
        ex:"Controlas cuántas lociones tienes, cuánto vendes y tu ganancia. La IA te ayuda a entenderlo."}
     ]},
-    {id:"e6l2",t:"Nada sin tu OK",d:"Tú apruebas",ex:[
+    {id:"e7l2",t:"Nada sin tu OK",d:"Tú apruebas",ex:[
       {type:"mc",skill:"oficina",eth:true,q:"Cuando Claude propone corregir una celda…",
        opts:["Tú (o el adulto a cargo) apruebas antes de aplicar","Se aplica sola y queda registrada en el historial","Se aplica sola solo si la fórmula da error","Se guarda aparte y se aplica al cerrar el archivo"],a:0,
        ex:"Claude propone; tú apruebas celda por celda. Nada cambia sin tu OK."},
@@ -845,11 +845,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 7 · PILOTO AUTOMÁTICO — Agentes ===== */
-  {id:"e7",etapa:7,name:"Piloto Automático",tag:"Agentes y automatizaciones",ic:"🤖",skill:"agentes",
-   insignia:{id:"e7",ic:"🤖",n:"Piloto Automático"},
+  /* ===== ETAPA 8 · PILOTO AUTOMÁTICO — Agentes ===== */
+  {id:"e8",etapa:8,name:"Piloto Automático",tag:"Agentes y automatizaciones",ic:"🤖",skill:"agentes",
+   insignia:{id:"e8",ic:"🤖",n:"Piloto Automático"},
    lessons:[
-    {id:"e7l1",t:"¿Qué es un agente?",d:"De ayudante a piloto automático",ex:[
+    {id:"e8l1",t:"¿Qué es un agente?",d:"De ayudante a piloto automático",ex:[
       {type:"mc",skill:"agentes",q:"Un 'agente' de IA es…",
        opts:["Una IA que actúa sola para lograr un objetivo, no solo responde","Una IA que solo contesta cuando tú le escribes algo","Un buscador que te muestra enlaces para que tú decidas","Un programa que sigue un guion fijo y nunca se adapta"],a:0,
        ex:"Un agente tiene un objetivo, memoria e iniciativa: observa, piensa, actúa y evalúa. Trabaja solo hacia una meta."},
@@ -861,7 +861,7 @@ const CURRICULUM={
       {type:"fill",skill:"agentes",q:"Un agente tiene un ______ y trabaja solo para lograrlo.",
        opts:["objetivo","permiso","reporte","horario"],a:0,ex:"El objetivo es su brújula. Todo lo que hace es para cumplirlo."}
     ]},
-    {id:"e7l2",t:"Que se repita solo",d:"Automatizaciones",ex:[
+    {id:"e8l2",t:"Que se repita solo",d:"Automatizaciones",ex:[
       {type:"mc",skill:"agentes",q:"Una automatización sirve para…",
        opts:["Que una tarea se haga sola cada día o semana sin que la pidas","Que la IA responda más rápido cuando le escribes","Que el computador se apague solo por la noche","Que la IA aprenda tus gustos y te recomiende cosas"],a:0,
        ex:"'Todos los lunes a las 5 a. m., descarga los datos y arma el reporte.' Se hace solo. Ahorro que se repite."},
@@ -873,7 +873,7 @@ const CURRICULUM={
        opts:["Vigila menciones de tu marca y te avisa por WhatsApp","Te corrige la ortografía mientras escribes","Traduce un texto cuando se lo pegas","Te muestra el clima al abrir el celular"],a:0,
        ex:"Escanea redes cada rato y te manda un resumen con propuesta de respuesta. Tu vigía personal."}
     ]},
-    {id:"e7l3",t:"El director de orquesta",d:"Orquestar agentes",ex:[
+    {id:"e8l3",t:"El director de orquesta",d:"Orquestar agentes",ex:[
       {type:"mc",skill:"agentes",q:"Un agente 'jefe' puede…",
        opts:["Dirigir a otras herramientas y agentes hacia un objetivo","Decidir sin que ningún humano pueda revisarlo","Hacer una sola tarea, siempre exactamente la misma","Guardar tus contraseñas para entrar a cualquier cuenta"],a:0,
        ex:"Como un director de orquesta: coordina a Chrome, Cowork y Excel para lograr algo grande. Tú controlas al director."},
@@ -886,11 +886,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 8 · INGENIERÍA DE VUELO — Crear con IA ===== */
-  {id:"e8",etapa:8,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
-   insignia:{id:"e8",ic:"🔧",n:"Ingeniero de Vuelo"},
+  /* ===== ETAPA 9 · INGENIERÍA DE VUELO — Crear con IA ===== */
+  {id:"e9",etapa:9,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
+   insignia:{id:"e9",ic:"🔧",n:"Ingeniero de Vuelo"},
    lessons:[
-    {id:"e8l1",t:"Crear sin programar",d:"Claude Code",ex:[
+    {id:"e9l1",t:"Crear sin programar",d:"Claude Code",ex:[
       {type:"mc",skill:"crear",q:"Con Claude Code tú…",
        opts:["Dices qué quieres y la IA lo construye, sin saber programar","Escribes el código tú y la IA solo te lo corrige","Necesitas ser ingeniero de sistemas para poder empezar","Solo puedes usar plantillas ya hechas, sin cambiarles nada"],a:0,
        ex:"Tú tienes la idea; Claude la ejecuta. Solo dices qué quieres y avanzas. ¡Como este mismo juego!"},
@@ -902,7 +902,7 @@ const CURRICULUM={
        opts:["Un marcador de pádel o un catálogo de tus lociones","Una app de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que pilotee un avión de verdad"],a:0,
        ex:"Cosas simples y útiles para ti. Empiezas pequeño y mejoras por partes."}
     ]},
-    {id:"e8l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
+    {id:"e9l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
       {type:"mc",skill:"crear",q:"'Vibecoding' significa…",
        opts:["Crear rápido un prototipo con IA, sin saber código","Programar escuchando música para concentrarte mejor","Copiar código de internet y pegarlo sin entenderlo","Diseñar cómo se ve una app, pero sin que funcione"],a:0,
        ex:"De idea a prototipo en horas: pruebas tu idea rapidísimo y la mejoras al instante."},
@@ -916,11 +916,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 9 · COMANDO — Uso responsable y repaso ===== */
-  {id:"e9",etapa:9,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
-   insignia:{id:"e9",ic:"👨‍✈️",n:"Capitán IA",logo:true},
+  /* ===== ETAPA 10 · COMANDO — Uso responsable y repaso ===== */
+  {id:"e10",etapa:10,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
+   insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA",logo:true},
    lessons:[
-    {id:"e9l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
+    {id:"e10l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
       {type:"mc",skill:"etica",eth:true,q:"Una 'alucinación' de la IA es…",
        opts:["Cuando inventa un dato falso pero lo dice muy seguro","Cuando te dice que no sabe la respuesta","Cuando se demora mucho en responder","Cuando entiende mal tu pregunta y te responde otra cosa"],a:0,
        ex:"Inventa con seguridad. Por eso los datos duros (cifras, fechas, nombres) siempre se verifican."},
@@ -932,7 +932,7 @@ const CURRICULUM={
       {type:"fill",skill:"etica",eth:true,q:"La IA asiste, yo verifico, y yo ______.",
        opts:["decido","confío","acepto","repito"],a:0,ex:"Tú decides al final. La IA es el copiloto; el capitán eres tú."}
     ]},
-    {id:"e9l2",t:"Vuela seguro",d:"Ética y datos",ex:[
+    {id:"e10l2",t:"Vuela seguro",d:"Ética y datos",ex:[
       {type:"mc",skill:"etica",eth:true,q:"¿Qué NO debes escribirle nunca a una IA?",
        opts:["Tu dirección, teléfono o datos de tu familia","Una duda del colegio que no entendiste","Una idea para tu negocio de lociones","El resumen de un libro que estás leyendo"],a:0,
        ex:"Nunca datos personales tuyos ni de tu familia. Eres menor: tu información es privada."},
@@ -944,7 +944,7 @@ const CURRICULUM={
       {type:"fill",skill:"etica",eth:true,q:"Lema del Piloto Seguro: la IA asiste, yo ______.",
        opts:["decido","acepto","repito","comparto"],a:0,ex:"Tú tienes el control. Usar la IA con cabeza es de capitanes."}
     ]},
-    {id:"e9l3",t:"Repaso de Capitán",d:"Lo más importante",ex:[
+    {id:"e10l3",t:"Repaso de Capitán",d:"Lo más importante",ex:[
       {type:"mc",skill:"etica",q:"Lo más importante de un buen prompt es…",
        opts:["Contexto y objetivo claros","Que sea lo más largo y detallado posible","Usar palabras técnicas para que la IA te tome en serio","Pedirle varias cosas distintas en un mismo mensaje"],a:0,
        ex:"¡Los dos vitales! Contexto + objetivo. Ya piensas como un Prompt Master."},
@@ -1007,21 +1007,7 @@ const DEFAULT_STATE=()=>({xp:0,streak:0,bestStreak:0,lastDay:null,streakShield:1
   lessonsCount:0,exCount:0,correctCount:0,createdAt:0,fails:{},_t:0});
 let S=DEFAULT_STATE();
 function stateKey(){ return STATE_PREFIX+(activeId||"none"); }
-/* El 28/07/2026 la etapa 4 (Radar) se fusionó dentro de la 3, así que las etapas
-   5..10 pasaron a ser 4..9. Esto mueve el progreso viejo a los ids nuevos para que
-   nadie pierda insignias ni lecciones ya hechas. Se ejecuta una sola vez. */
-function migrarIds(st){
-  if(!st || st._mig>=2) return st;
-  const mapa={}; for(let v=5;v<=10;v++) mapa["e"+v]="e"+(v-1);
-  const mueve=obj=>{ if(!obj) return obj; const out={};
-    Object.keys(obj).forEach(k=>{ const m=k.match(/^e(\d+)(l\d+)?(#\d+)?$/);
-      if(m && mapa["e"+m[1]]) out[mapa["e"+m[1]]+(m[2]||"")+(m[3]||"")]=obj[k]; else out[k]=obj[k]; });
-    return out; };
-  st.done=mueve(st.done); st.moduleDone=mueve(st.moduleDone); st.fails=mueve(st.fails);
-  st.review=[];               // los repasos guardaban posiciones que ya cambiaron
-  st._mig=2; return st;
-}
-function loadState(){ try{const r=localStorage.getItem(stateKey());if(r)return migrarIds(Object.assign(DEFAULT_STATE(),JSON.parse(r)));}catch(e){} return DEFAULT_STATE(); }
+function loadState(){ try{const r=localStorage.getItem(stateKey());if(r)return Object.assign(DEFAULT_STATE(),JSON.parse(r));}catch(e){} return DEFAULT_STATE(); }
 function saveLocal(){ if(!activeId) return; try{localStorage.setItem(stateKey(),JSON.stringify(S));}catch(e){} }
 function save(){ S._t=Date.now(); saveLocal(); cloudPush(); }
 
@@ -1057,12 +1043,7 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
    viejas (aka), y se queda con la que tenga MÁS avance. Nunca pierde nada. */
 function bestStateFor(p){ const filas=["cve_"+p.id].concat((p.aka||[]).map(a=>"cve_"+a));
   return Promise.all(filas.map(cloudGet)).then(rs=>{
-    let mejor=null; rs.forEach(r=>{ if(!r) return;
-      if(!mejor){ mejor=r; return; }
-      const a=progressScore(r), b=progressScore(mejor);
-      // gana el que más avance tenga; si empatan, el guardado más reciente
-      if(a>b || (a===b && (r._t||0)>(mejor._t||0))) mejor=r; });
-    return mejor?migrarIds(mejor):null; }); }
+    let mejor=null; rs.forEach(r=>{ if(r && (!mejor||progressScore(r)>progressScore(mejor))) mejor=r; }); return mejor; }); }
 function cloudLoad(cb){
   const p=activeProfile(); if(!p){ cloudReady=true; if(cb)cb(); return; }
   bestStateFor(p).then(remote=>{
@@ -1492,7 +1473,7 @@ function hideFeedback(){ elFb.classList.remove('show'); }
 /* =========================================================
    PANTALLA 3 · PERFIL / LOGROS
    ========================================================= */
-const SKILL_NAMES={capacidades:"Capacidades de IA",prompts:"Prompts",imagenes:"Imágenes",voz:"Hablarle a la IA",investigar:"Investigar y proyectos",cowork:"Claude Cowork",chrome:"Claude en Chrome",oficina:"Excel y oficina",agentes:"Agentes",crear:"Crear con IA",etica:"Ética y seguridad"};
+const SKILL_NAMES={capacidades:"Capacidades de IA",prompts:"Prompts",imagenes:"Imágenes",investigar:"Investigar",cowork:"Claude Cowork",chrome:"Claude en Chrome",oficina:"Excel y oficina",agentes:"Agentes",crear:"Crear con IA",etica:"Ética y seguridad"};
 function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.levels.reduce((a,l)=>a+l.lessons.length,0);
   const acc=S.exCount?Math.round(S.correctCount/S.exCount*100):0; const p=activeProfile();
   let h=`<div class="rankcard"><div class="avatar">${p?p.avatar:'🎓'}</div><div class="rankinfo"><div class="who">Piloto <b>${pilotName()}</b>${p&&p.callsign?(' «'+p.callsign+'»'):''}</div>

@@ -1,0 +1,43 @@
+﻿{
+    "id":  "daniel",
+    "data":  {
+                 "_t":  1784946184608,
+                 "xp":  0,
+                 "done":  {
+
+                          },
+                 "name":  "Daniel",
+                 "muted":  false,
+                 "skill":  {
+                               "prompts":  {
+                                               "ok":  1,
+                                               "total":  2
+                                           }
+                           },
+                 "badges":  {
+
+                            },
+                 "review":  [
+                                {
+                                    "ei":  0,
+                                    "li":  1,
+                                    "lj":  0
+                                }
+                            ],
+                 "streak":  0,
+                 "exCount":  2,
+                 "lastDay":  null,
+                 "ethCount":  0,
+                 "projects":  {
+
+                              },
+                 "createdAt":  1784910521278,
+                 "bestStreak":  0,
+                 "moduleDone":  {
+
+                                },
+                 "correctCount":  1,
+                 "lessonsCount":  0
+             },
+    "updated_at":  "2026-07-25 02:23:10.44+00"
+}

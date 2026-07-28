@@ -1,0 +1,88 @@
+{
+  "fecha": "2026-07-28T13:07:11.669Z",
+  "filas": {
+    "daniel": {
+      "name": "Daniel",
+      "xp": 115,
+      "streak": 1,
+      "bestStreak": 1,
+      "lastDay": "2026-07-25",
+      "done": {
+        "n1l1": true,
+        "n1l2": true,
+        "n1l3": true,
+        "n1l4": true,
+        "n1l5": true
+      },
+      "projects": {
+        "n1p": "done"
+      },
+      "badges": {
+        "primerVuelo": true,
+        "pilotoSeguro": true
+      },
+      "skill": {
+        "fundamentos": {
+          "ok": 23,
+          "total": 28
+        },
+        "verificar": {
+          "ok": 6,
+          "total": 7
+        },
+        "etica": {
+          "ok": 9,
+          "total": 9
+        }
+      },
+      "ethCount": 9,
+      "moduleDone": {
+        "n1": true
+      },
+      "review": [
+        {
+          "li": 0,
+          "lj": 0,
+          "ei": 2
+        }
+      ],
+      "muted": false,
+      "lessonsCount": 5,
+      "exCount": 38,
+      "correctCount": 32,
+      "createdAt": 1785026296813,
+      "_t": 1785026359538
+    },
+    "cve_none": {
+      "xp": 50,
+      "streak": 1,
+      "bestStreak": 1,
+      "lastDay": "2026-07-26",
+      "streakShield": 1,
+      "done": {
+        "e1l1": true
+      },
+      "moduleDone": {},
+      "badges": {},
+      "skill": {
+        "capacidades": {
+          "ok": 5,
+          "total": 5
+        }
+      },
+      "ethCount": 0,
+      "review": [],
+      "muted": false,
+      "lessonsCount": 1,
+      "exCount": 5,
+      "correctCount": 5,
+      "createdAt": 1785083940386,
+      "_t": 1785083972700,
+      "_meta": {
+        "name": "Dani",
+        "callsign": "Marlin",
+        "avatar": "✈️"
+      }
+    }
+  }
+}

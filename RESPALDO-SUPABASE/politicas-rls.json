@@ -1,0 +1,32 @@
+﻿[
+    {
+        "schemaname":  "public",
+        "tablename":  "progreso",
+        "policyname":  "p_upd",
+        "permissive":  "PERMISSIVE",
+        "roles":  "{public}",
+        "cmd":  "UPDATE",
+        "qual":  "true",
+        "with_check":  "true"
+    },
+    {
+        "schemaname":  "public",
+        "tablename":  "progreso",
+        "policyname":  "p_ins",
+        "permissive":  "PERMISSIVE",
+        "roles":  "{public}",
+        "cmd":  "INSERT",
+        "qual":  null,
+        "with_check":  "true"
+    },
+    {
+        "schemaname":  "public",
+        "tablename":  "progreso",
+        "policyname":  "p_sel",
+        "permissive":  "PERMISSIVE",
+        "roles":  "{public}",
+        "cmd":  "SELECT",
+        "qual":  "true",
+        "with_check":  null
+    }
+]
