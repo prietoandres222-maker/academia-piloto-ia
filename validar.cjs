@@ -108,6 +108,28 @@ for (const lv of CUR.levels) {
         }
       }
 
+      /* --- COMPLETAR: la frase debe sonar bien con CUALQUIER opción --- *
+         Nace de un error real: "Antes de preguntar, miro ___ modelo estoy usando"
+         con las opciones "a qué / a qué hora / de qué color / cuánto pesa". Metiendo
+         los distractores la frase se rompía, así que la respuesta se adivinaba sin
+         pensar; y encima la correcta sonaba forzada. Reglas: debe existir el espacio,
+         y todas las opciones deben tener una "forma" parecida (nº de palabras). */
+      if (e.type === 'fill') {
+        if (!/_{3,}/.test(String(e.q || '')))
+          errores.push(`${D}: 🔴 es de completar pero al enunciado le falta el espacio (____)`);
+        if (Array.isArray(e.opts) && typeof e.a === 'number' && e.opts[e.a] != null) {
+          /* Se cuentan solo palabras con carga: "de la IA" y "mía" son igual de
+             válidas en la frase, así que no deben contar como formas distintas. */
+          const VACIAS = ['de', 'del', 'la', 'el', 'los', 'las', 'un', 'una', 'a', 'al', 'en'];
+          const pal = o => String(o).trim().toLowerCase().split(/\s+/)
+            .filter(w => !VACIAS.includes(w)).length || 1;
+          const pc = pal(e.opts[e.a]);
+          const raros = e.opts.filter((o, i) => i !== e.a && (pal(o) > pc + 1 || pal(o) + 1 < pc));
+          if (raros.length)
+            avisos.push(`${D}: 🔴 en completar, estas opciones no encajan en la frase como la correcta (“${e.opts[e.a]}”): ${raros.map(o => '“' + o + '”').join(', ')} — al meterlas, la oración se rompe y se adivina`);
+        }
+      }
+
       /* --- verdadero / falso --- */
       if (e.type === 'tf') {
         if (typeof e.a !== 'boolean')
@@ -152,6 +174,52 @@ for (const lv of CUR.levels) {
     });
   }
 }
+
+/* --- 2b) Preguntas repetidas en todo el juego --- */
+const vistas = {};
+for (const lv of CUR.levels)
+  for (const le of lv.lessons)
+    (le.ex || []).forEach((e, k) => {
+      const q = String(e.q || '').trim().toLowerCase().replace(/\s+/g, ' ');
+      if (!q || q.length < 15) return;
+      if (vistas[q]) avisos.push(`Pregunta repetida en ${vistas[q]} y en ${le.id} ej#${k + 1}: “${e.q}”`);
+      else vistas[q] = `${le.id} ej#${k + 1}`;
+    });
+
+/* --- 2c) ¿Se puede aprobar sin saber nada? --- *
+   Dos trampas reales que se encontraron: (a) la respuesta correcta caía siempre
+   en las mismas posiciones (ya se resolvió barajando las opciones al mostrarlas)
+   y (b) casi todas las de verdadero/falso eran "verdadero", así que respondiendo
+   siempre lo mismo se sacaba 90%. */
+let nV = 0, nF = 0;
+for (const lv of CUR.levels)
+  for (const le of lv.lessons)
+    (le.ex || []).forEach(e => { if (e.type === 'tf') (e.a === true ? nV++ : nF++); });
+const totalTF = nV + nF;
+if (totalTF >= 8) {
+  const pctV = Math.round(nV / totalTF * 100);
+  console.log(`Verdadero/Falso: ${nV} verdaderas y ${nF} falsas (${pctV}% verdaderas)`);
+  if (pctV >= 75 || pctV <= 25)
+    errores.push(`🔴 DESBALANCE en verdadero/falso: ${pctV}% son "${pctV >= 75 ? 'verdadero' : 'falso'}". Respondiendo siempre lo mismo se aprueba sin saber. Invierte algunos enunciados.`);
+  else if (pctV >= 68 || pctV <= 32)
+    avisos.push(`Verdadero/falso algo desbalanceado (${pctV}% verdaderas). Lo ideal es acercarse al 50/50.`);
+}
+
+/* --- 2d) Explicaciones que regalan la respuesta de otra pregunta --- */
+for (const lv of CUR.levels)
+  for (const le of lv.lessons) {
+    const exs = le.ex || [];
+    exs.forEach((e, k) => {
+      const texto = String(e.ex || e.why || '').toLowerCase();
+      if (texto.length < 20) return;
+      exs.forEach((o, j) => {
+        if (j === k) return;
+        const q = String(o.q || '').trim().toLowerCase().replace(/[¿?'"]/g, '');
+        if (q.length >= 25 && texto.replace(/[¿?'"]/g, '').includes(q))
+          avisos.push(`${donde(lv, le, k)}: la explicación regala la respuesta del ejercicio #${j + 1} de la misma lección`);
+      });
+    });
+  }
 
 /* --- 3) Rangos e insignias --- */
 if (!Array.isArray(CUR.ranks) || !CUR.ranks.length) errores.push('No hay rangos definidos');
