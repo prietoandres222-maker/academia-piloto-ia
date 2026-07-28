@@ -620,27 +620,19 @@ const CURRICULUM={
        opts:["Partir un pedido grande en partes pequeñas","Pedirle lo mismo a dos IA distintas y comparar","Escribir el mismo pedido en dos idiomas","Repartir la respuesta en dos conversaciones"],a:0,
        ex:"Un pedido enorme confunde. Divídelo: primero esto, luego esto. Más control, mejor resultado."},
       {type:"mc",skill:"prompts",q:"Tu comando personal '-Marlin' (que TÚ inventaste) sirve para…",
-       opts:["Que la respuesta salga con el formato adaptado a ti","Que la IA busque en internet antes de responder","Que la IA guarde la conversación para después","Que la respuesta salga siempre más corta"],a:0,
-       ex:"-Marlin es TUYO, Daniel: lo bautizaste como el pez, y hace que la respuesta salga a tu medida. ¡Tu sello personal!"},
+       opts:["Que la IA convierta tu pedido en un prompt excelente y te responda mucho mejor, en tu formato","Que la IA salude distinto y te hable con un tono más juvenil","Que la IA busque en internet antes de responderte cualquier cosa","Que la IA guarde la conversación para poder seguirla mañana"],a:0,
+       ex:"Esto es lo grande de -Marlin: no es solo un formato bonito. Antes de responderte, la IA se arma a sí misma un prompt de experto con lo que le pediste. Por eso la respuesta sale MUCHO mejor… y encima ordenada como a ti te sirve. Lo bautizaste como el pez: es tu sello."},
+      {type:"tf",skill:"prompts",q:"Con '-Marlin' basta un pedido corto: la IA lo convierte en un prompt bien armado antes de responder.",a:true,
+       ex:"Verdadero. Ese es el atajo: tú escribes poco, la IA se construye el prompt largo y bueno, y te devuelve una respuesta de nivel experto en tu formato."},
       {type:"tf",skill:"prompts",eth:true,q:"'-Marlin' es un comando universal que funciona en cualquier chat del mundo.",a:false,
        ex:"Falso. Es TU comando personal, que configuraste para tu Claude. Es especial porque es tuyo, no de todos."},
       {type:"fill",skill:"prompts",q:"Si algo no me sirve, no me rindo: le pido a la IA que lo ______.",
-       opts:["mejore","repita igual","traduzca","acorte"],a:0,ex:"Iterar (pedir 'mejóralo', 'hazlo más corto') es normal. La primera respuesta es un borrador."}
-    ]},
-    {id:"e2l4",t:"Imágenes con IA",d:"Tu primer vistazo + misión",ex:[
-      {type:"mc",skill:"prompts",q:"Para que la IA cree la imagen que imaginas, hay que…",
-       opts:["Describirla con detalle: qué, colores, estilo","Decir solo el objeto y dejar que la IA elija lo demás","Pedir muchas imágenes a la vez y escoger la que sirva","Escribir la descripción en mayúsculas"],a:0,
-       ex:"La IA pinta lo que describes. 'Un avión' es poco; 'un avión rojo despegando al atardecer, realista' es oro."},
-      {type:"improve",skill:"prompts",q:"¿Cuál describe mejor una imagen para tu loción?",
-       opts:["'una loción'","'frasco de loción azul sobre fondo deportivo, luz suave, estilo moderno'"],a:1,
-       why:"Da objeto, color, fondo, luz y estilo. Con eso la imagen sale como la quieres."},
-      {type:"tf",skill:"prompts",q:"Si le describo bien una imagen, ChatGPT me la puede crear.",a:true,
-       ex:"Verdadero. Como el ejemplo que Andrés les mostró: describes con detalle y la IA la crea."},
+       opts:["mejore","repita igual","traduzca","acorte"],a:0,ex:"Iterar (pedir 'mejóralo', 'hazlo más corto') es normal. La primera respuesta es un borrador."},
       {type:"mission",skill:"prompts",q:"",title:"Misión: un prompt que te vende lociones",
        intro:"Arma un prompt maestro (rol + contexto + objetivo + tu comando -Marlin) y sácale un plan de ventas real para tu negocio.",
        steps:["Abre Claude o ChatGPT.","Copia el prompt y cámbiale lo que está entre [corchetes] por lo tuyo real.","Envíalo y lee las 3 ideas que te da.","Escoge la que MÁS te sirva y contéstale tú mismo: 'de esa idea, dame el paso 1 para hacer HOY'. Ese paso es tu tarea de hoy."],
        objetivo:"que la IA te dé 3 ideas para vender más lociones esta semana, y luego el primer paso concreto de la que elijas.",
-       copy:"Como un vendedor experto de perfumería para jóvenes, tengo un negocio de lociones que vendo por [Instagram / WhatsApp / en el colegio]. Mi público son [amigos y conocidos de 14 a 18 años]. Dame 3 ideas realistas y baratas para vender más esta semana, explicadas fácil. -Marlin",
+       copy:"Como un vendedor experto de perfumería para jóvenes, tengo un negocio de lociones que vendo por [Instagram / WhatsApp / el voz a voz en el colegio]. Mi público es [amigos y conocidos de 14 a 18 años]. Dame 3 ideas realistas y baratas para vender más esta semana, explicadas fácil. -Marlin",
        botin:"El paso 1 concreto para vender más lociones HOY. No una teoría: una acción que puedes hacer esta tarde.",xp:35}
     ]}
   ]},
@@ -659,32 +651,45 @@ const CURRICULUM={
       {type:"fill",skill:"imagenes",q:"En una imagen puedo definir el ______: realista, caricatura, 3D…",
        opts:["estilo","precio","peso","idioma"],a:0,ex:"El estilo cambia todo. Pídelo claro: 'estilo caricatura', 'foto realista'."},
       {type:"tf",skill:"imagenes",q:"Para las imágenes es mejor escribir poquito: si describes mucho, la IA se confunde.",a:false,
-       ex:"Falso. Es al revés: entre más detalle útil (color, luz, estilo), mejor sale. Practica describir con detalle."}
-    ]},
-    {id:"e3l2",t:"Estilo e iterar",d:"El mismo objeto, mil looks",ex:[
+       ex:"Falso. Es al revés: entre más detalle útil (color, luz, estilo), mejor sale. Practica describir con detalle."},
+      {type:"improve",skill:"imagenes",q:"¿Cuál describe mejor una imagen para tu loción?",
+       opts:["'una loción'","'frasco de loción azul sobre fondo deportivo, luz suave, estilo moderno'"],a:1,
+       why:"Da objeto, color, fondo, luz y estilo. Con eso la imagen sale como la quieres."},
       {type:"match",skill:"imagenes",q:"Empareja el estilo con lo que transmite:",
        pairs:[{l:"Realista",r:"Parece foto de verdad"},{l:"Caricatura",r:"Divertido y juvenil"},{l:"Minimalista",r:"Limpio y elegante"}],
-       ex:"Elige el estilo según el mensaje. Para lociones juveniles, algo fresco funciona genial."},
-      {type:"improve",skill:"imagenes",q:"La imagen salió casi bien. ¿Cómo la mejoras?",
-       opts:["'otra'","'igual pero con fondo azul cielo y más luz'"],a:1,
-       why:"Cambios concretos (fondo, luz) guían la nueva versión. Iterar es normal."},
-      {type:"fill",skill:"imagenes",q:"Si la imagen no me gusta, la ______: cambio un detalle y pido de nuevo.",
-       opts:["itero","borro","escondo","vendo"],a:0,ex:"Iterar imágenes es normal: ajusta color, fondo o luz y vuelve a generar."},
-      {type:"detect",skill:"imagenes",q:"Tu imagen salió sosa. ¿Qué le faltó?",
-       sub:"Pediste: 'un frasco'.",
-       opts:["Nada, la IA simplemente falló","Le faltó estilo, color, fondo y ambiente","Le faltó pedir varias","Le faltó pedirla en inglés"],a:1,ex:"'Un frasco' es muy poco. No es culpa del idioma ni de la cantidad: agrega color, fondo, luz y estilo."}
+       ex:"Elige el estilo según el mensaje. Para lociones juveniles, algo fresco funciona genial."}
     ]},
-    {id:"e3l3",t:"Contenido que vende",d:"Imagen + texto",ex:[
-      {type:"mc",skill:"imagenes",q:"¿Qué hace que una pieza publicitaria funcione?",
-       opts:["Una imagen bonita, que ya habla por sí sola","Una imagen atractiva junto a un texto corto que dé ganas de comprar","Un texto largo que explique todo el producto","Muchos hashtags para que llegue a más gente"],a:1,
-       ex:"Imagen que llama + frase que convence. Juntas venden. Sola la imagen o solo texto largo se quedan cortos."},
-      {type:"improve",skill:"imagenes",q:"¿Cuál texto es mejor para tu loción?",
-       opts:["'loción en venta'","'Tu aroma, tu jugada. Fresco para ganar el día. 😎'"],a:1,
-       why:"El segundo tiene gancho y personalidad juvenil. 'loción en venta' no emociona."},
+    {id:"e3l2",t:"Partir de una foto y editarla",d:"No siempre se empieza de cero",ex:[
+      {type:"mc",skill:"imagenes",q:"Tienes una foto de tu loción tomada con el celular. ¿Qué puedes hacer con la IA?",
+       opts:["Subirla y pedirle que la convierta en una foto de catálogo, manteniendo el mismo frasco","Nada: la IA solo crea imágenes desde cero, no trabaja con las tuyas","Solo recortarla o cambiarle el tamaño","Solo ponerle un filtro de color por encima"],a:0,
+       ex:"Se llama partir de una imagen: le das TU foto y le pides el cambio. La IA respeta lo que ya está y solo transforma lo que le pides. Ideal cuando el producto es real y no quieres que lo invente."},
+      {type:"improve",skill:"imagenes",q:"Quieres cambiar SOLO el fondo de la foto de tu loción. ¿Qué le pides?",
+       opts:["'mejórala'","'cambia solo el fondo por un fondo blanco de estudio; deja el frasco, la etiqueta y la tapa exactamente iguales'"],a:1,
+       why:"Al editar una parte hay que decir DOS cosas: qué cambiar y qué dejar intacto. Si no dices qué conservar, la IA te cambia el frasco también."},
+      {type:"detect",skill:"imagenes",q:"Le pediste cambiar el fondo y te cambió también la etiqueta. ¿Qué faltó?",
+       sub:"Le escribiste: 'ponle otro fondo'.",
+       opts:["Nada, la IA simplemente falló","Faltó decirle qué debía dejar IGUAL (el frasco y la etiqueta)","Faltó pedirle varias versiones","Faltó pedírselo en inglés"],a:1,
+       ex:"Al editar, lo que no proteges queda a criterio de la IA. La fórmula: 'cambia [esto], deja igual [aquello]'. No es culpa del idioma ni de la cantidad."},
+      {type:"fill",skill:"imagenes",q:"Si la imagen no me gusta, la ______: cambio un detalle y pido de nuevo.",
+       opts:["itero","borro","escondo","vendo"],a:0,ex:"Iterar es normal y no es perder el tiempo: ajusta color, fondo o luz y vuelve a generar. La primera casi nunca es la buena."}
+    ]},
+    {id:"e3l3",t:"Imágenes que sí sirven",d:"Invitaciones, etiquetas y anuncios",ex:[
+      {type:"mc",skill:"imagenes",q:"Vas a hacer con IA la invitación de un cumpleaños. ¿Qué NO puede faltar en el pedido?",
+       opts:["Los datos exactos: nombre, fecha, hora y lugar, escritos tal cual deben aparecer","Solo el estilo que te gusta; los datos se los inventa bien","Pedir muchas versiones y después escribirle los datos a mano","Que la pidas en tamaño grande para que se vea mejor"],a:0,
+       ex:"Una invitación es información + diseño. Si no le das los datos exactos, te entrega algo bonito pero inservible. Dale el texto literal y dile dónde va."},
+      {type:"tf",skill:"imagenes",q:"El texto que la IA escribe DENTRO de una imagen a veces sale con letras raras o mal escrito: hay que revisarlo.",a:true,
+       ex:"Verdadero. Es su punto débil más famoso. Antes de mandar una invitación o una etiqueta, léele el texto letra por letra; si salió mal, pídele que lo corrija."},
+      {type:"match",skill:"imagenes",q:"Empareja cada encargo con lo que NO se te puede olvidar pedirle:",
+       pairs:[{l:"Invitación de fiesta",r:"Fecha, hora y lugar exactos"},{l:"Etiqueta de tu loción",r:"El nombre de la marca bien escrito"},{l:"Publicación para Instagram",r:"Formato cuadrado o vertical"}],
+       ex:"Cada pieza tiene su dato clave. Si lo dices desde el principio, te ahorras cinco intentos."},
       {type:"tf",skill:"imagenes",eth:true,q:"Está bien poner el logo de otra marca en mi anuncio para engañar.",a:false,
        ex:"Falso. Usar la marca de otro para engañar es deshonesto y hasta ilegal. Crea lo tuyo, con honestidad."},
-      {type:"fill",skill:"imagenes",q:"Una buena publicidad no describe: hace ______.",
-       opts:["sentir","dudar","comparar","calcular"],a:0,ex:"La publicidad conecta emociones: frescura, energía, confianza. Ahí está la venta."}
+      {type:"mission",skill:"imagenes",q:"",title:"Misión: tu pieza gráfica de verdad",
+       intro:"Nada de imágenes de práctica: hoy sales con algo que puedes usar o mandar hoy mismo. Escoge UNA: la invitación de un plan con tus amigos, o la publicación para vender tus lociones.",
+       steps:["Abre una IA que genere imágenes (ChatGPT o Gemini).","Si tienes una foto real (tu loción, el sitio del plan), SÚBELA primero y dile que parta de ella.","Copia el prompt y cámbiale lo de [corchetes] por lo tuyo real.","Cuando salga, LEE el texto de la imagen letra por letra. Si hay un error, pídele: 'corrige el texto, deja el diseño igual'.","Guárdala y mándala o publícala."],
+       objetivo:"que la IA te entregue una pieza terminada y usable (invitación o publicación), con TUS datos bien escritos.",
+       copy:"Hazme una [invitación / publicación para Instagram] en formato [vertical / cuadrado], estilo [moderno y juvenil, colores azul y blanco]. El texto debe decir EXACTAMENTE esto y sin errores de ortografía: '[Nombre del plan o de la loción]', '[fecha]', '[hora]', '[lugar]'. Deja espacio libre para que el texto se lea bien y que no quede tapado por el dibujo.",
+       botin:"Una invitación o una publicación lista para mandar hoy, hecha por ti, con tus datos correctos.",xp:35}
     ]},
     /* --- Tema corto pero clave: hablarle a la IA en vez de escribirle --- */
     {id:"e3l4",t:"Hablarle a la IA",d:"Tu voz es más rápida que tus dedos",ex:[
@@ -694,9 +699,15 @@ const CURRICULUM={
       {type:"mc",skill:"voz",q:"Estás en modo voz y le haces una pregunta difícil. ¿Cuál es el truco de experto?",
        opts:["Dictar para que quede en TEXTO y ahí sí responda el modelo bueno","Quedarse en modo voz: es el mismo modelo, solo que hablado","Repetir la pregunta más despacio hasta que responda mejor","Hacer la pregunta en partes cortas para no confundirlo"],a:0,
        ex:"Ojo con esto: el modo voz usa un modelo más rápido (y por eso menos profundo), porque tiene que contestarte al instante como en una conversación. El truco de experto: usa la voz para DICTAR y que quede escrito, y deja que responda el modelo bueno. Hablas rápido y piensas profundo."}
-    ]},
+    ]}
+  ]},
+
+  /* ===== ETAPA 5 · RADAR — Proyectos e investigar a fondo ===== */
+  {id:"e4",etapa:4,name:"Radar de Datos",tag:"Proyectos, investigar a fondo y verificar",ic:"📡",skill:"investigar",
+   insignia:{id:"e4",ic:"📡",n:"Radar"},
+   lessons:[
     /* --- Proyectos: el espacio con memoria y materiales propios --- */
-    {id:"e3l5",t:"Proyectos",d:"Un espacio que ya te conoce",ex:[
+    {id:"e4l1",t:"Proyectos",d:"Un espacio que ya te conoce",ex:[
       {type:"mc",skill:"investigar",q:"Un 'Proyecto' en la IA sirve para…",
        opts:["Guardar en un mismo espacio tus archivos e instrucciones, y no repetir el contexto cada vez","Programar una tarea para que se ejecute sola cada semana","Guardar las imágenes que has generado","Compartir tu conversación con otras personas"],a:0,
        ex:"Un Proyecto es como una carpeta con memoria: le dejas tus archivos y tus instrucciones fijas una vez, y todas las conversaciones de ahí adentro ya saben quién eres y en qué andas."},
@@ -709,7 +720,7 @@ const CURRICULUM={
        opts:["contexto","precio","idioma","formato"],a:0,
        ex:"El contexto queda guardado. Por eso las respuestas salen afinadas desde el primer mensaje."}
     ]},
-    {id:"e3l6",t:"Investigación a fondo",d:"Deep Research",ex:[
+    {id:"e4l2",t:"Investigación a fondo",d:"Deep Research",ex:[
       {type:"mc",skill:"investigar",q:"La 'investigación a fondo' (Deep Research) sirve para…",
        opts:["Que la IA investigue, contraste y te entregue un informe con fuentes","Que la IA invente datos rápido sin revisar","Que guarde tus archivos ordenados","Que traduzca una palabra al inglés"],a:0,
        ex:"Deep Research busca en muchas fuentes, las cruza y te da un reporte ordenado con fuentes. Como un asistente investigador."},
@@ -721,7 +732,7 @@ const CURRICULUM={
        opts:["Hacer un mini-reporte de aviones, peces o Nacional, con fuentes","Escribir un mensaje corto de WhatsApp","Crear una imagen bonita","Corregir la ortografía de un texto"],a:0,
        ex:"Su fuerte es investigar a fondo con fuentes. Elige un tema tuyo y practica a verificar lo que te da."}
     ]},
-    {id:"e3l7",t:"NotebookLM",d:"Tu cuaderno inteligente",ex:[
+    {id:"e4l3",t:"NotebookLM",d:"Tu cuaderno inteligente",ex:[
       {type:"mc",skill:"investigar",q:"NotebookLM es útil para…",
        opts:["Cargar tus documentos y que la IA te los explique y resuma","Buscar cualquier cosa en todo internet","Crear imágenes desde cero","Chatear sin darle ningún material"],a:0,
        ex:"NotebookLM trabaja con TUS materiales (apuntes, PDF): resúmenes, preguntas, hasta audios. No sale a buscar a todo internet."},
@@ -733,7 +744,7 @@ const CURRICULUM={
       {type:"fill",skill:"investigar",q:"NotebookLM te ayuda a ______ mejor tus apuntes y materiales.",
        opts:["estudiar","imprimir","vender","borrar"],a:0,ex:"Cargas el tema y te lo explica fácil. Un cuaderno que responde."}
     ]},
-    {id:"e3l8",t:"Verificar y citar",d:"El radar del piloto",ex:[
+    {id:"e4l4",t:"Verificar y citar",d:"El radar del piloto",ex:[
       {type:"detect",skill:"investigar",q:"Detecta la señal de alerta:",
        sub:"'Según un estudio, el 87,3% de los peces prefieren salsa.'",
        opts:["Es un dato serio: viene de un estudio","Cifra rarísima + fuente que no puedo comprobar = a verificar","Está bien, porque trae un porcentaje exacto","Se puede publicar citando que lo dijo la IA"],a:1,
@@ -749,10 +760,10 @@ const CURRICULUM={
   ]},
 
   /* ===== ETAPA 4 · COPILOTO — Claude Cowork ===== */
-  {id:"e4",etapa:4,name:"Copiloto",tag:"La IA que trabaja en tu computador",ic:"🤝",skill:"cowork",
-   insignia:{id:"e4",ic:"🤝",n:"Copiloto de a bordo"},
+  {id:"e5",etapa:5,name:"Copiloto",tag:"La IA que trabaja en tu computador",ic:"🤝",skill:"cowork",
+   insignia:{id:"e5",ic:"🤝",n:"Copiloto de a bordo"},
    lessons:[
-    {id:"e4l1",t:"¿Qué es Cowork?",d:"La IA con tus archivos",ex:[
+    {id:"e5l1",t:"¿Qué es Cowork?",d:"La IA con tus archivos",ex:[
       {type:"mc",skill:"cowork",q:"Claude Cowork es una IA que…",
        opts:["Trabaja con tus archivos y te entrega cosas listas","Responde en un chat, pero no puede tocar tus archivos","Busca en internet y te muestra una lista de enlaces","Genera imágenes a partir de una descripción"],a:0,
        ex:"Cowork es el asistente que trabaja con tus carpetas: lee, ordena y genera archivos listos para usar."},
@@ -764,7 +775,7 @@ const CURRICULUM={
        opts:["'Lee estas facturas y arma un resumen de gastos'","'Dime cuánto va a subir el dólar el mes que viene'","'Entra a mi banco y paga esta factura'","'Hazme una foto realista de mi loción nueva'"],a:0,
        ex:"Tareas con archivos: resumir, ordenar, analizar. Ahí Cowork brilla."}
     ]},
-    {id:"e4l2",t:"Genera cosas listas",d:"Reportes y análisis",ex:[
+    {id:"e5l2",t:"Genera cosas listas",d:"Reportes y análisis",ex:[
       {type:"mc",skill:"cowork",q:"Cowork puede generar…",
        opts:["Reportes, análisis y archivos listos para usar","Solo respuestas en el chat, nada que puedas descargar","Solo imágenes y videos","Correos, pero hay que copiarlos y pegarlos a mano"],a:0,
        ex:"Le pides un reporte de competidores o un análisis y te lo entrega hecho. Como un analista de a bordo."},
@@ -776,7 +787,7 @@ const CURRICULUM={
       {type:"fill",skill:"cowork",q:"Cowork es como un ______ que trabaja con tus carpetas.",
        opts:["analista","mensajero","vendedor","diseñador"],a:0,ex:"Un analista de a bordo: ordena, analiza y entrega. Tú diriges."}
     ]},
-    {id:"e4l3",t:"Se enseña una vez",d:"Tareas programadas",ex:[
+    {id:"e5l3",t:"Se enseña una vez",d:"Tareas programadas",ex:[
       {type:"mc",skill:"cowork",q:"Las 'tareas programadas' sirven para…",
        opts:["Que Cowork repita una tarea solo, cada día o cada semana","Que Cowork trabaje más rápido una sola vez","Que Cowork recuerde de qué hablaron ayer","Que Cowork le pida permiso a otra persona antes de actuar"],a:0,
        ex:"Lo describes UNA vez y Cowork lo hace solo cada vez que toque, hasta que tú lo apagues: un resumen diario, un reporte semanal."},
@@ -790,11 +801,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 5 · CONTROLES — Claude en Chrome ===== */
-  {id:"e5",etapa:5,name:"Controles",tag:"Las manos dentro de tus páginas web",ic:"🕹️",skill:"chrome",
-   insignia:{id:"e5",ic:"🕹️",n:"Manos de Cabina"},
+  /* ===== ETAPA 6 · CONTROLES — Claude en Chrome ===== */
+  {id:"e6",etapa:6,name:"Controles",tag:"Las manos dentro de tus páginas web",ic:"🕹️",skill:"chrome",
+   insignia:{id:"e6",ic:"🕹️",n:"Manos de Cabina"},
    lessons:[
-    {id:"e5l1",t:"¿Qué es Claude en Chrome?",d:"Opera la web por ti",ex:[
+    {id:"e6l1",t:"¿Qué es Claude en Chrome?",d:"Opera la web por ti",ex:[
       {type:"mc",skill:"chrome",q:"Claude en Chrome es como…",
        opts:["Unas manos que operan las páginas web que tú usas","Un buscador que te devuelve una lista de enlaces","Un programa que ordena los archivos de tu computador","Un bloqueador de anuncios para el navegador"],a:0,
        ex:"Trabaja en TU navegador, con TUS sesiones ya abiertas: ve lo que tú ves y opera portales, tiendas y formularios. Lo de plata (pagar, transferir) lo haces tú."},
@@ -806,7 +817,7 @@ const CURRICULUM={
       {type:"fill",skill:"chrome",q:"Chrome trabaja en TU navegador, con ______ accesos.",
        opts:["tus","otros","nuevos","sus"],a:0,ex:"Con tus propios accesos: ve lo mismo que tú, sin instalar nada raro."}
     ]},
-    {id:"e5l2",t:"Ejemplos reales",d:"Portales y reseñas",ex:[
+    {id:"e6l2",t:"Ejemplos reales",d:"Portales y reseñas",ex:[
       {type:"mc",skill:"chrome",q:"Un buen ejemplo para Claude en Chrome:",
        opts:["'Abre mi tienda y revisa qué productos no tienen precio'","'Ordena por fecha las fotos de mi carpeta de Descargas'","'Dime quién va a ganar el partido del Nacional el domingo'","'Escribe la canción del comercial de mi loción'"],a:0,
        ex:"Tareas en páginas: revisar, descargar, comparar, llenar. Ahí Chrome es un crack."},
@@ -818,7 +829,7 @@ const CURRICULUM={
       {type:"fill",skill:"chrome",q:"Chrome ______ los datos de las páginas; Cowork los organiza.",
        opts:["recoge","traduce","imprime","borra"],a:0,ex:"Chrome trae los datos de la web; Cowork los ordena. Buen equipo."}
     ]},
-    {id:"e5l3",t:"Poder con cuidado",d:"Seguridad",ex:[
+    {id:"e6l3",t:"Poder con cuidado",d:"Seguridad",ex:[
       {type:"mc",skill:"chrome",eth:true,q:"Regla de oro de seguridad con Claude en Chrome:",
        opts:["Dejar que primero lea y descargue; lo sensible (pagar, enviar) lo apruebas TÚ","Darle todos los permisos de una vez para que no te interrumpa","Guardarle tus contraseñas para que entre solo a los portales","Usarlo únicamente en páginas que no pidan iniciar sesión"],a:0,
        ex:"Trátalo como a un empleado nuevo: empieza por lo seguro (leer, descargar). Lo delicado lo apruebas tú."},
@@ -831,11 +842,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 6 · BITÁCORA — Claude en Excel y documentos ===== */
-  {id:"e6",etapa:6,name:"Bitácora",tag:"Claude en Excel y documentos",ic:"📊",skill:"oficina",
-   insignia:{id:"e6",ic:"📊",n:"Bitácora"},
+  /* ===== ETAPA 7 · BITÁCORA — Claude en Excel y documentos ===== */
+  {id:"e7",etapa:7,name:"Bitácora",tag:"Claude en Excel y documentos",ic:"📊",skill:"oficina",
+   insignia:{id:"e7",ic:"📊",n:"Bitácora"},
    lessons:[
-    {id:"e6l1",t:"Claude en Excel",d:"El copiloto de la hoja",ex:[
+    {id:"e7l1",t:"Claude en Excel",d:"El copiloto de la hoja",ex:[
       {type:"mc",skill:"oficina",q:"Claude en Excel te ayuda a…",
        opts:["Revisar, explicar y construir tus hojas de cálculo","Imprimir la hoja con mejor calidad","Convertir la hoja en una imagen","Guardar la hoja en internet para que no se pierda"],a:0,
        ex:"Le preguntas '¿por qué esto no cuadra?', él revisa la hoja y te explica. Un copiloto de números."},
@@ -847,7 +858,7 @@ const CURRICULUM={
        opts:["Llevar el inventario y las ventas, y que la IA te explique los números","Diseñar la etiqueta y el frasco de la loción","Escribir los textos de tus publicaciones de Instagram","Elegir el aroma que más le gusta a la gente"],a:0,
        ex:"Controlas cuántas lociones tienes, cuánto vendes y tu ganancia. La IA te ayuda a entenderlo."}
     ]},
-    {id:"e6l2",t:"Nada sin tu OK",d:"Tú apruebas",ex:[
+    {id:"e7l2",t:"Nada sin tu OK",d:"Tú apruebas",ex:[
       {type:"mc",skill:"oficina",eth:true,q:"Cuando Claude propone corregir una celda…",
        opts:["Tú (o el adulto a cargo) apruebas antes de aplicar","Se aplica sola y queda registrada en el historial","Se aplica sola, pero únicamente si la fórmula da error","Se guarda aparte y se aplica al cerrar el archivo"],a:0,
        ex:"Claude propone; tú apruebas celda por celda. Nada cambia sin tu OK."},
@@ -861,11 +872,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 7 · PILOTO AUTOMÁTICO — Agentes ===== */
-  {id:"e7",etapa:7,name:"Piloto Automático",tag:"Agentes y automatizaciones",ic:"🤖",skill:"agentes",
-   insignia:{id:"e7",ic:"🤖",n:"Piloto Automático"},
+  /* ===== ETAPA 8 · PILOTO AUTOMÁTICO — Agentes ===== */
+  {id:"e8",etapa:8,name:"Piloto Automático",tag:"Agentes y automatizaciones",ic:"🤖",skill:"agentes",
+   insignia:{id:"e8",ic:"🤖",n:"Piloto Automático"},
    lessons:[
-    {id:"e7l1",t:"¿Qué es un agente?",d:"De ayudante a piloto automático",ex:[
+    {id:"e8l1",t:"¿Qué es un agente?",d:"De ayudante a piloto automático",ex:[
       {type:"mc",skill:"agentes",q:"Un 'agente' de IA es…",
        opts:["Una IA que actúa sola para lograr un objetivo, no solo responde","Una IA que solo contesta cuando tú le escribes algo","Un buscador que te muestra enlaces para que tú decidas","Un programa que sigue un guion fijo y nunca se adapta"],a:0,
        ex:"Un agente tiene un objetivo, memoria e iniciativa: observa, piensa, actúa y evalúa. Trabaja solo hacia una meta."},
@@ -877,7 +888,7 @@ const CURRICULUM={
       {type:"fill",skill:"agentes",q:"Un agente tiene un ______ y trabaja por su cuenta para lograrlo.",
        opts:["objetivo","permiso","reporte","horario"],a:0,ex:"El objetivo es su brújula. Todo lo que hace es para cumplirlo."}
     ]},
-    {id:"e7l2",t:"Que se repita solo",d:"Automatizaciones",ex:[
+    {id:"e8l2",t:"Que se repita solo",d:"Automatizaciones",ex:[
       {type:"mc",skill:"agentes",q:"Una automatización sirve para…",
        opts:["Que una tarea se haga sola cada día o semana sin que la pidas","Que la IA responda más rápido cuando le escribes","Que la IA te responda con textos más largos","Que la IA aprenda tus gustos y te recomiende cosas"],a:0,
        ex:"'Todos los lunes a las 5 a. m., descarga los datos y arma el reporte.' Se hace solo. Ahorro que se repite."},
@@ -889,7 +900,7 @@ const CURRICULUM={
        opts:["vigila menciones de tu marca y te avisa por WhatsApp","te corrige la ortografía mientras escribes","traduce un texto cuando se lo pegas","te muestra el clima al abrir el celular"],a:0,
        ex:"Escanea redes cada rato y te manda un resumen con propuesta de respuesta. Tu vigía personal."}
     ]},
-    {id:"e7l3",t:"El director de orquesta",d:"Orquestar agentes",ex:[
+    {id:"e8l3",t:"El director de orquesta",d:"Orquestar agentes",ex:[
       {type:"mc",skill:"agentes",q:"Un agente 'jefe' puede…",
        opts:["Dirigir a otras herramientas y agentes hacia un objetivo","Decidir sin que ningún humano pueda revisarlo","Hacer una sola tarea, siempre exactamente la misma","Guardar tus contraseñas para entrar a cualquier cuenta"],a:0,
        ex:"Como un director de orquesta: coordina a Chrome, Cowork y Excel para lograr algo grande. Tú controlas al director."},
@@ -902,11 +913,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 8 · INGENIERÍA DE VUELO — Crear con IA ===== */
-  {id:"e8",etapa:8,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
-   insignia:{id:"e8",ic:"🔧",n:"Ingeniero de Vuelo"},
+  /* ===== ETAPA 9 · INGENIERÍA DE VUELO — Crear con IA ===== */
+  {id:"e9",etapa:9,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
+   insignia:{id:"e9",ic:"🔧",n:"Ingeniero de Vuelo"},
    lessons:[
-    {id:"e8l1",t:"Crear sin programar",d:"Claude Code",ex:[
+    {id:"e9l1",t:"Crear sin programar",d:"Claude Code",ex:[
       {type:"mc",skill:"crear",q:"Con Claude Code tú…",
        opts:["Dices qué quieres y la IA lo construye, sin saber programar","Escribes el código tú y la IA solo te lo corrige","Necesitas ser ingeniero de sistemas para poder empezar","Solo puedes usar plantillas ya hechas, sin cambiarles nada"],a:0,
        ex:"Tú tienes la idea; Claude la ejecuta. Solo dices qué quieres y avanzas. ¡Como este mismo juego!"},
@@ -918,7 +929,7 @@ const CURRICULUM={
        opts:["Un marcador de pádel o un catálogo de tus lociones","Una app de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que pilotee un avión de verdad"],a:0,
        ex:"Cosas simples y útiles para ti. Empiezas pequeño y mejoras por partes."}
     ]},
-    {id:"e8l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
+    {id:"e9l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
       {type:"mc",skill:"crear",q:"'Vibecoding' significa…",
        opts:["Crear rápido un prototipo con IA, sin saber código","Programar escuchando música para concentrarte mejor","Copiar código de internet y pegarlo sin entenderlo","Diseñar cómo se ve una app, pero sin que funcione"],a:0,
        ex:"De idea a prototipo en horas: pruebas tu idea rapidísimo y la mejoras al instante."},
@@ -932,11 +943,11 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 9 · COMANDO — Uso responsable y repaso ===== */
-  {id:"e9",etapa:9,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
-   insignia:{id:"e9",ic:"👨‍✈️",n:"Capitán IA",logo:true},
+  /* ===== ETAPA 10 · COMANDO — Uso responsable y repaso ===== */
+  {id:"e10",etapa:10,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
+   insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA",logo:true},
    lessons:[
-    {id:"e9l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
+    {id:"e10l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
       {type:"mc",skill:"etica",eth:true,q:"Una 'alucinación' de la IA es…",
        opts:["Cuando inventa un dato falso pero lo dice muy seguro","Cuando te dice que no sabe la respuesta","Cuando se demora mucho en responder","Cuando entiende mal tu pregunta y te responde otra cosa"],a:0,
        ex:"Inventa con seguridad. Por eso los datos duros (cifras, fechas, nombres) siempre se verifican."},
@@ -948,7 +959,7 @@ const CURRICULUM={
       {type:"fill",skill:"etica",eth:true,q:"Cuando la IA da una cifra exacta y rara, lo primero que hago es ______.",
        opts:["comprobarla","creerla","copiarla","compartirla"],a:0,ex:"Tú decides al final. La IA es el copiloto; el capitán eres tú."}
     ]},
-    {id:"e9l2",t:"Vuela seguro",d:"Ética y datos",ex:[
+    {id:"e10l2",t:"Vuela seguro",d:"Ética y datos",ex:[
       {type:"mc",skill:"etica",eth:true,q:"¿Qué NO debes escribirle nunca a una IA?",
        opts:["Tu dirección, teléfono o datos de tu familia","Una duda del colegio que no entendiste","Una idea para tu negocio de lociones","El resumen de un libro que estás leyendo"],a:0,
        ex:"Nunca datos personales tuyos ni de tu familia. Eres menor: tu información es privada."},
@@ -960,7 +971,7 @@ const CURRICULUM={
       {type:"fill",skill:"etica",eth:true,q:"Lema del Piloto Seguro: la IA asiste, yo ______.",
        opts:["decido","acepto","repito","comparto"],a:0,ex:"Tú tienes el control. Usar la IA con cabeza es de capitanes."}
     ]},
-    {id:"e9l3",t:"Repaso de Capitán",d:"Lo más importante",ex:[
+    {id:"e10l3",t:"Repaso de Capitán",d:"Lo más importante",ex:[
       {type:"mc",skill:"etica",q:"Lo más importante de un buen prompt es…",
        opts:["Contexto y objetivo claros","Que sea lo más largo y detallado posible","Usar palabras técnicas para que la IA te tome en serio","Pedirle varias cosas distintas en un mismo mensaje"],a:0,
        ex:"¡Los dos vitales! Contexto + objetivo. Ya piensas como un Prompt Master."},
@@ -1024,19 +1035,22 @@ const DEFAULT_STATE=()=>({xp:0,streak:0,bestStreak:0,lastDay:null,streakShield:1
   lessonsCount:0,exCount:0,correctCount:0,createdAt:0,fails:{},_t:0});
 let S=DEFAULT_STATE();
 function stateKey(){ return STATE_PREFIX+(activeId||"none"); }
-/* El 28/07/2026 la etapa 4 (Radar) se fusionó dentro de la 3, así que las etapas
-   5..10 pasaron a ser 4..9. Esto mueve el progreso viejo a los ids nuevos para que
-   nadie pierda insignias ni lecciones ya hechas. Se ejecuta una sola vez. */
+/* Mueve el progreso guardado cuando se reorganizan las etapas, para que nadie
+   pierda insignias ni lecciones ya hechas. Se ejecuta una sola vez por perfil.
+     · Sin _mig  = orden original de 10 etapas → ya coincide con el de hoy: no se toca.
+     · _mig = 2  = el orden de 9 etapas del 27/07 → sus etapas 4..9 suben a 5..10,
+                   porque el 28/07 nació la nueva etapa 4 (Radar). */
 function migrarIds(st){
-  if(!st || st._mig>=2) return st;
-  const mapa={}; for(let v=5;v<=10;v++) mapa["e"+v]="e"+(v-1);
+  if(!st || st._mig>=3) return st;
+  const mapa={};
+  if(st._mig===2){ for(let v=9;v>=4;v--) mapa["e"+v]="e"+(v+1); }
   const mueve=obj=>{ if(!obj) return obj; const out={};
     Object.keys(obj).forEach(k=>{ const m=k.match(/^e(\d+)(l\d+)?(#\d+)?$/);
       if(m && mapa["e"+m[1]]) out[mapa["e"+m[1]]+(m[2]||"")+(m[3]||"")]=obj[k]; else out[k]=obj[k]; });
     return out; };
   st.done=mueve(st.done); st.moduleDone=mueve(st.moduleDone); st.fails=mueve(st.fails);
   st.review=[];               // los repasos guardaban posiciones que ya cambiaron
-  st._mig=2; return st;
+  st._mig=3; return st;
 }
 function loadState(){ try{const r=localStorage.getItem(stateKey());if(r)return migrarIds(Object.assign(DEFAULT_STATE(),JSON.parse(r)));}catch(e){} return DEFAULT_STATE(); }
 function saveLocal(){ if(!activeId) return; try{localStorage.setItem(stateKey(),JSON.stringify(S));}catch(e){} }
@@ -1578,42 +1592,49 @@ const PLANES={
   {t:"Hablarle a la IA (tema corto) + manos a la obra",como:"5 min: hablamos 4× más rápido de lo que escribimos, y el modo voz responde con un modelo más rápido y menos profundo → para lo difícil, DICTA a texto. Luego cada uno genera su imagen (máx 3 intentos).",ej:"Daniel dicta por voz un prompt largo de su loción y ven cuánto contexto dio en 20 segundos; después lo usa como texto.",tdah:"El tope de 3 intentos es clave. Cronómetro visible."},
   {t:"Arréglala: segunda versión",como:"Iterar: tomar SU imagen y cambiar 1-2 cosas. Comparan v1 vs v2 lado a lado.",ej:"El escudo salió con colores raros → «verde y blanco del Atlético Nacional, escudo limpio». Antes/después en pantalla.",tdah:"⏸️ Descanso ANTES (~1h55). Comparar v1/v2 da recompensa visual inmediata."},
   {t:"Proyectos e investigar a fondo + galería",como:"10 min: crear un Proyecto con sus instrucciones fijas y lanzar una investigación a fondo. Cierran con mini-galería.",ej:"Crean el proyecto «Mis lociones» con precios y estilo; lanzan una investigación de qué aromas se venden a su edad.",tdah:"Terminar mostrando lo propio deja subidón. Tarea: jugar la etapa en casa."}]},
- e4:{tema:"Cowork: la IA que trabaja con tus archivos",blocks:[
+ e4:{tema:"Proyectos e investigar a fondo",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 4 (~10 min). Salen Proyectos, Deep Research y NotebookLM.",ej:"Juegan la pregunta de para qué sirve un Proyecto y la de por qué NotebookLM no busca en internet.",tdah:"Meta visible: «hoy montamos el cuartel general de su negocio»."},
+  {t:"Proyectos: el espacio que ya te conoce",como:"Crea un Proyecto EN VIVO y muestra la diferencia: primero pregunta sin proyecto, luego dentro del proyecto con instrucciones puestas.",ej:"Creas «Mis lociones» con sus precios, su público y su tono; la misma pregunta sale mucho más afinada dentro del proyecto.",tdah:"El contraste antes/después es el gancho. Que él dicte las instrucciones del proyecto."},
+  {t:"Investigación a fondo (Deep Research)",como:"Lanza una investigación de verdad y mientras corre explica qué está haciendo. Vuelvan al resultado a leer las fuentes.",ej:"«Investiga qué aromas prefieren los hombres de 14 a 18 años en Colombia y con qué presupuesto compran». Revisan las fuentes juntos.",tdah:"⏸️ Descanso 5 min ANTES (55'). Deep Research se demora: lánzalo y usa la espera para el descanso."},
+  {t:"NotebookLM: estudiar con TUS materiales",como:"Cargan un documento real del colegio y le piden resumen, preguntas de repaso y explicación fácil.",ej:"Suben la guía de un tema que viene en el examen y le piden 10 preguntas de práctica con respuestas.",tdah:"Que sea material de un examen REAL y cercano: la utilidad inmediata sostiene la atención."},
+  {t:"Verificar: el radar del piloto",como:"Toma un dato del reporte y compruébenlo en la fuente original. Enseña las señales de alerta.",ej:"Buscan la cifra exacta que dio Deep Research en la página que citó. Si no aparece, se celebra el hallazgo.",tdah:"⏸️ Descanso ANTES (~1h55). Formato de juego: puntos por dato verificado."},
+  {t:"Muestra y despega",como:"Cada uno muestra su Proyecto montado y un dato que verificó.",ej:"Daniel presenta «Mis lociones» y el dato de aromas que comprobó. Tarea: terminar la etapa.",tdah:"Cerrar con el cuartel general montado deja sensación de herramienta propia."}]},
+ e5:{tema:"Cowork: la IA que trabaja con tus archivos",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 4 (~10 min). Queda claro qué es Cowork antes de verlo.",ej:"Juegan las preguntas de qué puede y qué NO puede tocar Cowork.",tdah:"Meta visible: «hoy la IA nos entrega un archivo hecho»."},
   {t:"Chat vs. trabajar con tus archivos",como:"Muestra la diferencia: el chat responde, Cowork ENTREGA archivos. Ábrelo en vivo.",ej:"Le das una carpeta con fotos y notas de las lociones y le pides un resumen en un documento.",tdah:"Que vean el archivo aparecer: el resultado visible es el gancho."},
   {t:"Permisos: tú mandas",como:"Enseña a dar acceso solo a una carpeta y a revisar antes de aprobar. Seguridad primero.",ej:"Le das acceso a UNA carpeta de prueba y muestras que no ve las demás.",tdah:"⏸️ Descanso ANTES (55'). Bloque corto: es concepto, no práctica larga."},
   {t:"Manos a la obra: tu primer entregable",como:"Cada uno le pide a Cowork algo real de su vida y lo revisa.",ej:"Daniel: «con estas notas arma la lista de precios de mis lociones en una tabla».",tdah:"Un solo entregable por persona. Cronómetro."},
   {t:"Revisar y corregir",como:"Enseña a NO aceptar a ciegas: revisan el entregable y piden 2 correcciones concretas.",ej:"«Faltó el precio del combo y ordénalo de mayor a menor». Ven la versión corregida.",tdah:"⏸️ Descanso ANTES (~1h55). Corregir es más entretenido que crear desde cero."},
   {t:"Tareas que se repiten + cierre",como:"Muestra programar una tarea recurrente. Cierran mostrando su entregable.",ej:"«Cada domingo, resume mis ventas de la semana». Tarea: terminar la etapa en casa.",tdah:"Cerrar con algo que trabaja solo deja sensación de superpoder."}]},
- e5:{tema:"Claude en Chrome: manos en la web",blocks:[
+ e6:{tema:"Claude en Chrome: manos en la web",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 5 (~10 min). Sale la diferencia con Cowork.",ej:"Juegan la pregunta de Cowork (archivos) vs Chrome (páginas web).",tdah:"Meta: «hoy la IA nos ahorra clics de verdad»."},
   {t:"Qué ve y qué no ve",como:"Aclara bien: ve la PESTAÑA donde lo activas, no toda la pantalla. Muéstralo activándolo y desactivándolo.",ej:"Lo activas en una página de pesca y le pides que resuma; luego abres otra pestaña y muestras que ahí no está.",tdah:"Este bloque previene miedo y mal uso. Demuéstralo, no lo expliques."},
   {t:"Ejemplos reales",como:"Tareas de verdad dentro de páginas: revisar, comparar, llenar formularios largos.",ej:"«Revisa esta tienda y dime qué productos no tienen precio». O comparar 3 lociones en una tienda online.",tdah:"⏸️ Descanso ANTES (55'). Elige páginas que a él le interesen."},
   {t:"Manos a la obra",como:"Cada uno le pone una tarea real en una página que use. Tú rotas.",ej:"Daniel lo pone a comparar precios de perfumería para fijar el suyo.",tdah:"Máximo 2 tareas por persona. Que la primera sea fácil."},
   {t:"Lo que NUNCA se le delega",como:"Regla dura: pagar, transferir, mandar mensajes y contraseñas son SIEMPRE del humano.",ej:"Le pides que llene un carrito pero TÚ das clic en pagar. La frontera queda vista, no dicha.",tdah:"⏸️ Descanso ANTES (~1h55). Regla en una sola frase, repetida."},
   {t:"Muestra y despega",como:"Cada uno cuenta cuánto tiempo se ahorró. Cierras con la tarea.",ej:"Comparan cuántos clics se ahorraron. Tarea: terminar la etapa.",tdah:"Medir el ahorro en minutos lo hace concreto."}]},
- e6:{tema:"Claude en Excel: los números de tu negocio",blocks:[
+ e7:{tema:"Claude en Excel: los números de tu negocio",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 6 (~10 min).",ej:"Juegan las preguntas de qué puede hacer en una hoja de cálculo.",tdah:"Meta: «hoy sabemos cuánto gana de verdad el negocio»."},
   {t:"Explica y construye",como:"Muestra las dos caras: que te EXPLIQUE una hoja y que te la CONSTRUYA desde cero.",ej:"Le pides que arme la hoja de inventario de lociones con fórmula de ganancia.",tdah:"Ver la fórmula aparecer sola engancha más que explicarla."},
   {t:"Tus números reales",como:"Cargan datos reales (aunque sean pocos) y hacen preguntas de negocio.",ej:"«¿Cuál loción me deja más ganancia?» «¿Cuánto llevo vendido este mes?»",tdah:"⏸️ Descanso ANTES (55'). Sus datos, no ejemplos inventados."},
   {t:"Manos a la obra",como:"Cada uno arma su hoja. Tú rotas resolviendo.",ej:"Daniel deja su control de inventario y ganancia funcionando.",tdah:"Una sola hoja, bien hecha. Nada de perfeccionismo."},
   {t:"Aprobar antes de aplicar",como:"Enseña que el cambio se ve ANTES de aplicarse y que él aprueba.",ej:"Propone un cambio de fórmula; lo revisan juntos antes de aceptar.",tdah:"⏸️ Descanso ANTES (~1h55)."},
   {t:"Muestra y despega",como:"Cada uno muestra su hoja y un número que descubrió.",ej:"Daniel dice cuánto gana por frasco. Tarea: terminar la etapa.",tdah:"Descubrir un número propio cierra con impacto."}]},
- e7:{tema:"Agentes: que trabaje solo",blocks:[
+ e8:{tema:"Agentes: que trabaje solo",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 7 (~10 min).",ej:"Juegan la pregunta de qué diferencia a un agente de un chat.",tdah:"Meta: «hoy dejamos algo trabajando solo»."},
   {t:"Qué es un agente de verdad",como:"Observar → pensar → actuar → revisar. Con un ejemplo, no con teoría.",ej:"Un agente que vigila si alguien menciona su marca y le avisa.",tdah:"Dibuja el ciclo en 4 palabras y déjalo a la vista."},
   {t:"El piloto automático (no el capitán)",como:"Deja clarísimo que el agente es el piloto automático y él sigue siendo el capitán.",ej:"Analogía de vuelo: el piloto automático vuela el tramo, el capitán puede desconectarlo cuando quiera.",tdah:"⏸️ Descanso ANTES (55'). La analogía de avión es su lenguaje."},
   {t:"Manos a la obra",como:"Cada uno define un agente sencillo por escrito: objetivo, cada cuánto y qué NO puede hacer.",ej:"«Cada domingo revisa precios de la competencia y mándame el resumen. No compres nada.»",tdah:"Plantilla de 3 líneas para llenar."},
   {t:"Límites y permisos",como:"Qué pasa si se equivoca: límites, avisos y apagarlo.",ej:"Revisan qué haría el agente si el precio bajara raro. Definen el aviso.",tdah:"⏸️ Descanso ANTES (~1h55)."},
   {t:"Muestra y despega",como:"Cada uno presenta su agente y su límite.",ej:"Daniel presenta su vigilante de precios. Tarea: terminar la etapa.",tdah:"Presentar el LÍMITE, no solo la idea: fija el criterio."}]},
- e8:{tema:"Crear con IA sin programar",blocks:[
+ e9:{tema:"Crear con IA sin programar",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 8 (~10 min).",ej:"Juegan las preguntas de qué se puede construir sin saber código.",tdah:"Meta: «hoy cada uno estrena algo hecho por él»."},
   {t:"De la idea al prototipo",como:"Muestra en vivo cómo una frase se vuelve algo que funciona.",ej:"Pides un marcador de pádel simple y aparece funcionando en minutos.",tdah:"Que vean el resultado antes de entender el cómo."},
   {t:"Empezar pequeño",como:"La regla: algo chiquito que funcione hoy, no algo enorme que nunca sale.",ej:"Comparas «una app de banco» (no) con «un catálogo de mis lociones» (sí).",tdah:"⏸️ Descanso ANTES (55'). Regla en una frase."},
   {t:"Manos a la obra",como:"Cada uno construye su prototipo. Tú rotas desatascando.",ej:"Daniel arma su catálogo de lociones con fotos y precios.",tdah:"Un prototipo feo que funciona vale más que uno bonito a medias."},
   {t:"Mejorar de a poco",como:"Enseña a pedir un cambio a la vez y probar.",ej:"«Ponle los colores de Nacional» → prueban → «agrega el botón de WhatsApp».",tdah:"⏸️ Descanso ANTES (~1h55). Un cambio = una prueba."},
   {t:"Muestra y despega",como:"Cada uno muestra lo suyo funcionando.",ej:"Daniel enseña su catálogo. Tarea: terminar la etapa.",tdah:"Mostrar algo propio funcionando es el cierre más fuerte del curso."}]},
- e9:{tema:"Uso responsable: el mando es tuyo",blocks:[
+ e10:{tema:"Uso responsable: el mando es tuyo",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 9 (~10 min).",ej:"Juegan las preguntas de alucinaciones y datos personales.",tdah:"Meta: «hoy salimos sabiendo cuándo NO hacerle caso»."},
   {t:"Alucinaciones: cazar el error",como:"Provoca datos falsos y que los detecten. Enseña las señales: cifras exactas raras, fuentes que no se pueden comprobar.",ej:"Preguntas un récord de pesca muy específico y verifican juntos.",tdah:"Formato de juego: puntos por error cazado."},
   {t:"Datos que nunca se dan",como:"Lista corta y clara: dirección, teléfono, datos de la familia, contraseñas.",ej:"Muestras un mensaje que pide datos «para un premio» y practican decir que no.",tdah:"⏸️ Descanso ANTES (55'). Lista de 4, no de 20."},
