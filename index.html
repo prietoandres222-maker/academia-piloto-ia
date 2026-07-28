@@ -293,6 +293,23 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .csopt{font-size:12px;font-weight:700;padding:7px 11px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--dim);cursor:pointer}
 .csopt.sel{border-color:var(--cyan);color:var(--cyan);background:var(--panel2)}
 
+/* ===== PLAN DE CLASE (solo Comandante) ===== */
+.planentry{display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0e7490,#0b5c9c);border:1.5px solid var(--cyan);border-radius:16px;padding:13px 15px;margin:14px 0 4px;cursor:pointer;box-shadow:0 8px 22px rgba(34,211,238,.25);transition:transform .12s}
+.planentry:active{transform:scale(.985)}
+.planentry .pe-ic{font-size:26px;flex-shrink:0}
+.planentry .pe-txt{flex:1;min-width:0}
+.planentry .pe-t{font-size:15px;font-weight:800;color:#fff}
+.planentry .pe-s{font-size:11.5px;color:#d9f4ff;margin-top:2px;line-height:1.35}
+.planentry .pe-go{background:#fff;color:#04121f;font-weight:800;font-size:12.5px;padding:8px 12px;border-radius:10px;white-space:nowrap;flex-shrink:0}
+.planpick{display:flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 8px;margin-bottom:12px}
+.planarrow{width:38px;height:38px;border-radius:11px;background:var(--panel2);border:1px solid var(--line);color:var(--cyan);font-size:15px;font-weight:800;flex-shrink:0}
+.planarrow:disabled{opacity:.25;pointer-events:none}
+.planmid{flex:1;min-width:0;text-align:center}
+.planet{font-size:14.5px;font-weight:800;line-height:1.15}
+.plantema{font-size:11.5px;color:var(--dim);margin-top:2px}
+.planchip{display:inline-block;font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;margin-top:5px;background:var(--panel2);color:var(--dim2)}
+.planchip.now{background:var(--cyan);color:#04121f}
+
 /* ===== TABLERO DE TRIPULACIÓN (Comandante) ===== */
 .crewcard{background:linear-gradient(135deg,#16265a,#0c1738);border:1px solid var(--line);border-radius:16px;padding:13px 14px;margin-bottom:11px;box-shadow:var(--sh)}
 .crewtop{display:flex;align-items:center;gap:11px}
@@ -416,7 +433,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   <section class="screen" id="scr-tutor"></section>
   <nav class="nav">
     <button class="navbtn active" data-nav="path"><span class="ni">🗺️</span>Camino</button>
-    <button class="navbtn" data-nav="session"><span class="ni">⏱️</span>Sesión</button>
     <button class="navbtn" data-nav="profile"><span class="ni">🏅</span>Perfil</button>
     <button class="navbtn" data-nav="tutor"><span class="ni">🎖️</span>Comandante</button>
   </nav>
@@ -990,7 +1006,8 @@ function loadConfig(){ try{const r=localStorage.getItem(CONFIG_KEY);if(r)return 
 function defConfig(){ return {
   rewards:{Alférez:"",Teniente:"","Primer Oficial":""},
   prizeText:"Cuando llegues a Capitán IA, vuelas de verdad: 1 hora en un simulador de Airbus A320 con pilotos reales en V1 Aviation Center (Medellín).",
-  dadLetter:"", familyNote:"" }; }
+  dadLetter:"", familyNote:"",
+  claseFijada:"e3" }; }   /* la clase del 28/07/2026; se cambia con un toque en el plan */
 let CFG=loadConfig();
 function saveConfig(){ try{localStorage.setItem(CONFIG_KEY,JSON.stringify(CFG));}catch(e){} }
 
@@ -1533,28 +1550,132 @@ function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.level
 /* Campana reconocible de fin de bloque (triple ding) */
 function sndBell(){ if(S.muted)return; const c=ac(); if(!c)return; if(c.state==='suspended')c.resume(); let t=c.currentTime;
   for(let i=0;i<3;i++){ [1568,1047].forEach(f=>{ const o=c.createOscillator(),g=c.createGain(); o.type='sine'; o.frequency.value=f; g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(.2,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+.5); o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+.5); }); t+=.38; } }
-/* Plan de la próxima clase (Sesión 3: imágenes). Cada bloque: cómo hacerlo + ejemplo real + tip TDAH */
-const BLOCKS=[
- {t:"Despegue: la etapa de hoy",como:"Proyecta la etapa nueva del juego y JUÉGUENLA JUNTOS, tú narrando. Engancha y repasa. Cierra con la pregunta del día en voz alta.",ej:"Juegan juntos la etapa de imágenes; entre todos escriben el prompt que pide el juego y ven cómo cambia el dibujo.",tdah:"Arranca con la pantalla ya prendida, sin sermón. Meta visible: «hoy cada uno sale con 3 imágenes suyas»."},
- {t:"¿Cómo ve la IA? De palabras a dibujo",como:"10 min explicando cómo el modelo convierte texto en imagen (sin tecnicismos) + 15 min generando EN VIVO, pensando el prompt en voz alta.",ej:"Generas «un guacamayo con gorra de piloto, estilo caricatura»; cambias una palabra (gorra→casco) y muestran cómo cambia.",tdah:"Máx 10 min hablando seguido. Deja que Daniel diga la siguiente palabra a cambiar."},
- {t:"El prompt que sí funciona",como:"Receta del buen prompt de imagen: sujeto + estilo + detalle + fondo. Ellos escriben el suyo; corriges 2-3 en vivo.",ej:"Cada uno el prompt del escudo de su «marca». Daniel: etiqueta de lociones o guacamayo-piloto de Nacional. Corriges: «fondo blanco, estilo logo plano».",tdah:"⏸️ Descanso de 5 min ANTES de este bloque (llevan 55'). Tarea de una sola frase."},
- {t:"Manos a la obra: tu primera imagen",como:"Cada uno genera su imagen. Tú rotas ayudando. Máximo 3 intentos por imagen (que no se enganchen infinito).",ej:"Daniel genera la etiqueta de su loción o el guacamayo-piloto. Guardan el mejor resultado.",tdah:"El tope de 3 intentos es clave. Cronómetro visible. Celebra al primero con algo usable."},
- {t:"Arréglala: segunda versión",como:"Enseña a iterar: tomar SU imagen y mejorarla cambiando 1-2 cosas. Comparan v1 vs v2 en pantalla.",ej:"El escudo salió con colores raros → «verde y blanco del Atlético Nacional, escudo limpio». Ven antes/después lado a lado.",tdah:"⏸️ Segundo descanso de 5 min ANTES (llevan ~1h55). Comparar v1/v2 da recompensa visual inmediata."},
- {t:"Muestra y despega",como:"Mini-galería: cada uno muestra su mejor imagen y dice su prompt (10 min). Cierras con el «para la casa».",ej:"Daniel presenta su etiqueta y su guacamayo-piloto. Tarea: volver a jugar la etapa en casa y traer una imagen nueva libre.",tdah:"Terminar mostrando lo propio deja subidón de logro. El juego como tarea cierra sin comerse la clase."}
-];
+/* =====================================================================
+   PLANES DE CLASE POR ETAPA (solo los ve Andrés, en Modo Comandante)
+   Cada etapa trae 6 bloques de 25 min con: cómo darlo · ejemplo real
+   aterrizado a Daniel (pesca, Nacional, lociones, aviación) · tip TDAH.
+   La pantalla escoge SOLA la etapa que sigue según el avance del grupo.
+   ===================================================================== */
+const PLANES={
+ e1:{tema:"Qué es capaz de hacer la IA",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 1 y JUÉGUENLA JUNTOS (~10 min), tú narrando. Engancha y deja el vocabulario puesto.",ej:"Lees en voz alta la pregunta de qué es un modelo y que Daniel escoja; celebras el acierto con el sonido del juego.",tdah:"Pantalla ya prendida, sin sermón inicial. Meta visible: «hoy cada uno le saca a la IA algo que no sabía hacer»."},
+  {t:"El genio que sabe de todo",como:"Muestra EN VIVO la amplitud: misma IA resolviendo cosas de mundos distintos, sin cambiar de herramienta.",ej:"En la misma ventana: explica un tema del colegio, arma una rutina de pesca y te corrige un mensaje de venta de lociones.",tdah:"Cambia de ejemplo cada 3-4 min. Que él elija el tercer tema."},
+  {t:"Exponencial: por qué esto cambió",como:"Compara lo que hacía la IA hace 2 años con hoy. La idea a fijar: no es un cambio, es un cambio DE ERA.",ej:"Muestra una imagen generada hace años (deforme) contra una de hoy. La cara que pone es la clase.",tdah:"⏸️ Descanso 5 min ANTES (llevan 55'). Este bloque es visual: pon el antes/después grande."},
+  {t:"Modelos: no todos piensan igual",como:"Explica modelo rápido vs modelo que razona. Haz la MISMA pregunta difícil en ambos y comparen respuestas.",ej:"«¿Me conviene vender la loción a $25.000 o a $35.000?» con datos suyos. Comparan cuál razona mejor.",tdah:"Que él lea las dos respuestas y diga cuál es mejor: lo vuelve juez, no espectador."},
+  {t:"Alucina: verifica siempre",como:"Provoca un error a propósito y que lo cacen. Enséñale a pedir la fuente y a comprobarla.",ej:"Pregunta por un récord de pesca muy específico; buscan juntos si el dato es real. Cazar el error se celebra.",tdah:"⏸️ Segundo descanso ANTES (~1h55). Convierte esto en juego: «el que caza el error gana»."},
+  {t:"Muestra y despega",como:"Cada uno cuenta el mejor uso que le encontró hoy. Cierras con la tarea.",ej:"Daniel muestra la respuesta que más le sirvió. Tarea: terminar la Etapa 1 en casa.",tdah:"Cerrar mostrando lo propio deja sensación de logro. La tarea es el juego, no más trabajo."}]},
+ e2:{tema:"Prompts: cómo pedirle bien",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 2 (~10 min). Salen contexto y objetivo, que son la columna del día.",ej:"Entre todos arreglan el prompt malo que muestra el juego y ven cómo mejora la respuesta.",tdah:"Empieza jugando, no explicando. Meta: «hoy cada uno se lleva SU prompt maestro»."},
+  {t:"Los dos vitales: contexto y objetivo",como:"Muestra el mismo pedido sin y con contexto+objetivo. La diferencia de respuesta enseña sola.",ej:"«Dame ideas» vs «Tengo 15 años, vendo lociones en el colegio a $30.000, dame 5 ideas para vender más esta semana».",tdah:"Máximo 8 min hablando. Que él dicte el contexto: se lo aprende haciéndolo."},
+  {t:"El rol: como un experto",como:"Enseña el «cómo» del rol: entre más específico el experto, mejor la respuesta. Compara dos roles en vivo.",ej:"«como un vendedor» vs «como un vendedor experto en perfumería juvenil». Leen las dos respuestas.",tdah:"⏸️ Descanso 5 min ANTES (55'). Bloque corto y con comparación visible."},
+  {t:"Trucos de piloto",como:"Paso a paso, dividir tareas, pedir versión 2, TLDR. Uno por uno, aplicándolos al mismo pedido.",ej:"Sobre su plan de ventas: «hazlo paso a paso», luego «dame la versión 2 más agresiva», luego «resúmelo en 5 líneas».",tdah:"Un truco = una prueba inmediata. Nada de listas teóricas."},
+  {t:"Arma tu prompt maestro",como:"Cada uno escribe su prompt completo (rol + contexto + objetivo + formato). Corriges 2-3 en vivo.",ej:"Daniel arma el prompt de su negocio de lociones y lo guarda en notas para reusarlo.",tdah:"⏸️ Descanso ANTES (~1h55). Plantilla en pantalla para que solo rellene."},
+  {t:"Muestra y despega",como:"Cada uno lee su prompt y la respuesta que sacó. Cierras con la tarea.",ej:"Comparan qué prompt sacó la mejor respuesta y por qué. Tarea: terminar la Etapa 2.",tdah:"Competencia sana por el mejor prompt: cierra con energía."}]},
+ e3:{tema:"Imágenes, hablarle a la IA y proyectos",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 3 y JUÉGUENLA JUNTOS (~10 min), tú narrando. Engancha y repasa.",ej:"Entre todos escriben el prompt de imagen que pide el juego y ven cómo cambia el dibujo al cambiar una palabra.",tdah:"Pantalla prendida, sin sermón. Meta visible: «hoy cada uno sale con 3 imágenes suyas»."},
+  {t:"De palabras a dibujo",como:"10 min de cómo el modelo convierte texto en imagen (sin tecnicismos) + 15 min generando EN VIVO, pensando el prompt en voz alta.",ej:"Generas «un guacamayo con gorra de piloto, estilo caricatura»; cambias gorra→casco y muestran cómo cambia.",tdah:"Máx 10 min hablando seguido. Deja que Daniel diga la siguiente palabra a cambiar."},
+  {t:"El prompt de imagen que sí funciona",como:"Receta: sujeto + estilo + detalle + fondo. Ellos escriben el suyo; corriges 2-3 en vivo.",ej:"Daniel: la etiqueta de sus lociones o un guacamayo-piloto de Nacional. Corriges: «fondo blanco, estilo logo plano».",tdah:"⏸️ Descanso 5 min ANTES (55'). Tarea de una sola frase."},
+  {t:"Hablarle a la IA (tema corto) + manos a la obra",como:"5 min: hablamos 4× más rápido de lo que escribimos, y el modo voz responde con un modelo más rápido y menos profundo → para lo difícil, DICTA a texto. Luego cada uno genera su imagen (máx 3 intentos).",ej:"Daniel dicta por voz un prompt largo de su loción y ven cuánto contexto dio en 20 segundos; después lo usa como texto.",tdah:"El tope de 3 intentos es clave. Cronómetro visible."},
+  {t:"Arréglala: segunda versión",como:"Iterar: tomar SU imagen y cambiar 1-2 cosas. Comparan v1 vs v2 lado a lado.",ej:"El escudo salió con colores raros → «verde y blanco del Atlético Nacional, escudo limpio». Antes/después en pantalla.",tdah:"⏸️ Descanso ANTES (~1h55). Comparar v1/v2 da recompensa visual inmediata."},
+  {t:"Proyectos e investigar a fondo + galería",como:"10 min: crear un Proyecto con sus instrucciones fijas y lanzar una investigación a fondo. Cierran con mini-galería.",ej:"Crean el proyecto «Mis lociones» con precios y estilo; lanzan una investigación de qué aromas se venden a su edad.",tdah:"Terminar mostrando lo propio deja subidón. Tarea: jugar la etapa en casa."}]},
+ e4:{tema:"Cowork: la IA que trabaja con tus archivos",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 4 (~10 min). Queda claro qué es Cowork antes de verlo.",ej:"Juegan las preguntas de qué puede y qué NO puede tocar Cowork.",tdah:"Meta visible: «hoy la IA nos entrega un archivo hecho»."},
+  {t:"Chat vs. trabajar con tus archivos",como:"Muestra la diferencia: el chat responde, Cowork ENTREGA archivos. Ábrelo en vivo.",ej:"Le das una carpeta con fotos y notas de las lociones y le pides un resumen en un documento.",tdah:"Que vean el archivo aparecer: el resultado visible es el gancho."},
+  {t:"Permisos: tú mandas",como:"Enseña a dar acceso solo a una carpeta y a revisar antes de aprobar. Seguridad primero.",ej:"Le das acceso a UNA carpeta de prueba y muestras que no ve las demás.",tdah:"⏸️ Descanso ANTES (55'). Bloque corto: es concepto, no práctica larga."},
+  {t:"Manos a la obra: tu primer entregable",como:"Cada uno le pide a Cowork algo real de su vida y lo revisa.",ej:"Daniel: «con estas notas arma la lista de precios de mis lociones en una tabla».",tdah:"Un solo entregable por persona. Cronómetro."},
+  {t:"Revisar y corregir",como:"Enseña a NO aceptar a ciegas: revisan el entregable y piden 2 correcciones concretas.",ej:"«Faltó el precio del combo y ordénalo de mayor a menor». Ven la versión corregida.",tdah:"⏸️ Descanso ANTES (~1h55). Corregir es más entretenido que crear desde cero."},
+  {t:"Tareas que se repiten + cierre",como:"Muestra programar una tarea recurrente. Cierran mostrando su entregable.",ej:"«Cada domingo, resume mis ventas de la semana». Tarea: terminar la etapa en casa.",tdah:"Cerrar con algo que trabaja solo deja sensación de superpoder."}]},
+ e5:{tema:"Claude en Chrome: manos en la web",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 5 (~10 min). Sale la diferencia con Cowork.",ej:"Juegan la pregunta de Cowork (archivos) vs Chrome (páginas web).",tdah:"Meta: «hoy la IA nos ahorra clics de verdad»."},
+  {t:"Qué ve y qué no ve",como:"Aclara bien: ve la PESTAÑA donde lo activas, no toda la pantalla. Muéstralo activándolo y desactivándolo.",ej:"Lo activas en una página de pesca y le pides que resuma; luego abres otra pestaña y muestras que ahí no está.",tdah:"Este bloque previene miedo y mal uso. Demuéstralo, no lo expliques."},
+  {t:"Ejemplos reales",como:"Tareas de verdad dentro de páginas: revisar, comparar, llenar formularios largos.",ej:"«Revisa esta tienda y dime qué productos no tienen precio». O comparar 3 lociones en una tienda online.",tdah:"⏸️ Descanso ANTES (55'). Elige páginas que a él le interesen."},
+  {t:"Manos a la obra",como:"Cada uno le pone una tarea real en una página que use. Tú rotas.",ej:"Daniel lo pone a comparar precios de perfumería para fijar el suyo.",tdah:"Máximo 2 tareas por persona. Que la primera sea fácil."},
+  {t:"Lo que NUNCA se le delega",como:"Regla dura: pagar, transferir, mandar mensajes y contraseñas son SIEMPRE del humano.",ej:"Le pides que llene un carrito pero TÚ das clic en pagar. La frontera queda vista, no dicha.",tdah:"⏸️ Descanso ANTES (~1h55). Regla en una sola frase, repetida."},
+  {t:"Muestra y despega",como:"Cada uno cuenta cuánto tiempo se ahorró. Cierras con la tarea.",ej:"Comparan cuántos clics se ahorraron. Tarea: terminar la etapa.",tdah:"Medir el ahorro en minutos lo hace concreto."}]},
+ e6:{tema:"Claude en Excel: los números de tu negocio",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 6 (~10 min).",ej:"Juegan las preguntas de qué puede hacer en una hoja de cálculo.",tdah:"Meta: «hoy sabemos cuánto gana de verdad el negocio»."},
+  {t:"Explica y construye",como:"Muestra las dos caras: que te EXPLIQUE una hoja y que te la CONSTRUYA desde cero.",ej:"Le pides que arme la hoja de inventario de lociones con fórmula de ganancia.",tdah:"Ver la fórmula aparecer sola engancha más que explicarla."},
+  {t:"Tus números reales",como:"Cargan datos reales (aunque sean pocos) y hacen preguntas de negocio.",ej:"«¿Cuál loción me deja más ganancia?» «¿Cuánto llevo vendido este mes?»",tdah:"⏸️ Descanso ANTES (55'). Sus datos, no ejemplos inventados."},
+  {t:"Manos a la obra",como:"Cada uno arma su hoja. Tú rotas resolviendo.",ej:"Daniel deja su control de inventario y ganancia funcionando.",tdah:"Una sola hoja, bien hecha. Nada de perfeccionismo."},
+  {t:"Aprobar antes de aplicar",como:"Enseña que el cambio se ve ANTES de aplicarse y que él aprueba.",ej:"Propone un cambio de fórmula; lo revisan juntos antes de aceptar.",tdah:"⏸️ Descanso ANTES (~1h55)."},
+  {t:"Muestra y despega",como:"Cada uno muestra su hoja y un número que descubrió.",ej:"Daniel dice cuánto gana por frasco. Tarea: terminar la etapa.",tdah:"Descubrir un número propio cierra con impacto."}]},
+ e7:{tema:"Agentes: que trabaje solo",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 7 (~10 min).",ej:"Juegan la pregunta de qué diferencia a un agente de un chat.",tdah:"Meta: «hoy dejamos algo trabajando solo»."},
+  {t:"Qué es un agente de verdad",como:"Observar → pensar → actuar → revisar. Con un ejemplo, no con teoría.",ej:"Un agente que vigila si alguien menciona su marca y le avisa.",tdah:"Dibuja el ciclo en 4 palabras y déjalo a la vista."},
+  {t:"El piloto automático (no el capitán)",como:"Deja clarísimo que el agente es el piloto automático y él sigue siendo el capitán.",ej:"Analogía de vuelo: el piloto automático vuela el tramo, el capitán puede desconectarlo cuando quiera.",tdah:"⏸️ Descanso ANTES (55'). La analogía de avión es su lenguaje."},
+  {t:"Manos a la obra",como:"Cada uno define un agente sencillo por escrito: objetivo, cada cuánto y qué NO puede hacer.",ej:"«Cada domingo revisa precios de la competencia y mándame el resumen. No compres nada.»",tdah:"Plantilla de 3 líneas para llenar."},
+  {t:"Límites y permisos",como:"Qué pasa si se equivoca: límites, avisos y apagarlo.",ej:"Revisan qué haría el agente si el precio bajara raro. Definen el aviso.",tdah:"⏸️ Descanso ANTES (~1h55)."},
+  {t:"Muestra y despega",como:"Cada uno presenta su agente y su límite.",ej:"Daniel presenta su vigilante de precios. Tarea: terminar la etapa.",tdah:"Presentar el LÍMITE, no solo la idea: fija el criterio."}]},
+ e8:{tema:"Crear con IA sin programar",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 8 (~10 min).",ej:"Juegan las preguntas de qué se puede construir sin saber código.",tdah:"Meta: «hoy cada uno estrena algo hecho por él»."},
+  {t:"De la idea al prototipo",como:"Muestra en vivo cómo una frase se vuelve algo que funciona.",ej:"Pides un marcador de pádel simple y aparece funcionando en minutos.",tdah:"Que vean el resultado antes de entender el cómo."},
+  {t:"Empezar pequeño",como:"La regla: algo chiquito que funcione hoy, no algo enorme que nunca sale.",ej:"Comparas «una app de banco» (no) con «un catálogo de mis lociones» (sí).",tdah:"⏸️ Descanso ANTES (55'). Regla en una frase."},
+  {t:"Manos a la obra",como:"Cada uno construye su prototipo. Tú rotas desatascando.",ej:"Daniel arma su catálogo de lociones con fotos y precios.",tdah:"Un prototipo feo que funciona vale más que uno bonito a medias."},
+  {t:"Mejorar de a poco",como:"Enseña a pedir un cambio a la vez y probar.",ej:"«Ponle los colores de Nacional» → prueban → «agrega el botón de WhatsApp».",tdah:"⏸️ Descanso ANTES (~1h55). Un cambio = una prueba."},
+  {t:"Muestra y despega",como:"Cada uno muestra lo suyo funcionando.",ej:"Daniel enseña su catálogo. Tarea: terminar la etapa.",tdah:"Mostrar algo propio funcionando es el cierre más fuerte del curso."}]},
+ e9:{tema:"Uso responsable: el mando es tuyo",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 9 (~10 min).",ej:"Juegan las preguntas de alucinaciones y datos personales.",tdah:"Meta: «hoy salimos sabiendo cuándo NO hacerle caso»."},
+  {t:"Alucinaciones: cazar el error",como:"Provoca datos falsos y que los detecten. Enseña las señales: cifras exactas raras, fuentes que no se pueden comprobar.",ej:"Preguntas un récord de pesca muy específico y verifican juntos.",tdah:"Formato de juego: puntos por error cazado."},
+  {t:"Datos que nunca se dan",como:"Lista corta y clara: dirección, teléfono, datos de la familia, contraseñas.",ej:"Muestras un mensaje que pide datos «para un premio» y practican decir que no.",tdah:"⏸️ Descanso ANTES (55'). Lista de 4, no de 20."},
+  {t:"Colegio: usarla sin hacer trampa",como:"La línea: usarla para ENTENDER y luego escribir con sus palabras.",ej:"Toman un tema del colegio: la IA lo explica, él lo escribe solo y comparan.",tdah:"Que él proponga dónde está la línea: se compromete más."},
+  {t:"Tu tarjeta de piloto responsable",como:"Cada uno arma sus 5 reglas de oro y las deja a mano.",ej:"Daniel guarda su tarjeta en notas del celular.",tdah:"⏸️ Descanso ANTES (~1h55). 5 reglas, cortas."},
+  {t:"Graduación",como:"Repasan el camino completo y hablas del premio. Cierre grande.",ej:"Muestran su mejor trabajo de todo el curso. Se habla del simulador A320.",tdah:"Cierre emocional: aquí es donde el premio cobra sentido."}]}
+};
+/* compatibilidad: la pantalla arranca en la etapa que sigue */
+let planEtapa=null;
+/* La clase que sigue = la primera etapa que el alumno MÁS ADELANTADO no ha
+   terminado. Se mira a toda la tripulación (si ya se cargó), no solo al piloto
+   que esté abierto, porque la clase avanza al ritmo del grupo. */
+function etapaSugerida(){
+  const estados=(TRIP&&TRIP.length)?TRIP.map(r=>r.st).filter(Boolean):[S];
+  const hecha=id=>estados.some(st=>(st.done||{})[id]);
+  for(const lv of CURRICULUM.levels){ for(const le of lv.lessons){ if(!hecha(le.id)) return lv.id; } }
+  return CURRICULUM.levels[CURRICULUM.levels.length-1].id;
+}
+/* Andrés puede FIJAR la etapa de la clase (queda guardada), porque la clase suele ir
+   por delante del avance del juego. Si no fija nada, se usa la sugerida automática. */
+function planActual(){ const id=planEtapa||CFG.claseFijada||etapaSugerida(); return PLANES[id]?id:CURRICULUM.levels[0].id; }
+function fijarClase(){ CFG.claseFijada=planActual(); saveConfig(); planEtapa=null; renderSession(); toast("📌 Fijada como la clase de hoy"); }
+function soltarClase(){ CFG.claseFijada=""; saveConfig(); planEtapa=null; renderSession(); toast("Vuelve a seguir el avance del juego"); }
+function BLOCKS_DE(id){ return (PLANES[id]||PLANES.e1).blocks; }
 let TM={run:false,rest:false,sec:25*60,block:0,iv:null};
-function renderSession(){ const b=BLOCKS[TM.block];
-  let h=`<div class="sectitle">Sesión de 3 horas · 6 bloques de 25 min</div>
-  <div class="capi" style="margin-bottom:12px"><div class="face">${CAPI_SVG}</div><div class="bub"><b>Cómo usar el juego en clase:</b> jueguen la etapa nueva <b>juntos, una vez</b> (proyectada, ~10 min) para encender el tema; luego tú enseñas y el <b>proyecto real</b> lo fija. Repetir el juego = tarea o descanso. Nunca todos en pantallas separadas.</div></div>
-  <div class="timerwrap"><div class="timerbig ${TM.rest?'rest':''}" id="tmDisp">${fmt(TM.sec)}</div><div class="timerlbl">${TM.rest?'☕ Descanso · 5 min':('Bloque '+(TM.block+1)+' · '+b.t)}</div></div>
+function renderSession(){
+  const id=planActual(); const P=PLANES[id]; const BL=P.blocks; const b=BL[TM.block]||BL[0];
+  const lv=CURRICULUM.levels.find(l=>l.id===id); const idx=CURRICULUM.levels.findIndex(l=>l.id===id);
+  const sug=etapaSugerida(); const fijada=CFG.claseFijada||"";
+  const esLaQueSigue=(id===sug); const estaFijada=(id===fijada);
+  // progreso del grupo en esa etapa (para saber si ya la vieron)
+  const hechas=lv?lv.lessons.filter(le=>S.done[le.id]).length:0;
+  let h=`<div class="sectitle">🎖️ Plan de clase · solo para Andrés</div>
+  <div class="capi" style="margin-bottom:12px"><div class="face">${CAPI_SVG}</div><div class="bub"><b>Cómo usar el juego en clase:</b> jueguen la etapa nueva <b>juntos, una vez</b> (proyectada, ~10 min) para encender el tema; luego tú enseñas y el <b>proyecto real</b> lo fija. Repetir el juego = tarea o descanso. Nunca todos en pantallas separadas.</div></div>`;
+  // selector de etapa
+  h+=`<div class="planpick">
+    <button class="planarrow" ${idx<=0?'disabled':''} onclick="APP.planPrev()">◀</button>
+    <div class="planmid"><div class="planet">Etapa ${lv?lv.etapa:'?'} · ${esc(lv?lv.name:'')}</div>
+      <div class="plantema">${esc(P.tema)}</div>
+      <div class="planchip ${estaFijada?'now':esLaQueSigue?'now':''}">${estaFijada?'📌 Clase de hoy':esLaQueSigue?'▶ Va según el avance del juego':(hechas>0?`Ya vista (${hechas}/${lv.lessons.length} lecciones)`:'Más adelante')}</div></div>
+    <button class="planarrow" ${idx>=CURRICULUM.levels.length-1?'disabled':''} onclick="APP.planNext()">▶</button></div>`;
+  h+=`<div style="display:flex;gap:8px;margin-bottom:12px">`;
+  if(!estaFijada) h+=`<button class="btn amber sm" style="flex:1" onclick="APP.fijarClase()">📌 Fijar como la clase de hoy</button>`;
+  else h+=`<button class="btn ghost sm" style="flex:1" onclick="APP.soltarClase()">📌 Quitar fijado (seguir el juego)</button>`;
+  if(planEtapa) h+=`<button class="btn ghost sm" style="flex:1" onclick="APP.planAuto()">↩︎ Volver</button>`;
+  h+=`</div>`;
+  h+=`<div class="muted" style="margin:-4px 0 12px;line-height:1.5">La clase suele ir por delante del juego. Muévete con ◀ ▶ y <b>fija</b> la etapa que vas a dar: queda guardada y el plan se abre siempre en esa.</div>`;
+  h+=`<div class="timerwrap"><div class="timerbig ${TM.rest?'rest':''}" id="tmDisp">${fmt(TM.sec)}</div><div class="timerlbl">${TM.rest?'☕ Descanso · 5 min':('Bloque '+(TM.block+1)+' · '+b.t)}</div></div>
   <div style="display:flex;gap:10px;margin-bottom:14px"><button class="btn ${TM.run?'ghost':'primary'} sm" style="flex:1" onclick="APP.tmToggle()">${TM.run?'⏸ Pausar':'▶ Iniciar'}</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmNext()">⏭ Siguiente</button><button class="btn ghost sm" style="flex:1" onclick="APP.tmReset()">↺ Reiniciar</button></div>
-  <div class="sectitle">Plan sugerido · próxima clase: Imágenes con IA</div><div class="blocklist">`;
-  BLOCKS.forEach((bl,i)=>{ const cls=i<TM.block?'done':i===TM.block?'active':'';
+  <div class="sectitle">Sesión de 3 horas · 6 bloques de 25 min</div><div class="blocklist">`;
+  BL.forEach((bl,i)=>{ const cls=i<TM.block?'done':i===TM.block?'active':'';
     h+=`<div class="blk ${cls}" style="flex-direction:column;align-items:stretch;gap:0">
       <div style="display:flex;gap:12px;align-items:center"><div class="bnum">${i<TM.block?'✓':i+1}</div><div class="bt">${bl.t}</div></div>
       <div style="font-size:12px;line-height:1.55;margin-top:8px"><span style="color:var(--cyan);font-weight:800">Cómo:</span> <span style="color:var(--dim)">${bl.como}</span><br><span style="color:var(--amber);font-weight:800">Ejemplo:</span> <span style="color:var(--dim)">${bl.ej}</span><br><span style="color:#6ee7b7;font-weight:800">TDAH:</span> <span style="color:var(--dim)">${bl.tdah}</span></div></div>`; });
-  h+=`</div><div class="muted" style="text-align:center;margin-top:12px">Descansos de 5 min tras el bloque 2 (min 55) y tras el bloque 4 (min 1h55).</div>`;
+  h+=`</div><div class="muted" style="text-align:center;margin-top:12px">Descansos de 5 min tras el bloque 2 (min 55) y tras el bloque 4 (min 1h55).</div>
+  <button class="btn ghost sm" style="margin-top:12px" onclick="APP.volverComandante()">← Volver al panel del Comandante</button>`;
   document.getElementById('scr-session').innerHTML=h; }
+function planPrev(){ const i=CURRICULUM.levels.findIndex(l=>l.id===planActual()); if(i>0){ planEtapa=CURRICULUM.levels[i-1].id; tmReset(); } }
+function planNext(){ const i=CURRICULUM.levels.findIndex(l=>l.id===planActual()); if(i<CURRICULUM.levels.length-1){ planEtapa=CURRICULUM.levels[i+1].id; tmReset(); } }
+function planAuto(){ planEtapa=null; tmReset(); }
+function abrirSesion(){ if(!tutorAuthed){ openTutor(); return; } renderSession(); show('session'); }
+function volverComandante(){ renderTutor(); show('tutor'); }
 function fmt(s){ const m=(s/60|0),ss=s%60; return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0'); }
 function tmTick(){ TM.sec--; const d=document.getElementById('tmDisp'); if(d)d.textContent=fmt(TM.sec);
   if(TM.sec<=0){ if(!TM.rest){ sndBell(); TM.rest=true; TM.sec=5*60; toast('🔔 ¡25 minutos! Fin del bloque · descanso de 5 min'); } else { sndAlert(); TM.rest=false; TM.block=Math.min(TM.block+1,BLOCKS.length-1); TM.sec=25*60; toast('☕ Fin del descanso · Bloque '+(TM.block+1)); } renderSession(); } }
@@ -1628,6 +1749,13 @@ function renderTutor(){ const r=rankFor(S.xp);
     <div class="muted" style="margin-bottom:10px">Solo tú ves esto. Ordenados por XP; abajo de cada uno, dónde se está trabando.</div>`;
   h+=tablaTripulacion();
   h+=`<button class="btn ghost sm" style="margin:10px 0 4px" onclick="APP.cargarTripulacion()">🔄 Actualizar progreso de todos</button>`;
+  // El plan de clase vive aquí adentro: es material tuyo, los pilotos no lo ven.
+  {const idp=planActual(); const lvp=CURRICULUM.levels.find(l=>l.id===idp);
+   h+=`<div class="planentry" onclick="APP.abrirSesion()">
+     <div class="pe-ic">⏱️</div>
+     <div class="pe-txt"><div class="pe-t">Plan de la clase que sigue</div>
+       <div class="pe-s">Etapa ${lvp?lvp.etapa:''} · ${esc(lvp?lvp.name:'')} — 6 bloques de 25 min, con ejemplos y tips TDAH</div></div>
+     <div class="pe-go">Abrir →</div></div>`;}
   h+=`<div class="sectitle">Piloto abierto ahora: ${esc(pilotName())}</div>
     <div class="statgrid"><div class="statbox"><div class="v">${S.xp}</div><div class="l">XP · ${r.n}</div></div>
     <div class="statbox"><div class="v">${S.lessonsCount}</div><div class="l">Lecciones</div></div>
@@ -1674,6 +1802,7 @@ function switchPilot(){ flushCloud(); showProfiles(); }
 /* ---------- API pública ---------- */
 const APP={ openLesson:(i,j)=>startLesson(i,j), review:startReview, choosePractice, startPractice, pick, check, orderPick, orderBack, matchSel, quitLesson, doMission, copyPrompt,
   tmToggle, tmNext, tmReset, checkPin, closeOverlay, exportData, importData, resetData, doReset, lockTutor, syncNow, saveCfg, switchPilot, cargarTripulacion,
+  planPrev, planNext, planAuto, abrirSesion, volverComandante, fijarClase, soltarClase,
   newPilot, pickAva, pickCs, createPilot, pickPilot, delPilot, doDelPilot, recoverPilot, doRecover, editPilot, saveEdit };
 window.APP=APP;
 
