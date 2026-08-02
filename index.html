@@ -1057,13 +1057,13 @@ function saveLocal(){ if(!activeId) return; try{localStorage.setItem(stateKey(),
 function save(){ S._t=Date.now(); saveLocal(); cloudPush(); }
 
 /* =========================================================
-   NUBE COMPARTIDA (Netlify Blobs)
+   NUBE COMPARTIDA (Cloudflare Workers KV)
    - fila "cve_roster"  = la LISTA de pilotos de la familia (compartida)
    - fila "cve_<id>"    = el progreso de cada piloto
    El id sale del nombre (dani, andres, olguita…), así que ningún piloto
    necesita códigos: entra, se ve en la lista y sigue donde iba.
    ========================================================= */
-const SYNC_URL="https://capitan-echandia-sync.netlify.app/.netlify/functions/sync";
+const SYNC_URL="https://capitan-echandia-sync.prieto-ia.workers.dev";
 const ROSTER_ROW="cve_roster";
 let cloudOk=null, sbTimer=null, cloudReady=false;
 function syncRow(){ return "cve_"+activeId; }
