@@ -253,34 +253,6 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .navbtn{flex:1;max-width:200px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:12px;color:var(--dim2);font-size:10px;font-weight:700;transition:.15s}
 .navbtn .ni{font-size:21px}
 .navbtn.active{color:var(--cyan)}
-.navbtn{position:relative}
-.nbadge{position:absolute;top:2px;right:calc(50% - 22px);min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--gradA);color:#2b1600;font-size:10px;font-weight:900;display:none;place-items:center;line-height:17px;box-shadow:0 2px 6px rgba(251,191,36,.5)}
-.nbadge.on{display:grid}
-/* --- Torre de Misiones --- */
-.mishead{background:linear-gradient(135deg,#1a2c63,#0c1738);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:var(--sh)}
-.mishead h2{font-size:19px;font-weight:800;margin-bottom:4px}
-.mishead p{font-size:13px;color:var(--dim);line-height:1.5}
-.misres{display:flex;gap:8px;margin-top:11px;flex-wrap:wrap}
-.misres span{font-size:11.5px;font-weight:800;padding:5px 10px;border-radius:999px;background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid var(--line)}
-.misgroup{margin-bottom:16px}
-.misgh{display:flex;align-items:center;gap:9px;margin:0 2px 8px}
-.misgh .gi{font-size:20px}
-.misgh h3{font-size:14px;font-weight:800}
-.misgh .glock{font-size:11px;color:var(--dim2);font-weight:700}
-.miscard{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:9px;transition:.15s}
-.miscard:not(.locked):hover{border-color:var(--cyan);transform:translateY(-1px)}
-.miscard.locked{opacity:.42}
-.miscard.done{border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.06)}
-.mis-ic{width:38px;height:38px;flex-shrink:0;border-radius:11px;display:grid;place-items:center;font-size:19px;background:rgba(251,191,36,.12)}
-.miscard.done .mis-ic{background:rgba(52,211,153,.15)}
-.mis-b{flex:1;min-width:0}
-.mis-t{font-size:14.5px;font-weight:800;line-height:1.3;margin-bottom:4px}
-.mis-m{display:flex;gap:6px;flex-wrap:wrap}
-.mis-m i{font-style:normal;font-size:10.5px;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.06);color:var(--dim)}
-.mis-m i.corta{background:rgba(34,211,238,.13);color:var(--cyan)}
-.mis-m i.larga{background:rgba(251,191,36,.13);color:var(--amber)}
-.mis-m i.ok{background:rgba(52,211,153,.15);color:#34d399}
-.mis-go{align-self:center;font-size:18px;color:var(--dim2)}
 
 /* ===== MODALES ===== */
 .overlay{position:fixed;inset:0;z-index:60;background:rgba(3,7,18,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px}
@@ -456,13 +428,11 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
   </div>
   <section class="screen active" id="scr-path"></section>
   <section class="screen" id="scr-lesson"></section>
-  <section class="screen" id="scr-missions"></section>
   <section class="screen" id="scr-profile"></section>
   <section class="screen" id="scr-session"></section>
   <section class="screen" id="scr-tutor"></section>
   <nav class="nav">
     <button class="navbtn active" data-nav="path"><span class="ni">🗺️</span>Camino</button>
-    <button class="navbtn" data-nav="missions"><span class="ni">🎯</span>Misiones<span class="nbadge" id="navMisBadge"></span></button>
     <button class="navbtn" data-nav="profile"><span class="ni">🏅</span>Perfil</button>
     <button class="navbtn" data-nav="tutor"><span class="ni">🎖️</span>Comandante</button>
   </nav>
@@ -1021,179 +991,6 @@ const CURRICULUM={
 };
 
 /* =====================================================================
-   2b) TORRE DE MISIONES — misiones reales, fuera de las lecciones
-   ---------------------------------------------------------------------
-   Por qué existen aparte: dentro de las lecciones solo había 4 misiones
-   (etapas 1, 2, 3 y 10) y de la 4 a la 9 no había NINGUNA. Peor: una
-   misión metida en una lección ya superada nunca se vuelve a ver.
-   Aquí cada etapa superada libera 2 misiones (una CORTA y una LARGA) que
-   quedan disponibles para siempre, para llevar de tarea. Se pagan una
-   sola vez (S.missions guarda cuáles ya se cobraron).
-   Todas empujan el MISMO negocio real de pesca, así que al terminar el
-   juego el negocio queda armado de verdad.
-   ===================================================================== */
-const MISIONES=[
-
-/* ===== ETAPA 4 · RADAR DE DATOS — investigar y verificar ===== */
-{mid:"m4a",etapa:4,tipo:"corta",min:15,xp:20,
- title:"El cuartel general de tu negocio",
- intro:"Cada vez que le hablas a la IA le toca explicarle otra vez quién eres y qué vendes. Se acabó. Vas a crear un Proyecto: un espacio que ya te conoce y arranca sabiendo de tu negocio de pesca.",
- steps:["Abre Claude y busca <b>Proyectos</b> en el menú de la izquierda. Crea uno nuevo y ponle el nombre de tu negocio.",
-  "Adentro busca donde dice <b>Instrucciones</b> del proyecto. Copia el texto de abajo, pégalo ahí y cambia lo que está entre corchetes por lo tuyo de verdad.",
-  "Guarda. Ahora, dentro del Proyecto, escríbele solo esto: 'dame 3 ideas de publicación para esta semana'. Nada más.",
-  "Fíjate en lo que pasó: te contestó sabiendo quién eres, sin que le explicaras nada. Eso es el Proyecto trabajando.",
-  "De aquí en adelante, TODO lo de tu negocio lo haces dentro de este Proyecto."],
- objetivo:"que la IA quede configurada como un empleado que ya conoce tu negocio, para no repetirle el contexto nunca más.",
- copy:"Este proyecto es para mi negocio de pesca. Datos: me llamo [tu nombre] y tengo [tu edad] años. Mi negocio se llama [nombre del negocio] y vende [qué vendes: señuelos, guiadas, combos, ropa...]. Mis clientes son [a quién le vendes: pescadores de tu zona, principiantes, deportivos...]. Estoy en [tu ciudad o región] y vendo por [Instagram / WhatsApp / mi página web]. Reglas para ti: háblame como a alguien de mi edad, sin palabras raras; los precios siempre en pesos colombianos; cuando me des ideas, que sean cosas que yo pueda hacer hoy con lo que tengo (poco dinero y un celular); y si algo no lo sabes con seguridad, dímelo en vez de inventarlo.",
- botin:"Tu Proyecto de negocio montado: un espacio donde la IA ya sabe quién eres, qué vendes y a quién. Nunca más le explicas todo desde cero."},
-
-{mid:"m4b",etapa:4,tipo:"larga",min:45,xp:40,
- title:"Espía tu propio mercado",
- intro:"Los que ya venden pesca llevan años aprendiendo a los golpes. Tú te vas a saltar esos años en una tarde: pon a la IA a investigar a fondo qué venden, a cuánto, y de qué se quejan sus clientes.",
- steps:["Entra al Proyecto de tu negocio (el de la misión corta). Activa <b>Investigación a fondo</b> y ponle el modelo más fuerte: esto es trabajo pesado.",
-  "Pega el prompt. Va a tardar varios minutos: déjalo trabajando y vuelve.",
-  "Lo más importante de toda la misión: agarra 2 precios de los que te dio y ENTRA tú mismo a la página de donde los sacó, a ver si es verdad. La IA a veces inventa.",
-  "Marca en la tabla los precios que verificaste. A los que no pudiste verificar, ponles un signo de pregunta.",
-  "Al final quédate con UNA sola frase: qué le falta al mercado que tú sí puedes ofrecer. Escríbela y guárdala. Esa frase es tu negocio."],
- objetivo:"que la IA te entregue el mapa de tu competencia (qué venden, a cuánto, qué les critican) para que pongas tu precio con datos y no adivinando.",
- copy:"Investiga a fondo el mercado de la pesca deportiva y de artículos de pesca en [tu región de Colombia] y en Instagram. Quiero saber: 1) quiénes están vendiendo lo mismo que yo, con nombre y enlace; 2) qué cobran exactamente por cada cosa, en pesos colombianos, y de dónde sacaste ese precio; 3) qué dicen los clientes en comentarios y reseñas que les gusta y de qué se quejan; 4) tres cosas que nadie está ofreciendo y que un negocio nuevo y pequeño sí podría hacer. Organízalo en una tabla sencilla y pon la fuente de cada dato. Si un precio no lo encuentras confirmado, dímelo en vez de estimarlo.",
- botin:"La tabla de precios de tu competencia con 2 datos verificados por ti, más la frase de qué te hace distinto. Con eso ya le pones precio a lo tuyo sin adivinar."},
-
-/* ===== ETAPA 5 · COPILOTO — Cowork ===== */
-{mid:"m5a",etapa:5,tipo:"corta",min:20,xp:20,
- title:"Tu lista de precios, hecha por Cowork",
- intro:"Ya sabes lo que cobra la competencia. Ahora Cowork te arma TU lista: qué vendes, a cuánto, y cuánto te queda a ti de cada venta. En un archivo de verdad, no en un chat que se pierde.",
- steps:["Abre <b>Cowork</b> (el Claude que vive en el computador y sí puede crear archivos).",
-  "Dile que cree una carpeta con el nombre de tu negocio. Ahí va a vivir todo.",
-  "Pega el prompt. Si ya hiciste la misión larga de la etapa 4, agrégale: 'usa los precios de la competencia que investigamos'.",
-  "Ábrelo y revísalo TÚ: ¿los costos son reales? Corrige lo que esté mal — lo que Cowork no sabía, lo adivinó.",
-  "Mira la columna de ganancia y busca cuál producto te deja más plata. Sorpresa: casi nunca es el que más se vende."],
- objetivo:"que Cowork te deje un archivo de catálogo con precio, costo y ganancia por producto, para saber cuál te conviene empujar.",
- copy:"Créame una carpeta para mi negocio de pesca y adentro un archivo de catálogo. Debe tener una fila por cada cosa que vendo, con estas columnas: producto o servicio, qué incluye, cuánto me cuesta a mí, a cuánto lo vendo, cuánta ganancia me deja y qué porcentaje es esa ganancia. Los precios en pesos colombianos con puntos de miles. Empieza con estos productos: [escribe aquí lo que vendes]. Los costos que no sepas, déjalos en blanco y márcalos para que yo los llene. Al final dime cuál producto me deja más ganancia y por qué.",
- botin:"El archivo de catálogo de tu negocio con precios y ganancia por producto, guardado en tu computador. Y saber cuál producto te conviene vender más."},
-
-{mid:"m5b",etapa:5,tipo:"larga",min:40,xp:40,
- title:"Monta la carpeta de tu negocio",
- intro:"Un negocio se muere de desorden antes que de falta de clientes. Vas a poner a Cowork a montarte, en una sola sesión, toda la papelería: quién eres, qué vendes y qué le respondes a un cliente.",
- steps:["Abre Cowork en la carpeta de tu negocio (la de la misión corta).",
-  "Pega el prompt. Va a crear varios archivos: déjalo terminar antes de tocar nada.",
-  "Ábrelos uno por uno y léelos EN VOZ ALTA. Lo que no suene a ti, cámbialo. Si suena a robot, dile: 'esto suena acartonado, escríbelo como hablo yo'.",
-  "Prueba el de respuestas: pídele a alguien de tu familia que te escriba haciéndose pasar por cliente, y contéstale usando el archivo. ¿Sirvió?",
-  "Deja la carpeta ordenada. Ese es tu puesto de mando: cuando llegue un cliente de verdad, no vas a improvisar."],
- objetivo:"que Cowork te arme de una sentada la papelería completa del negocio: presentación, respuestas listas y guion de venta, en archivos que abres cuando quieras.",
- copy:"En la carpeta de mi negocio de pesca, créame cuatro archivos. 1) 'Quiénes somos': un párrafo corto que explique mi negocio y por qué alguien me compraría a mí y no a otro. 2) 'Respuestas listas': las 10 preguntas que más me van a hacer los clientes (precio, envío, si sirve para principiantes, garantía) con una respuesta corta y amable para cada una, lista para copiar y pegar en WhatsApp. 3) 'Guion de venta': qué decirle a alguien que muestra interés pero no se decide, sin sonar rogón. 4) 'Lista de tareas': las 10 cosas que me faltan para que el negocio esté completo, de la más urgente a la menos. Escríbelo todo como habla alguien de 15 años en Colombia, sin palabras acartonadas.",
- botin:"Cuatro archivos que son la papelería de tu negocio: tu presentación, tus respuestas de WhatsApp listas para copiar, tu guion de venta y tu lista de pendientes."},
-
-/* ===== ETAPA 6 · CONTROLES — Claude en Chrome ===== */
-{mid:"m6a",etapa:6,tipo:"corta",min:20,xp:20,
- title:"Que Claude le busque los errores a tu página",
- intro:"Tú ya no ves los errores de tu página: la has visto mil veces. Claude en Chrome la va a ver por primera vez, igual que un cliente, y te va a decir sin pena qué está mal.",
- steps:["Abre Chrome con la extensión de Claude y entra a la página de tu negocio.",
-  "Abre Claude en Chrome y pega el prompt. Déjalo recorrer la página.",
-  "Lee la lista completa. Va a doler un poquito: esa es la señal de que sirvió.",
-  "Escoge SOLO los 2 arreglos más fáciles y hazlos hoy. Los demás quedan anotados — no intentes arreglar todo de una.",
-  "Vuelve a abrir la página en el celular con los 2 arreglos hechos. ¿Se ve mejor?"],
- objetivo:"que Claude revise tu página con ojos de cliente nuevo y te diga qué confunde, qué falta y qué espanta compradores.",
- copy:"Estás viendo la página de mi negocio de pesca. Revísala como si fueras un cliente que llega por primera vez desde el celular y no me conoce de nada. Dime: 1) en los primeros 5 segundos, ¿se entiende qué vendo y a quién? 2) ¿qué información importante falta y que un comprador necesita para decidirse (precios, cómo pedir, dónde estoy, si hay envío)? 3) ¿hay algo que confunda o que se vea mal en pantalla pequeña? 4) dame 5 arreglos concretos, del más fácil al más difícil, y dime cuánto cambiaría cada uno. Sé honesto: prefiero que me lo digas tú ahora y no que me lo diga un cliente que ya se fue.",
- botin:"La lista de 5 arreglos de tu página ordenados por facilidad, y 2 de ellos ya hechos hoy."},
-
-{mid:"m6b",etapa:6,tipo:"larga",min:45,xp:40,
- title:"Caza dónde están tus clientes",
- intro:"Tus clientes ya existen y ya están reunidos en algún lado: grupos de pesca, tiendas, cuentas donde publican sus capturas. Claude en Chrome los va a buscar por ti y te va a traer la lista con nombre y enlace.",
- steps:["Abre Chrome con Claude y pega el prompt. Va a ir abriendo páginas y buscando: déjalo trabajar.",
-  "Pídele que te lo deje en una lista con el enlace de cada lugar.",
-  "Revisa la lista TÚ y tacha lo que no encaje. La IA a veces mete cosas que no tienen nada que ver.",
-  "Escoge 3 lugares. Solo 3. Pídele a Claude que te escriba qué publicarías en cada uno, distinto en cada uno — no el mismo copiado y pegado.",
-  "🛡️ REGLA DE SEGURIDAD: antes de publicar o escribirle a alguien, muéstrale a tu papá lo que vas a mandar. Y nunca pongas la dirección de tu casa ni datos de tu familia."],
- objetivo:"que Claude encuentre los lugares reales de internet donde ya están reunidos tus posibles clientes, y te escriba qué decir en cada uno.",
- copy:"Búscame en internet dónde se reúnen los pescadores de [tu región de Colombia]: grupos de Facebook, cuentas de Instagram, foros, clubes de pesca, tiendas de artículos de pesca y torneos. Quiero 10 lugares, con nombre, enlace y cuánta gente hay más o menos en cada uno. Para cada lugar dime también qué tipo de pescador es (principiante, deportivo, de río, de mar) y si permiten que alguien ofrezca cosas o si es solo para conversar. Ordénalos por cuál me conviene más a mí, que estoy empezando y no tengo dinero para publicidad.",
- botin:"Tu lista de 10 lugares donde están tus clientes, con enlace, y el mensaje ya escrito para los 3 mejores."},
-
-/* ===== ETAPA 7 · BITÁCORA — cuentas y hojas de cálculo ===== */
-{mid:"m7a",etapa:7,tipo:"corta",min:20,xp:20,
- title:"¿Cuánto ganas de verdad por cada venta?",
- intro:"Vender no es ganar. Un montón de negocios venden mucho y no les queda nada porque nunca hicieron esta cuenta. Tú la haces hoy, en 20 minutos.",
- steps:["Abre Cowork en la carpeta de tu negocio.",
-  "Pega el prompt. Va a armar la hoja con las fórmulas ya puestas.",
-  "Llena TÚ los costos reales: el producto, el envío, la bolsa, todo. Lo que se te olvide contar, te lo come la ganancia.",
-  "Mira la última columna. Si algún producto te deja menos del 20%, pregúntale a Cowork: 'este me deja muy poco, ¿qué hago?'.",
-  "Guarda la hoja. Cada vez que vayas a poner un precio nuevo, la abres primero."],
- objetivo:"que la hoja calcule sola cuánta plata te queda de cada venta contando TODOS los costos, no solo lo que pagaste por el producto.",
- copy:"Créame una hoja de cálculo para saber cuánto gano de verdad en mi negocio de pesca. Una fila por producto y estas columnas: producto, cuánto me costó, cuánto me cuesta empacarlo, cuánto cuesta el envío, cuánto me cuesta en total, a cuánto lo vendo, cuánto me queda limpio y qué porcentaje es. Las últimas tres columnas deben calcularse solas con fórmulas, no escritas a mano. Deja las celdas de costos vacías para yo llenarlas y márcalas con color. Abajo pon el total de todo y, aparte, explícame en tres líneas y con palabras sencillas qué es el margen y por qué un margen bajo es peligroso.",
- botin:"Tu hoja de ganancias con fórmulas que se calculan solas, y saber cuál producto te está haciendo perder el tiempo."},
-
-{mid:"m7b",etapa:7,tipo:"larga",min:45,xp:40,
- title:"El tablero de mando de tu negocio",
- intro:"Un piloto no vuela mirando por la ventana: mira el tablero. Vas a montar el tuyo — una hoja donde apuntas cada pedido y ella sola te dice cómo va el negocio.",
- steps:["Abre Cowork en la carpeta del negocio y pega el prompt.",
-  "Cuando esté lista, invéntate 5 pedidos de mentira y escríbelos, solo para ver si los totales se mueven solos. Si no se mueven, dile: 'los totales no se actualizan, arréglalo'.",
-  "Borra los pedidos de mentira. Ahora la hoja es tuya y está limpia.",
-  "Anota el primer pedido real que te llegue. Aunque sea uno. Aunque sea de un tío.",
-  "Ponte una cita contigo mismo: cada domingo abres la hoja y le preguntas a Cowork 'mírala y dime cómo voy'."],
- objetivo:"que tengas una sola hoja donde apuntas los pedidos y ella calcule sola cuánto vendiste, cuánto ganaste y qué producto va ganando.",
- copy:"Créame el tablero de control de mi negocio de pesca en una hoja de cálculo, con dos pestañas. Pestaña 1 'Pedidos': fecha, nombre del cliente, cómo me contactó, qué pidió, cuánto pagó, si ya lo entregué y si ya me pagó. Pestaña 2 'Cómo voy': que se calcule sola y muestre cuánto he vendido en total, cuánta ganancia llevo, cuántos pedidos son, el producto más vendido y cuánta plata me deben todavía. Agrégale una gráfica de barras con las ventas por mes. Que todo se actualice solo cuando yo escriba un pedido nuevo. Al final explícame en pasos cortos cómo anoto un pedido nuevo sin dañar nada.",
- botin:"Tu tablero de pedidos con totales y gráfica que se actualizan solos, y la costumbre de mirarlo cada domingo."},
-
-/* ===== ETAPA 8 · PILOTO AUTOMÁTICO — agentes y automatizaciones ===== */
-{mid:"m8a",etapa:8,tipo:"corta",min:20,xp:20,
- title:"Un ayudante que trabaja mientras duermes",
- intro:"Lo difícil de las redes no es publicar: es acordarse de qué publicar. Vas a dejar programado un ayudante que cada semana te llega con las ideas listas, sin que tú hagas nada.",
- steps:["Abre Cowork y busca donde se programan las <b>tareas programadas</b>.",
-  "Crea una nueva, pega el prompt y ponla para que se repita cada semana, el día que tú quieras.",
-  "Ejecútala una vez a mano para ver qué entrega. Si las ideas salen flojas, dile qué le faltó y vuelve a guardar la tarea mejorada.",
-  "Listo: acabas de contratar un empleado que trabaja gratis todas las semanas. Eso es un agente."],
- objetivo:"que una tarea programada te entregue sola, cada semana, ideas de publicación para tu negocio sin que se las tengas que pedir.",
- copy:"Cada semana, dame 5 ideas de publicación para las redes de mi negocio de pesca. Para cada idea: el gancho (la primera frase que hace parar el dedo), qué mostrar en la foto o el video, el texto completo listo para copiar y 3 etiquetas. Que sean variadas: una que enseñe algo de pesca, una que muestre un producto, una que cuente algo mío, una que haga que la gente comente y una divertida. Nada de frases de vendedor acartonado: escríbelo como habla un pelado de 15 años que sabe de pesca. Ten en cuenta la época del año y si es temporada de pesca o no.",
- botin:"Una tarea programada que te va a mandar 5 ideas de publicación todas las semanas, sola, sin que se lo vuelvas a pedir."},
-
-{mid:"m8b",etapa:8,tipo:"larga",min:50,xp:40,
- title:"Un mes entero de contenido, de una sentada",
- intro:"La gente abandona las redes porque publica cuando se acuerda. Tú vas a hacer trampa: dejas el mes completo escrito hoy, y de ahí en adelante solo copias y pegas.",
- steps:["Abre Cowork en la carpeta de tu negocio y pega el prompt.",
-  "Te va a entregar un calendario con 12 publicaciones. Léelas y bota las 2 que menos te gusten: pídele 2 nuevas para reemplazarlas.",
-  "Haz las fotos de las 3 primeras. Solo 3. Con el celular, sin producción.",
-  "Publica la primera HOY. No mañana. Hoy.",
-  "Marca en el calendario cada una que publiques. Al final del mes vas a tener algo que casi nadie tiene: constancia."],
- objetivo:"que quede escrito en un archivo todo un mes de publicaciones listas para copiar, para que publicar deje de depender de las ganas.",
- copy:"Arma el calendario de contenido de un mes para las redes de mi negocio de pesca: 12 publicaciones, tres por semana. Para cada una: qué día va, el gancho, el texto completo listo para copiar, qué foto o video hay que hacer (algo que yo pueda grabar con el celular, sin equipo), las etiquetas y qué quiero lograr con esa publicación (que me conozcan, que me escriban o que me compren). Mézclalas: enseñar algo de pesca, mostrar producto, contar mi historia, responder dudas de principiantes. Ponlo en una tabla, guárdalo como archivo en la carpeta y deja una columna vacía para yo marcar las que ya publiqué.",
- botin:"Un archivo con 12 publicaciones listas para copiar y pegar, con la foto que hay que hacer en cada una. Y la primera ya publicada."},
-
-/* ===== ETAPA 9 · INGENIERÍA DE VUELO — crear con IA ===== */
-{mid:"m9a",etapa:9,tipo:"corta",min:25,xp:20,
- title:"El botón que te trae los pedidos",
- intro:"Una página bonita donde nadie sabe cómo comprarte no sirve de nada. Le vas a poner el botón que convierte visitas en pedidos: uno que abre WhatsApp con el mensaje ya escrito.",
- steps:["Abre la conversación donde hiciste tu página (o Cowork, en la carpeta de la página).",
-  "Pega el prompt y cámbiale el número por el tuyo, con el 57 adelante y sin espacios.",
-  "Cuando lo tenga, pruébalo TÚ desde el celular: dale al botón y mira si abre WhatsApp con el mensaje puesto.",
-  "Si abre bien, publícalo. Si no, dile qué pasó exactamente ('no abre nada', 'abre vacío') y que lo arregle."],
- objetivo:"que tu página tenga un botón de WhatsApp que abre el chat con el mensaje ya escrito, para que el cliente no tenga que pensar qué decirte.",
- copy:"Ponle a mi página un botón de WhatsApp que se vea siempre, flotando en la esquina de abajo a la derecha, también en el celular. Al tocarlo debe abrir WhatsApp con mi número [57 y tu número, sin espacios] y con este mensaje ya escrito: 'Hola, vi tu página y quiero preguntarte por...'. Que el botón sea verde de WhatsApp, redondo, con el icono, y que se note pero no tape el contenido. Después dime en pasos sencillos cómo publico el cambio para verlo en internet.",
- botin:"El botón de WhatsApp funcionando en tu página, probado por ti desde el celular. De ahí en adelante, cada visita puede volverse un pedido."},
-
-{mid:"m9b",etapa:9,tipo:"larga",min:60,xp:40,
- title:"Constrúyete tu cotizador de pedidos",
- intro:"Aquí dejas de usar programas y empiezas a hacerlos. Vas a construir, sin saber programar, una herramienta que solo existe para tu negocio: el cliente escoge lo que quiere y ella le dice cuánto vale.",
- steps:["Antes de pedir nada, escribe en una nota qué quieres que haga: qué escoge el cliente y qué le tiene que salir. Sin eso, la IA construye cualquier cosa.",
-  "Pega el prompt con TUS productos y TUS precios (los del catálogo de la etapa 5).",
-  "Cuando esté, pruébalo rompiéndolo a propósito: no escojas nada, pide 50 unidades, mete cosas raras. Cuenta qué se dañó y pide que lo arregle.",
-  "Enséñaselo a un pescador de verdad y quédate callado mientras lo usa. Lo que le cueste entender, eso es lo que hay que arreglar.",
-  "Cuando funcione, pégalo en tu página. Acabas de hacer un programa."],
- objetivo:"que construyas una herramienta propia donde el cliente arma su pedido y le sale el total, sin que tú tengas que contestar precios uno por uno.",
- copy:"Hazme una página web sencilla, de un solo archivo, que sea el cotizador de mi negocio de pesca. El cliente debe poder escoger de una lista los productos que quiere y cuántos de cada uno, y que se le vaya mostrando el total en pesos colombianos con puntos de miles, actualizándose solo. Los productos y precios son estos: [pega aquí tu catálogo]. Al final un botón que diga 'Pedir por WhatsApp' que abra mi WhatsApp [tu número] con el resumen del pedido y el total ya escritos en el mensaje. Que se vea bien en celular, que use los colores y el logo de mi marca, y que sea fácil de usar para alguien que no es de tecnología. Explícame al final cómo lo pongo en internet.",
- botin:"Tu cotizador funcionando: el cliente arma su pedido, ve el total y te lo manda por WhatsApp solo. Es un programa hecho por ti."}
-];
-
-/* Las 4 misiones que viven DENTRO de una lección (etapas 1, 2, 3 y 10).
-   Se listan aquí para que la Torre las muestre completas: se dan por hechas
-   cuando su lección está superada, y al tocarlas se abre esa lección. */
-const MISIONES_LECCION=[
- {mid:"L1", etapa:1, tipo:"larga", min:30, xp:40, les:"e1l4",  li:0, lj:3, title:"Pon a la IA a pescar por ti"},
- {mid:"L2", etapa:2, tipo:"larga", min:30, xp:35, les:"e2l3",  li:1, lj:2, title:"Un prompt que te vende lociones"},
- {mid:"L3", etapa:3, tipo:"larga", min:30, xp:35, les:"e3l3",  li:2, lj:2, title:"Tu pieza gráfica de verdad"},
- {mid:"L10",etapa:10,tipo:"larga", min:30, xp:50, les:"e10l3", li:9, lj:2, title:"Tu Tarjeta de Piloto Responsable"}
-];
-
-/* =====================================================================
    3) ENGINE — perfiles, estado, nube, render, motor de lección
    ===================================================================== */
 const PROFILES_KEY="cve_profiles_v1", ACTIVE_KEY="cve_active_v1", CONFIG_KEY="cve_config_v1";
@@ -1235,7 +1032,7 @@ function activeProfile(){ return PROFILES.find(p=>p.id===activeId)||null; }
 /* ---------- estado por perfil ---------- */
 const DEFAULT_STATE=()=>({xp:0,streak:0,bestStreak:0,lastDay:null,streakShield:1,
   done:{},moduleDone:{},badges:{},skill:{},ethCount:0,review:[],muted:false,
-  lessonsCount:0,exCount:0,correctCount:0,createdAt:0,fails:{},missions:{},_t:0});
+  lessonsCount:0,exCount:0,correctCount:0,createdAt:0,fails:{},_t:0});
 let S=DEFAULT_STATE();
 function stateKey(){ return STATE_PREFIX+(activeId||"none"); }
 /* Mueve el progreso guardado cuando se reorganizan las etapas, para que nadie
@@ -1440,10 +1237,9 @@ function toast(m){ elToast.textContent=m; elToast.classList.add('show'); clearTi
 function show(scr){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById('scr-'+scr).classList.add('active');
   document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.nav===scr)); window.scrollTo(0,0); }
 document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>{ const n=b.dataset.nav; if(n==='tutor'){ openTutor(); return; }
-  if(n==='path')renderPath(); if(n==='profile')renderProfile(); if(n==='session')renderSession(); if(n==='missions')renderMisiones(); show(n); });
+  if(n==='path')renderPath(); if(n==='profile')renderProfile(); if(n==='session')renderSession(); show(n); });
 function refreshTop(){ document.getElementById('xpStat').textContent='⭐ '+S.xp; document.getElementById('streakStat').textContent='🔥 '+S.streak;
-  document.getElementById('soundBtn').textContent=S.muted?'🔇':'🔊'; const p=activeProfile(); if(p) document.getElementById('miniAva').textContent=p.avatar;
-  if(typeof refreshMisBadge==='function') refreshMisBadge(); }
+  document.getElementById('soundBtn').textContent=S.muted?'🔇':'🔊'; const p=activeProfile(); if(p) document.getElementById('miniAva').textContent=p.avatar; }
 document.getElementById('soundBtn').onclick=()=>{ S.muted=!S.muted; save(); refreshTop(); if(!S.muted)sndGood(); };
 document.getElementById('miniAva').onclick=()=>{ flushCloud(); showProfiles(); };
 
@@ -1579,8 +1375,6 @@ function renderPath(){
       <div class="cc-t">${t}</div><div class="cc-s">${lv.name}</div></div><div class="cc-btn">Volar →</div></div>`;
   } else { h+=`<div class="continuecard done"><div class="cc-l"><div class="cc-tag">🏆 ¡TODO COMPLETADO!</div><div class="cc-t">Eres Capitán IA, ${pilotName()}</div></div></div>`; }
   h+=`<div class="capi"><div class="face">${CAPI_SVG}</div><div class="bub">${capiLine(nt)}</div></div>`;
-  const nMis=misionesDisponibles();
-  if(nMis) h+=`<button class="btn amber sm" style="margin-bottom:6px" onclick="APP.irMisiones()">🎯 Tienes ${nMis} ${nMis===1?'misión real esperando':'misiones reales esperando'} · ¡a la Torre!</button>`;
   if(S.review.length) h+=`<button class="btn ghost sm" style="margin-bottom:6px" onclick="APP.review()">🛩️ Simulador de repaso · ${S.review.length} por reforzar</button>`;
   if(S.lessonsCount>0) h+=`<button class="btn ghost sm" style="margin-bottom:6px" onclick="APP.choosePractice()">🎯 Elige un tema para practicar</button>`;
   if(CFG.familyNote) h+=`<div class="capi" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.3)"><div class="face" style="display:grid;place-items:center;font-size:24px">💛</div><div class="bub"><b>Mensaje de tu familia:</b> ${esc(CFG.familyNote)}</div></div>`;
@@ -1659,8 +1453,7 @@ function renderMission(e){ const stepsH=e.steps.map((s,k)=>`<div class="step"><d
   const objH=e.objetivo?`<div class="muted" style="margin-bottom:5px">🎯 Para qué sirve este prompt: ${e.objetivo}</div>`:'';
   const copyH=e.copy?`<div style="margin:10px 0">${objH}<div class="copybox" id="copybox">${e.copy}</div><button class="copybtn" onclick="APP.copyPrompt()">📋 Copiar prompt</button></div>`:'';
   const botinH=e.botin?`<div style="margin-top:12px;background:rgba(34,211,238,.08);border:1px solid var(--line);border-radius:10px;padding:12px"><div style="font-weight:800;color:var(--cyan);font-size:12px;margin-bottom:4px">🎒 TE LLEVAS (tu botín)</div><div style="font-size:13px;color:#cfe0ff;line-height:1.5">${e.botin}</div></div>`:'';
-  const tipoH=e.tipo?`<span class="mtag" style="margin-left:6px;color:var(--cyan);background:rgba(34,211,238,.13)">${e.tipo==='corta'?'⚡ CORTA':'🚀 LARGA'} · ${e.min} MIN</span>`:'';
-  return `<div class="mission"><span class="mtag">MISIÓN REAL · +${e.xp} XP</span>${tipoH}<h4>${e.title}</h4><div class="intro">${e.intro}</div><div class="steps">${stepsH}</div>${copyH}${botinH}</div>`; }
+  return `<div class="mission"><span class="mtag">MISIÓN REAL · +${e.xp} XP</span><h4>${e.title}</h4><div class="intro">${e.intro}</div><div class="steps">${stepsH}</div>${copyH}${botinH}</div>`; }
 function showCheck(label,cls,onclick,disabled){ elCheck.innerHTML=`<button class="btn ${cls}" id="checkBtn" ${disabled?'disabled':''} onclick="${onclick}">${label}</button>`; elCheck.classList.add('show'); }
 function hideCheck(){ elCheck.classList.remove('show'); }
 function enableCheck(){ const b=document.getElementById('checkBtn'); if(b)b.disabled=false; }
@@ -1711,10 +1504,7 @@ function finishLesson(){
   else celebrate({icon:"✅",title:"¡Lección completada!",msg:randomCeleb(),xp:"+"+(first?gain:5)+" XP"});
   const delay=jackpot?2700:1200;
   setTimeout(()=>{ if(rankUp) celebrate({icon:"🎖️",title:"¡Ascenso a "+rankUp+"!",msg:rankReward(rankUp),xp:""}); },delay+50);
-  const go=()=>{renderPath();show('path');
-    // Superar una etapa libera sus misiones reales: hay que avisarlo o no se enteran.
-    if(moduleNow){ const n=MISIONES.filter(m=>m.etapa===lv.etapa).length;
-      if(n) setTimeout(()=>toast('🎯 Se te desbloquearon '+n+' misiones reales en la Torre'),700); } };
+  const go=()=>{renderPath();show('path');};
   if(moduleNow){ setTimeout(()=>flightSim(lv.name,go),(rankUp?3200:delay)); }
   else setTimeout(go,(rankUp?3200:delay)+100);
 }
@@ -1723,78 +1513,6 @@ function quitLesson(){ hideCheck(); hideFeedback(); renderPath(); show('path'); 
 function doMission(){ const {e}=CUR.exs[CUR.idx]; addXP(e.xp||30); toast("¡Botín conseguido! +"+(e.xp||30)+" XP"); save(); refreshTop();
   answered=true; hideCheck(); celebrate({icon:"🎒",title:"¡Botín conseguido!",msg:"¡Hiciste algo que ayer no sabías hacer, "+pilotName()+"! Guarda tu botín: eso es tuyo y te sirve de verdad. 🦜",xp:"+"+(e.xp||30)+" XP"});
   setTimeout(()=>advance(),1500); }
-
-/* =========================================================
-   TORRE DE MISIONES · pantalla propia
-   ---------------------------------------------------------
-   Antes las misiones vivían solo dentro de una lección: las etapas 4 a 9
-   no tenían ninguna, y una misión de una lección ya superada no se volvía
-   a ver nunca. Aquí cada etapa superada libera las suyas y quedan
-   disponibles para siempre. Se pagan UNA sola vez (S.missions).
-   ========================================================= */
-let MIS_ACT=null;
-function misionHecha(mid){ return !!(S.missions&&S.missions[mid]); }
-function etapaSuperada(n){ const lv=CURRICULUM.levels.find(l=>l.etapa===n); return !!(lv&&S.moduleDone[lv.id]); }
-function misionesTodas(){ const dentro=MISIONES_LECCION.map(m=>Object.assign({},m,{enLeccion:true}));
-  return MISIONES.concat(dentro).sort((a,b)=>(a.etapa-b.etapa)||(a.tipo==='corta'?-1:1)); }
-/* Las que viven dentro de una lección se dan por hechas cuando esa lección está superada. */
-function misionListaHecha(m){ return m.enLeccion? !!S.done[m.les] : misionHecha(m.mid); }
-function misionesDisponibles(){ return misionesTodas().filter(m=>etapaSuperada(m.etapa)&&!misionListaHecha(m)).length; }
-function refreshMisBadge(){ const el=document.getElementById('navMisBadge'); if(!el)return;
-  const n=misionesDisponibles(); el.textContent=n; el.classList.toggle('on',n>0); }
-
-function renderMisiones(){
-  const todas=misionesTodas();
-  const hechas=todas.filter(m=>misionListaHecha(m)).length;
-  const disp=todas.filter(m=>etapaSuperada(m.etapa)&&!misionListaHecha(m)).length;
-  let h=`<div class="mishead"><h2>🎯 Torre de Misiones</h2>
-    <p>Aquí no hay preguntas. Son cosas de verdad que haces con la IA para tu negocio. Cada etapa que superas te libera dos: una <b>corta</b> para cuando tengas poco tiempo y una <b>larga</b> para cuando quieras avanzar en serio. No se vencen: haz la que quieras, cuando quieras.</p>
-    <div class="misres"><span>✅ ${hechas} conseguidas</span><span>🎯 ${disp} disponibles</span><span>🔒 ${todas.length-hechas-disp} por desbloquear</span></div></div>`;
-  if(!disp) h+=`<div class="capi"><div class="face">${CAPI_SVG}</div><div class="bub">${hechas>=todas.length?('¡Hiciste TODAS las misiones, '+pilotName()+'! Tu negocio ya no es una idea. 🦜'):('Ahora mismo no te queda ninguna pendiente, '+pilotName()+'. Supera la siguiente etapa en el Camino y te libero dos nuevas. 🦜')}</div></div>`;
-  CURRICULUM.levels.forEach(lv=>{
-    const ms=todas.filter(m=>m.etapa===lv.etapa); if(!ms.length) return;
-    const abierta=etapaSuperada(lv.etapa);
-    h+=`<div class="misgroup"><div class="misgh"><div class="gi">${lv.ic}</div><h3>Etapa ${lv.etapa} · ${lv.name}</h3>${abierta?'':'<div class="glock">🔒 supera la etapa</div>'}</div>`;
-    ms.forEach(m=>{ const hecha=misionListaHecha(m); const cls=!abierta?'locked':(hecha?'done':'');
-      const ic=!abierta?'🔒':(hecha?'✅':(m.tipo==='corta'?'⚡':'🚀'));
-      const click=abierta?` onclick="APP.abrirMision('${m.mid}')"`:'';
-      h+=`<button class="miscard ${cls}"${click}><div class="mis-ic">${ic}</div><div class="mis-b">
-        <div class="mis-t">${m.title}</div><div class="mis-m"><i class="${m.tipo}">${m.tipo==='corta'?'⚡ Corta':'🚀 Larga'} · ${m.min} min</i><i>+${m.xp} XP</i>${hecha?'<i class="ok">✓ Conseguida</i>':''}${m.enLeccion?'<i>va dentro de la lección</i>':''}</div>
-        </div><div class="mis-go">${abierta?'›':''}</div></button>`; });
-    h+=`</div>`; });
-  document.getElementById('scr-missions').innerHTML=h; refreshMisBadge(); }
-
-function misionDeLeccion(m){ const lv=CURRICULUM.levels[m.li], ls=lv&&lv.lessons[m.lj];
-  return ls?(ls.ex.find(e=>e.type==='mission')||null):null; }
-function abrirMision(mid){ const m=misionesTodas().find(x=>x.mid===mid); if(!m) return;
-  if(m.enLeccion){
-    // Si todavía no la ha hecho, se juega dentro de su lección, como siempre.
-    if(!misionListaHecha(m)){ startLesson(m.li,m.lj); return; }
-    // Si ya la hizo, se muestra solo para releerla y volver a copiar el prompt:
-    // abrir la lección entera lo obligaría a repetir preguntas ya respondidas.
-    const e=misionDeLeccion(m); if(!e){ startLesson(m.li,m.lj); return; }
-    MIS_ACT=null;   // así no hay forma de cobrarla otra vez
-    document.getElementById('scr-lesson').innerHTML=
-      `<div class="lessonhead"><button class="x" onclick="APP.cerrarMision()">✕</button><div class="pbar"><i style="width:100%"></i></div></div>`
-      +renderMission(Object.assign({},e,{tipo:m.tipo,min:m.min}));
-    showCheck('✓ Ya la conseguiste · volver','ghost','APP.cerrarMision()');
-    show('lesson'); window.scrollTo(0,0); return;
-  }
-  MIS_ACT=m;
-  const head=`<div class="lessonhead"><button class="x" onclick="APP.cerrarMision()">✕</button><div class="pbar"><i style="width:100%"></i></div></div>`;
-  document.getElementById('scr-lesson').innerHTML=head+renderMission(m);
-  if(misionHecha(mid)) showCheck('✓ Ya la conseguiste · volver','ghost','APP.cerrarMision()');
-  else showCheck('✅ Marcar misión como hecha','amber','APP.completarMision()');
-  show('lesson'); window.scrollTo(0,0); }
-
-function completarMision(){ const m=MIS_ACT; if(!m||misionHecha(m.mid)) return;   // se paga una sola vez
-  S.missions=S.missions||{}; S.missions[m.mid]=Date.now();
-  const rankUp=addXP(m.xp); bumpStreak(); save(); refreshTop(); hideCheck(); sndGood(); burst(70);
-  celebrate({icon:"🎒",title:"¡Botín conseguido!",msg:"Eso que acabas de hacer ya no es del juego, "+pilotName()+": es de tu negocio. Guárdalo bien. 🦜",xp:"+"+m.xp+" XP"});
-  setTimeout(()=>{ if(rankUp) celebrate({icon:"🎖️",title:"¡Ascenso a "+rankUp+"!",msg:rankReward(rankUp),xp:""}); },1450);
-  setTimeout(()=>{ renderMisiones(); show('missions'); },rankUp?3400:1400); }
-
-function cerrarMision(){ hideCheck(); hideFeedback(); renderMisiones(); show('missions'); }
 function copyPrompt(){ const t=(document.getElementById('copybox')||{}).innerText||""; if(navigator.clipboard) navigator.clipboard.writeText(t).then(()=>toast('Copiado ✓'),()=>toast('Selecciona y copia')); else toast('Selecciona y copia'); }
 /* feedback */
 function showFeedback(good,title,ex,onCont){ hideCheck(); elFb.className='fb '+(good?'good':'bad');
@@ -2106,8 +1824,7 @@ function switchPilot(){ flushCloud(); showProfiles(); }
 const APP={ openLesson:(i,j)=>startLesson(i,j), review:startReview, choosePractice, startPractice, pick, check, orderPick, orderBack, matchSel, quitLesson, doMission, copyPrompt,
   tmToggle, tmNext, tmReset, checkPin, closeOverlay, exportData, importData, resetData, doReset, lockTutor, syncNow, saveCfg, switchPilot, cargarTripulacion,
   planPrev, planNext, planAuto, abrirSesion, volverComandante, fijarClase, soltarClase,
-  newPilot, pickAva, pickCs, createPilot, pickPilot, delPilot, doDelPilot, recoverPilot, doRecover, editPilot, saveEdit,
-  abrirMision, completarMision, cerrarMision, irMisiones:()=>{ renderMisiones(); show('missions'); } };
+  newPilot, pickAva, pickCs, createPilot, pickPilot, delPilot, doDelPilot, recoverPilot, doRecover, editPilot, saveEdit };
 window.APP=APP;
 
 /* ---------- ARRANQUE ---------- */

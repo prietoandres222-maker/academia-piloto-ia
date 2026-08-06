@@ -10,10 +10,11 @@ const fs = require('fs');
 const html = fs.readFileSync(__dirname + '/index.html', 'utf8');
 
 /* --- 1) Sacar el objeto CURRICULUM del HTML sin ejecutar toda la app --- */
-function extraerCurriculum() {
-  const ini = html.indexOf('const CURRICULUM=');
-  if (ini < 0) throw new Error('No encontré CURRICULUM en index.html');
-  const abre = html.indexOf('{', ini);
+function extraerConst(nombre, apertura) {
+  const cierre = apertura === '{' ? '}' : ']';
+  const ini = html.indexOf('const ' + nombre + '=');
+  if (ini < 0) throw new Error('No encontré ' + nombre + ' en index.html');
+  const abre = html.indexOf(apertura, ini);
   let i = abre, prof = 0, enTxt = null, esc = false;
   for (; i < html.length; i++) {
     const c = html[i];
@@ -24,14 +25,16 @@ function extraerCurriculum() {
       continue;
     }
     if (c === '"' || c === "'" || c === '`') { enTxt = c; continue; }
-    if (c === '{') prof++;
-    else if (c === '}') { prof--; if (prof === 0) { i++; break; } }
+    if (c === apertura) prof++;
+    else if (c === cierre) { prof--; if (prof === 0) { i++; break; } }
   }
   const cuerpo = html.slice(abre, i);
   return new Function('return ' + cuerpo)();
 }
 
-const CUR = extraerCurriculum();
+const CUR = extraerConst('CURRICULUM', '{');
+const MIS = extraerConst('MISIONES', '[');
+const MISL = extraerConst('MISIONES_LECCION', '[');
 
 const TIPOS = ['mc', 'tf', 'fill', 'order', 'match', 'improve', 'mission', 'detect'];
 const errores = [], avisos = [];
@@ -221,6 +224,66 @@ for (const lv of CUR.levels)
     });
   }
 
+/* --- 2e) TORRE DE MISIONES --- *
+   Las misiones de la Torre no pasan por el motor de lecciones, así que si
+   nadie las revisa aquí, no las revisa nadie. Se piden los mismos mínimos
+   que a una misión de lección, más lo suyo: mid único, etapa que exista,
+   tipo corta/larga y que cada etapa quede con una de cada una. */
+const etapasCUR = new Set(CUR.levels.map(l => l.etapa));
+const mids = new Set();
+let xpMisiones = 0;
+
+for (const m of MIS) {
+  const D = `Misión "${m.mid || '(sin mid)'}"`;
+  if (!m.mid) errores.push(`Misión sin mid: "${m.title || '?'}"`);
+  else if (mids.has(m.mid)) errores.push(`${D}: 🔴 mid repetido (el progreso guardado se pisaría)`);
+  else mids.add(m.mid);
+  if (!etapasCUR.has(m.etapa)) errores.push(`${D}: etapa ${m.etapa} no existe en el currículo`);
+  if (m.tipo !== 'corta' && m.tipo !== 'larga') errores.push(`${D}: tipo debe ser "corta" o "larga", es ${JSON.stringify(m.tipo)}`);
+  if (!m.title) errores.push(`${D}: sin título`);
+  if (!m.intro) avisos.push(`${D}: sin intro (el enganche)`);
+  if (!Array.isArray(m.steps) || m.steps.length < 3) errores.push(`${D}: necesita al menos 3 pasos`);
+  if (!m.botin) errores.push(`${D}: 🔴 sin "botín" — si no se lleva nada, no es una misión`);
+  if (typeof m.xp !== 'number' || m.xp <= 0) errores.push(`${D}: XP inválido (${JSON.stringify(m.xp)})`);
+  if (typeof m.min !== 'number' || m.min <= 0) errores.push(`${D}: sin duración en minutos`);
+  if (m.copy && !m.objetivo) avisos.push(`${D}: tiene prompt para copiar pero no explica para qué sirve (objetivo)`);
+  xpMisiones += (m.xp || 0);
+  /* Misma regla que en las misiones de lección: no puede terminar en "cuéntale a tu papá". */
+  const ultimo = String((m.steps || [])[(m.steps || []).length - 1] || '').toLowerCase();
+  if (/^cu[eé]ntale a (andr[eé]s|felipe|tu pap)/.test(ultimo.trim()))
+    errores.push(`${D}: 🔴 el último paso es "contarle a alguien" — debe terminar dejándole algo hecho`);
+  /* Un prompt de misión larga con dos líneas no investiga nada. */
+  if (m.tipo === 'larga' && m.copy && m.copy.length < 250)
+    avisos.push(`${D}: es larga pero su prompt es muy corto (${m.copy.length} caracteres)`);
+  if (m.tipo === 'corta' && m.min > 30)
+    avisos.push(`${D}: dice "corta" pero pide ${m.min} minutos`);
+}
+
+/* Cada etapa con misiones propias debe quedar con una corta y una larga:
+   la corta es la que hace que un día flojo igual sirva. */
+const porEtapa = {};
+MIS.forEach(m => { (porEtapa[m.etapa] = porEtapa[m.etapa] || []).push(m.tipo); });
+Object.keys(porEtapa).forEach(et => {
+  const t = porEtapa[et];
+  if (!t.includes('corta')) avisos.push(`Etapa ${et}: tiene misión larga pero no corta`);
+  if (!t.includes('larga')) avisos.push(`Etapa ${et}: tiene misión corta pero no larga`);
+});
+
+/* Las misiones que viven dentro de una lección: el puntero tiene que existir
+   de verdad, o la Torre abriría una lección equivocada. */
+for (const m of MISL) {
+  const D = `Misión de lección "${m.mid}"`;
+  if (mids.has(m.mid)) errores.push(`${D}: 🔴 mid repetido con una misión de la Torre`);
+  mids.add(m.mid);
+  const lv = CUR.levels[m.li];
+  const le = lv && lv.lessons[m.lj];
+  if (!le) { errores.push(`${D}: 🔴 apunta a la lección [${m.li}][${m.lj}] y ahí no hay nada`); continue; }
+  if (le.id !== m.les) errores.push(`${D}: 🔴 dice lección "${m.les}" pero [${m.li}][${m.lj}] es "${le.id}"`);
+  if (lv.etapa !== m.etapa) errores.push(`${D}: dice etapa ${m.etapa} pero la lección está en la ${lv.etapa}`);
+  if (!(le.ex || []).some(e => e.type === 'mission'))
+    errores.push(`${D}: 🔴 la lección "${le.id}" no tiene ninguna misión adentro`);
+}
+
 /* --- 3) Rangos e insignias --- */
 if (!Array.isArray(CUR.ranks) || !CUR.ranks.length) errores.push('No hay rangos definidos');
 else {
@@ -238,9 +301,26 @@ if (new Set(idsIns).size !== idsIns.length) errores.push('Hay insignias con id r
 const XP_TOTAL = CUR.levels.reduce((s, lv) =>
   s + lv.lessons.reduce((a, le) => a + le.ex.reduce((b, e) => b + (e.xp || 10), 0), 0), 0);
 
+/* Economía REAL de XP, no la estimación de arriba: una lección sin errores
+   paga 14 (finishLesson) y cada misión paga lo suyo. Sirve para saber si el
+   rango de Capitán queda alcanzable pero no regalado — está calibrado con
+   la cantidad de contenido y con premios ya prometidos, así que si esto se
+   desvía hay que mirarlo antes de publicar. */
+const XP_LECCIONES = nLec * 14;
+const XP_MIS_LECCION = CUR.levels.reduce((s, lv) =>
+  s + lv.lessons.reduce((a, le) => a + le.ex.reduce((b, e) => b + (e.type === 'mission' ? (e.xp || 0) : 0), 0), 0), 0);
+const XP_PASADA = XP_LECCIONES + XP_MIS_LECCION + xpMisiones;
+const XP_CAPITAN = CUR.ranks[CUR.ranks.length - 1].xp;
+
 console.log('===== VALIDACIÓN DEL JUEGO =====');
 console.log(`Etapas: ${CUR.levels.length} · Lecciones: ${nLec} · Ejercicios: ${nEx}`);
-console.log(`XP máximo alcanzable: ~${XP_TOTAL} (Capitán IA pide ${CUR.ranks[CUR.ranks.length - 1].xp})`);
+console.log(`Misiones: ${MIS.length} en la Torre + ${MISL.length} dentro de lecciones = ${MIS.length + MISL.length}`);
+console.log(`XP de una pasada limpia: ${XP_PASADA} (lecciones ${XP_LECCIONES} + misiones ${XP_MIS_LECCION + xpMisiones}) · Capitán IA pide ${XP_CAPITAN}`);
+if (XP_PASADA > XP_CAPITAN * 1.15)
+  avisos.push(`Con ${XP_PASADA} XP de una sola pasada se llega a Capitán (${XP_CAPITAN}) bastante antes de terminar el juego. Revisa si el premio se está regalando.`);
+if (XP_PASADA < XP_CAPITAN * 0.75)
+  avisos.push(`Una pasada limpia da ${XP_PASADA} XP y Capitán pide ${XP_CAPITAN}: quedaría demasiado repaso obligatorio para llegar.`);
+console.log(`XP máximo alcanzable: ~${XP_TOTAL} (Capitán IA pide ${XP_CAPITAN})`);
 if (XP_TOTAL < CUR.ranks[CUR.ranks.length - 1].xp)
   errores.push(`🔴 IMPOSIBLE LLEGAR A CAPITÁN: el juego da ${XP_TOTAL} XP pero el rango pide ${CUR.ranks[CUR.ranks.length - 1].xp}`);
 
