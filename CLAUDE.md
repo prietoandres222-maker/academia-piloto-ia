@@ -50,16 +50,17 @@ node validar.cjs     # OBLIGATORIO antes de publicar
 Publicación: Vercel, como sitio estático, desde el repo. No hay build.
 
 **Variables de entorno:** la app no lee ninguna en tiempo de ejecución (es HTML plano).
-`.env.local` existe solo para herramientas locales y contiene los nombres `SYNC_URL`,
-`NETLIFY_SYNC_SITE_ID`, `NETLIFY_SYNC_REPO` y `APP_TUTOR_PIN`. Está en `.gitignore`.
+`.env.local` existe solo para herramientas locales y está en `.gitignore`. Además de `SYNC_URL`
+y `APP_TUTOR_PIN`, todavía puede tener nombres heredados de la etapa de Netlify
+(`NETLIFY_SYNC_SITE_ID`, `NETLIFY_SYNC_REPO`): son sobras, ya nadie los lee.
 
 ## Dónde se guardan los datos
 
 **El navegador manda; la nube es una copia.** El progreso vive en `localStorage` y el juego
 está hecho para seguir funcionando aunque la nube no conteste.
 
-La nube es una función de **Netlify Blobs** (`SYNC_URL`, definida como constante dentro de
-`index.html`), con dos clases de fila:
+La nube es un **Cloudflare Worker con KV** — `https://capitan-echandia-sync.prieto-ia.workers.dev`,
+la constante `SYNC_URL` dentro de `index.html` (línea ~1269) — con dos clases de fila:
 
 - `cve_roster` → la lista de pilotos de la familia (compartida).
 - `cve_<id>` → el progreso de cada piloto. El `id` sale del nombre (`dani`, `andres`…), y ese
@@ -124,7 +125,8 @@ Color de fondo y tema: `#070d20`. Español de Colombia. Sin scroll horizontal en
 - **El proyecto de Supabase `capitan-dani-ia` está PAUSADO, no borrado.** Era la nube anterior.
   Se pausó porque el plan gratis solo permite 2 proyectos activos y los ocupan `crm-mop` y
   `las-prendas`. Reactivarlo requiere pausar otro. El respaldo y el instructivo están en
-  `RESPALDO-SUPABASE/RESTAURAR.md`. **La nube vigente es Netlify Blobs, no Supabase.**
+  `RESPALDO-SUPABASE/RESTAURAR.md`. **La nube vigente es el Worker de Cloudflare, no Supabase
+  ni Netlify.** Netlify Blobs fue la nube intermedia y también quedó atrás (02/08/2026).
 - **`vercel.json` desactiva la caché a propósito.** Sin eso, un cambio en `index.html` puede
   tardar en verse y parece que la publicación no funcionó.
 
