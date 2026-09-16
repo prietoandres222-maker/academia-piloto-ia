@@ -533,7 +533,7 @@ const CAPI_TIPS=[
    2) CURRICULUM — 10 ETAPAS DE VUELO (cada una da una insignia)
    ===================================================================== */
 const CURRICULUM={
-  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Primer Oficial",xp:700,ic:"🛩️"},{n:"Capitán IA",xp:900,ic:"👨‍✈️",logo:true}],
+  ranks:[{n:"Cadete",xp:0,ic:"🎓"},{n:"Alférez",xp:220,ic:"🪶"},{n:"Teniente",xp:520,ic:"🎖️"},{n:"Primer Oficial",xp:780,ic:"🛩️"},{n:"Capitán IA",xp:1000,ic:"👨‍✈️",logo:true}],
   levels:[
   /* ===== ETAPA 1 · DESPEGUE — Capacidades de la IA ===== */
   {id:"e1",etapa:1,name:"Despegue",tag:"Qué tan capaz es la IA hoy",ic:"🛫",skill:"capacidades",
@@ -872,53 +872,79 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 7 · SHOW AEREO — videos que venden, con IA ===== */
-  {id:"e11",etapa:7,name:"Show Aéreo",tag:"Videos que venden, hechos con IA",ic:"🎬",skill:"video",
-   insignia:{id:"e11",ic:"🎬",n:"Show Aéreo"},
+  /* ===== ETAPA 7 · BITÁCORA — Claude en Excel y documentos ===== */
+  {id:"e7",etapa:7,name:"Bitácora",tag:"Claude en Excel y documentos",ic:"📊",skill:"oficina",
+   insignia:{id:"e7",ic:"📊",n:"Bitácora"},
    lessons:[
-    {id:"e11l1",t:"De una foto a un video",d:"Higgsfield",ex:[
-      {type:"mc",skill:"video",q:"Para sacar un video de algo que vendes, hoy necesitas…",
-       opts:["Una foto del producto y describir qué quieres que pase","Una cámara profesional y un estudio con luces","Saber editar video en un programa de computador","Contratar a alguien que grabe y edite por ti"],a:0,
-       ex:"Subes la foto y escribes la escena. La IA arma el video. El equipo caro dejó de ser la puerta de entrada."},
-      {type:"tf",skill:"video",q:"Un video para redes hecho con IA puede estar listo en minutos.",a:true,
-       ex:"Verdadero. Lo que antes era un día de grabación hoy se resuelve mientras haces otra cosa."},
-      {type:"fill",skill:"video",q:"En Higgsfield, la parte que hace anuncios de producto se llama Marketing ______.",
-       opts:["Studio","Center","Camera","Piloto"],a:0,
-       ex:"Marketing Studio: le das la foto del producto, escoges el estilo y te entrega el video vertical listo para publicar."},
-      {type:"mc",skill:"video",q:"¿Por qué a tu negocio le sirve más un video que una foto?",
-       opts:["Muestra el producto en movimiento y retiene más la atención","Porque los videos siempre salen más baratos de hacer","Porque las fotos ya no se pueden publicar en redes","Porque un video no necesita que escribas nada"],a:0,
-       ex:"El movimiento retiene: la gente para el dedo. Por eso las redes muestran más los videos que las fotos."}
+    {id:"e7l1",t:"Claude en Excel",d:"El copiloto de la hoja",ex:[
+      {type:"mc",skill:"oficina",q:"Claude en Excel te ayuda a…",
+       opts:["Revisar, explicar y construir tus hojas de cálculo","Imprimir la hoja con mejor calidad","Convertir la hoja en una imagen","Guardar la hoja en internet para que no se pierda"],a:0,
+       ex:"Le preguntas '¿por qué esto no cuadra?', él revisa la hoja y te explica. Un copiloto de números."},
+      {type:"tf",skill:"oficina",q:"Puedo pedirle a Claude que revise por qué una cuenta no cuadra.",a:true,
+       ex:"Verdadero. Ejemplo real: 'revisa las hojas y explícame por qué quedó descuadrado.'"},
+      {type:"fill",skill:"oficina",q:"En el trabajo: Chrome recoge, Cowork concilia, Excel ______.",
+       opts:["cierra","empieza","busca","traduce"],a:0,ex:"Excel cierra: el trabajo termina en la hoja de siempre, revisada y aprobada por ti."},
+      {type:"mc",skill:"oficina",q:"Para tu negocio de lociones, Excel + IA sirve para…",
+       opts:["Llevar el inventario y las ventas, y que la IA te explique los números","Diseñar la etiqueta y el frasco de la loción","Escribir los textos de tus publicaciones de Instagram","Elegir el aroma que más le gusta a la gente"],a:0,
+       ex:"Controlas cuántas lociones tienes, cuánto vendes y tu ganancia. La IA te ayuda a entenderlo."}
     ]},
-    {id:"e11l2",t:"El video que sí vende",d:"Gancho, formato y duración",ex:[
-      {type:"mc",skill:"video",q:"Lo que decide si alguien ve tu video completo son…",
-       opts:["Los primeros 3 segundos del video","La música que le pongas al final","La cantidad de etiquetas que uses","El día de la semana en que publicas"],a:0,
-       ex:"Si el arranque no engancha, el resto no lo ve nadie. A eso se le dice el gancho."},
-      {type:"fill",skill:"video",q:"Para Instagram y TikTok el video se hace ______.",
-       opts:["vertical","horizontal","cuadrado","alargado"],a:0,
-       ex:"Vertical (9:16), como se sostiene el teléfono. Uno horizontal se ve chiquito y pierde fuerza."},
-      {type:"tf",skill:"video",q:"Entre más largo el video, más vende.",a:false,
-       ex:"Falso. En redes manda lo corto: entre 10 y 15 segundos bien hechos rinden más que un minuto flojo."},
-      {type:"mc",skill:"video",q:"Tu video se ve increíble y nadie te escribe. Lo más probable es que falte…",
-       opts:["Decir claramente qué hacer: escríbeme, pide por WhatsApp","Ponerle un filtro de color más llamativo","Subirlo en mejor resolución para que se vea nítido","Publicarlo otra vez al día siguiente"],a:0,
-       ex:"Sin llamado a la acción la gente admira y sigue de largo. Hay que decirle qué hacer."}
+    {id:"e7l2",t:"Nada sin tu OK",d:"Tú apruebas",ex:[
+      {type:"mc",skill:"oficina",eth:true,q:"Cuando Claude propone corregir una celda…",
+       opts:["Tú (o el adulto a cargo) apruebas antes de aplicar","Se aplica sola y queda registrada en el historial","Se aplica sola, pero únicamente si la fórmula da error","Se guarda aparte y se aplica al cerrar el archivo"],a:0,
+       ex:"Claude propone; tú apruebas celda por celda. Nada cambia sin tu OK."},
+      {type:"tf",skill:"oficina",q:"Cuando la IA propone un cambio en tu hoja, se aplica sola sin que tú apruebes.",a:false,
+       ex:"Falso. Nada se aplica sin tu aprobación. Tú firmas el resultado: la IA acelera, tú decides."},
+      {type:"fill",skill:"oficina",q:"Claude propone el cambio, pero solo se aplica cuando tú lo ______.",
+       opts:["apruebas","escribes","imprimes","comentas"],a:0,ex:"Tu aprobación manda. Ese control es lo que te hace el capitán."},
+      {type:"match",skill:"oficina",q:"Empareja cada herramienta de trabajo con su tarea:",
+       pairs:[{l:"Excel + IA",r:"Revisa y explica números"},{l:"Word/PPT + IA",r:"Redacta y arma presentaciones"}],
+       ex:"La IA también ayuda en Word, PowerPoint y correo. Un copiloto para toda la oficina."}
+    ]}
+  ]},
+
+  /* ===== ETAPA 8 · PILOTO AUTOMÁTICO — Agentes ===== */
+  {id:"e8",etapa:8,name:"Piloto Automático",tag:"Agentes y automatizaciones",ic:"🤖",skill:"agentes",
+   insignia:{id:"e8",ic:"🤖",n:"Piloto Automático"},
+   lessons:[
+    {id:"e8l1",t:"¿Qué es un agente?",d:"De ayudante a piloto automático",ex:[
+      {type:"mc",skill:"agentes",q:"Un 'agente' de IA es…",
+       opts:["Una IA que actúa sola para lograr un objetivo, no solo responde","Una IA que solo contesta cuando tú le escribes algo","Un buscador que te muestra enlaces para que tú decidas","Un programa que sigue un guion fijo y nunca se adapta"],a:0,
+       ex:"Un agente tiene un objetivo, memoria e iniciativa: observa, piensa, actúa y evalúa. Trabaja solo hacia una meta."},
+      {type:"match",skill:"agentes",q:"Empareja el paso del agente con su ejemplo:",
+       pairs:[{l:"Observa",r:"Mira la situación"},{l:"Piensa",r:"Decide qué hacer"},{l:"Actúa",r:"Ejecuta la acción"}],
+       ex:"Observa → piensa → actúa → evalúa. Ese es el 'loop' de un agente. Como un piloto en cabina."},
+      {type:"tf",skill:"agentes",q:"Un agente puede tener memoria y actuar sin que lo activen cada vez.",a:true,
+       ex:"Verdadero. Por eso pasamos de 'copilotos' (ayudan) a 'capitanes' (deciden y actúan)."},
+      {type:"fill",skill:"agentes",q:"Un agente tiene un ______ y trabaja por su cuenta para lograrlo.",
+       opts:["objetivo","permiso","reporte","horario"],a:0,ex:"El objetivo es su brújula. Todo lo que hace es para cumplirlo."}
     ]},
-    {id:"e11l3",t:"Videos honestos",d:"Lo que no se hace",ex:[
-      {type:"mc",skill:"video",eth:true,q:"La IA te hace el producto más bonito de lo que es en realidad. Eso…",
-       opts:["Es engañar: el cliente se decepciona y no vuelve","Está bien, porque toda la publicidad hace eso mismo","No importa mientras el video quede bonito y tenga vistas","Es normal y nadie se fija en esos detalles al comprar"],a:0,
-       ex:"Vender es prometer algo y cumplirlo. Un video que promete de más te quema con el primer cliente."},
-      {type:"tf",skill:"video",eth:true,q:"Puedo poner la cara de un compañero en un video hecho con IA sin preguntarle.",a:false,
-       ex:"Falso. La cara de alguien es suya: se pide permiso siempre, aunque sea tu amigo y sea para un chiste."},
-      {type:"fill",skill:"video",eth:true,q:"Antes de publicar un video hecho con IA, yo lo ______.",
-       opts:["reviso","publico","comparto","programo"],a:0,
-       ex:"Lo revisas tú: manos raras, texto mal escrito, algo que no es cierto. Publicas tú, respondes tú."},
-      {type:"mc",skill:"video",eth:true,q:"¿Cuándo conviene decir que el video lo hiciste con IA?",
-       opts:["Cuando alguien podría creer que es una grabación real","Nunca, porque le quita seriedad a tu negocio","Siempre, aunque se note a simple vista que es hecho con IA","Solo si el cliente te lo pregunta a ti directamente"],a:0,
-       ex:"La regla es no hacer creer algo falso. Si parece grabado de verdad y no lo es, se dice."}
+    {id:"e8l2",t:"Que se repita solo",d:"Automatizaciones",ex:[
+      {type:"mc",skill:"agentes",q:"Una automatización sirve para…",
+       opts:["Que una tarea se haga sola cada día o semana sin que la pidas","Que la IA responda más rápido cuando le escribes","Que la IA te responda con textos más largos","Que la IA aprenda tus gustos y te recomiende cosas"],a:0,
+       ex:"'Todos los lunes a las 5 a. m., descarga los datos y arma el reporte.' Se hace solo. Ahorro que se repite."},
+      {type:"tf",skill:"agentes",eth:true,q:"Aunque el agente actúe solo, un humano debe poder revisarlo y frenarlo.",a:true,
+       ex:"Verdadero. Control humano siempre: el agente ayuda, pero las personas mandan."},
+      {type:"fill",skill:"agentes",q:"Lo describes una vez y el agente lo hace ______.",
+       opts:["solo","contigo","a medias","al revés"],a:0,ex:"Solo, para siempre. Ese es el punto de las automatizaciones."},
+      {type:"mc",skill:"agentes",q:"Un ejemplo cool de agente sería uno que…",
+       opts:["vigila menciones de tu marca y te avisa por WhatsApp","te corrige la ortografía mientras escribes","traduce un texto cuando se lo pegas","te muestra el clima al abrir el celular"],a:0,
+       ex:"Escanea redes cada rato y te manda un resumen con propuesta de respuesta. Tu vigía personal."}
+    ]},
+    {id:"e8l3",t:"El director de orquesta",d:"Orquestar agentes",ex:[
+      {type:"mc",skill:"agentes",q:"Un agente 'jefe' puede…",
+       opts:["Dirigir a otras herramientas y agentes hacia un objetivo","Decidir sin que ningún humano pueda revisarlo","Hacer una sola tarea, siempre exactamente la misma","Guardar tus contraseñas para entrar a cualquier cuenta"],a:0,
+       ex:"Como un director de orquesta: coordina a Chrome, Cowork y Excel para lograr algo grande. Tú controlas al director."},
+      {type:"tf",skill:"agentes",q:"El agente jefe manda sobre ti: una vez arranca, ya no lo puedes frenar.",a:false,
+       ex:"Falso. Es al revés: tú → agente director → agentes ayudantes. Tú siempre arriba, y puedes frenarlo cuando quieras."},
+      {type:"fill",skill:"agentes",q:"El agente director ______ y reporta; tú decides.",
+       opts:["supervisa","aprueba","firma","decide"],a:0,ex:"Supervisa los procesos y te reporta. Tú tomas las decisiones finales."},
+      {type:"mc",skill:"agentes",eth:true,q:"¿Quién manda al final?",
+       opts:["Tú, el capitán","El agente jefe, porque coordina a los demás","La herramienta que ejecuta la acción","La empresa que fabricó la IA"],a:0,ex:"Siempre tú. Los agentes son poderosos, pero el capitán eres tú."}
     ]}
   ]},
 
   /* ===== ETAPA 9 · INGENIERÍA DE VUELO — Crear con IA ===== */
-  {id:"e9",etapa:8,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
+  {id:"e9",etapa:9,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
    insignia:{id:"e9",ic:"🔧",n:"Ingeniero de Vuelo"},
    lessons:[
     {id:"e9l1",t:"Crear sin programar",d:"Claude Code",ex:[
@@ -926,12 +952,12 @@ const CURRICULUM={
        opts:["Dices qué quieres y la IA lo construye, sin saber programar","Escribes el código tú y la IA solo te lo corrige","Necesitas ser ingeniero de sistemas para poder empezar","Solo puedes usar plantillas ya hechas, sin cambiarles nada"],a:0,
        ex:"Tú tienes la idea; Claude la ejecuta. Solo dices qué quieres y avanzas. ¡Como este mismo juego!"},
       {type:"tf",skill:"crear",q:"Para pedirle un programa simple a la IA hay que saber programar primero.",a:false,
-       ex:"Falso. No necesitas saber programar: describes lo que quieres (por ejemplo, el cotizador de tu negocio) y la IA lo arma. Tú lo pruebas."},
+       ex:"Falso. No necesitas saber programar: describes lo que quieres (por ejemplo, un marcador de pádel) y la IA lo arma. Tú lo pruebas."},
       {type:"fill",skill:"crear",q:"Tú tienes la ______; Claude la ejecuta.",
        opts:["idea","respuesta","herramienta","cuenta"],a:0,ex:"La idea es tuya. La IA pone los ladrillos. Tú diriges."},
       {type:"mc",skill:"crear",q:"¿Qué podrías crear tú con IA?",
-       opts:["El catálogo o el cotizador de tu propio negocio","Una app de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que pilotee un avión de verdad"],a:0,
-       ex:"Cosas simples y útiles para tu negocio. Empiezas pequeño y mejoras por partes."}
+       opts:["Un marcador de pádel o un catálogo de tus lociones","Una app de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que pilotee un avión de verdad"],a:0,
+       ex:"Cosas simples y útiles para ti. Empiezas pequeño y mejoras por partes."}
     ]},
     {id:"e9l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
       {type:"mc",skill:"crear",q:"'Vibecoding' significa…",
@@ -948,7 +974,7 @@ const CURRICULUM={
   ]},
 
   /* ===== ETAPA 10 · COMANDO — Uso responsable y repaso ===== */
-  {id:"e10",etapa:9,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
+  {id:"e10",etapa:10,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
    insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA",logo:true},
    lessons:[
     {id:"e10l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
@@ -965,7 +991,7 @@ const CURRICULUM={
     ]},
     {id:"e10l2",t:"Vuela seguro",d:"Ética y datos",ex:[
       {type:"mc",skill:"etica",eth:true,q:"¿Qué NO debes escribirle nunca a una IA?",
-       opts:["Tu dirección, teléfono o datos de tu familia","Una duda del colegio que no entendiste","Una idea para tu negocio","El resumen de un libro que estás leyendo"],a:0,
+       opts:["Tu dirección, teléfono o datos de tu familia","Una duda del colegio que no entendiste","Una idea para tu negocio de lociones","El resumen de un libro que estás leyendo"],a:0,
        ex:"Nunca datos personales tuyos ni de tu familia. Eres menor: tu información es privada."},
       {type:"mc",skill:"etica",eth:true,q:"Para una tarea del colegio, lo honesto es…",
        opts:["Usar la IA para entender y luego escribir con TUS palabras","Copiar y pegar la respuesta tal cual y entregarla","Pedirle que la haga toda y solo cambiarle unas palabras","Entregarla sin avisar que usaste IA, aunque el profe lo pida"],a:0,
@@ -1083,33 +1109,57 @@ const MISIONES=[
  copy:"Búscame en internet dónde se reúnen los pescadores de [tu región de Colombia]: grupos de Facebook, cuentas de Instagram, foros, clubes de pesca, tiendas de artículos de pesca y torneos. Quiero 10 lugares, con nombre, enlace y cuánta gente hay más o menos en cada uno. Para cada lugar dime también qué tipo de pescador es (principiante, deportivo, de río, de mar) y si permiten que alguien ofrezca cosas o si es solo para conversar. Ordénalos por cuál me conviene más a mí, que estoy empezando y no tengo dinero para publicidad.",
  botin:"Tu lista de 10 lugares donde están tus clientes, con enlace, y el mensaje ya escrito para los 3 mejores."},
 
-/* ===== ETAPA 7 · SHOW AEREO — videos para vender ===== */
-{mid:"m11a",etapa:7,tipo:"corta",min:20,xp:20,
- title:"Tu primer video de producto",
- intro:"Tienes fotos de lo que vendes y nadie las mira. Hoy una de esas fotos se convierte en un video vertical de 15 segundos, del estilo de los que sí paran el dedo.",
- steps:["Escoge UNA foto de lo que vendes: la más clara, con el producto bien visible y fondo sencillo.",
-  "Entra a Higgsfield y abre Marketing Studio. Sube la foto del producto.",
-  "Escoge formato vertical (9:16) y un estilo de anuncio. Escribe en una frase qué quieres que pase en el video.",
-  "Míralo con ojo de cliente: ¿se entiende qué es y se ve real? Si exagera lo que el producto es, vuélvelo a hacer más sobrio.",
-  "Guárdalo en el teléfono y publícalo con el texto y el precio. Que el pie diga cómo pedirlo."],
- objetivo:"que salgas con UN video vertical de tu producto, publicado, hecho a partir de una foto que ya tenías.",
- copy:"Quiero un video vertical de 15 segundos para Instagram de este producto: [qué es y para qué sirve]. Mi negocio se llama [nombre] y le vendo a [a quién]. El video debe mostrar el producto en movimiento, verse real (nada de prometer más de lo que es) y terminar invitando a escribirme por WhatsApp. Dime también qué texto pongo en el pie de la publicación, en español de Colombia, con el precio en pesos.",
- botin:"Tu primer video de producto publicado, y la certeza de que puedes sacar uno nuevo en 20 minutos cada vez que quieras."},
+/* ===== ETAPA 7 · BITÁCORA — cuentas y hojas de cálculo ===== */
+{mid:"m7a",etapa:7,tipo:"corta",min:20,xp:20,
+ title:"¿Cuánto ganas de verdad por cada venta?",
+ intro:"Vender no es ganar. Un montón de negocios venden mucho y no les queda nada porque nunca hicieron esta cuenta. Tú la haces hoy, en 20 minutos.",
+ steps:["Abre Cowork en la carpeta de tu negocio.",
+  "Pega el prompt. Va a armar la hoja con las fórmulas ya puestas.",
+  "Llena TÚ los costos reales: el producto, el envío, la bolsa, todo. Lo que se te olvide contar, te lo come la ganancia.",
+  "Mira la última columna. Si algún producto te deja menos del 20%, pregúntale a Cowork: 'este me deja muy poco, ¿qué hago?'.",
+  "Guarda la hoja. Cada vez que vayas a poner un precio nuevo, la abres primero."],
+ objetivo:"que la hoja calcule sola cuánta plata te queda de cada venta contando TODOS los costos, no solo lo que pagaste por el producto.",
+ copy:"Créame una hoja de cálculo para saber cuánto gano de verdad en mi negocio de pesca. Una fila por producto y estas columnas: producto, cuánto me costó, cuánto me cuesta empacarlo, cuánto cuesta el envío, cuánto me cuesta en total, a cuánto lo vendo, cuánto me queda limpio y qué porcentaje es. Las últimas tres columnas deben calcularse solas con fórmulas, no escritas a mano. Deja las celdas de costos vacías para yo llenarlas y márcalas con color. Abajo pon el total de todo y, aparte, explícame en tres líneas y con palabras sencillas qué es el margen y por qué un margen bajo es peligroso.",
+ botin:"Tu hoja de ganancias con fórmulas que se calculan solas, y saber cuál producto te está haciendo perder el tiempo."},
 
-{mid:"m11b",etapa:7,tipo:"larga",min:45,xp:40,
- title:"Tres anuncios y el que gana",
- intro:"Nadie sabe de antemano qué video funciona: se prueba. Vas a sacar tres versiones del mismo producto con ganchos distintos, publicarlas y dejar que la gente decida cuál sirve.",
- steps:["Escribe tres ganchos distintos para el mismo producto: uno que enseñe algo útil, uno que muestre el producto en uso y uno que cuente por qué lo vendes tú.",
-  "En Marketing Studio saca un video vertical por cada gancho, con la misma foto de producto. Que los tres duren entre 10 y 15 segundos.",
-  "Publícalos en días distintos, a la misma hora, con el mismo texto de pie. Solo cambia el gancho: así sabes qué fue lo que funcionó.",
-  "A los tres días anota en el archivo de tu negocio las vistas de cada uno y cuántas personas te escribieron.",
-  "Quédate con el gancho ganador y saca dos videos más con esa misma fórmula, cambiando de producto."],
- objetivo:"que descubras con datos tuyos cuál gancho vende en TU negocio, y te quedes con una fórmula que puedes repetir.",
- copy:"Actúa como el que maneja las redes de mi negocio. Vendo [qué vendes] a [a quién] en [tu ciudad]. Escríbeme TRES ganchos distintos para videos cortos del mismo producto: uno que enseñe algo útil a mi cliente, uno que muestre el producto en uso y uno que cuente por qué lo vendo yo. Para cada uno dame: la primera frase exacta que se ve en el video, qué debe pasar en pantalla en esos 15 segundos y el texto del pie de la publicación. Después dime cómo comparo cuál funcionó mejor sin pagar publicidad.",
- botin:"Tres videos publicados, los números de cada uno y tu fórmula ganadora por escrito: ya no adivinas qué publicar."},
+{mid:"m7b",etapa:7,tipo:"larga",min:45,xp:40,
+ title:"El tablero de mando de tu negocio",
+ intro:"Un piloto no vuela mirando por la ventana: mira el tablero. Vas a montar el tuyo — una hoja donde apuntas cada pedido y ella sola te dice cómo va el negocio.",
+ steps:["Abre Cowork en la carpeta del negocio y pega el prompt.",
+  "Cuando esté lista, invéntate 5 pedidos de mentira y escríbelos, solo para ver si los totales se mueven solos. Si no se mueven, dile: 'los totales no se actualizan, arréglalo'.",
+  "Borra los pedidos de mentira. Ahora la hoja es tuya y está limpia.",
+  "Anota el primer pedido real que te llegue. Aunque sea uno. Aunque sea de un tío.",
+  "Ponte una cita contigo mismo: cada domingo abres la hoja y le preguntas a Cowork 'mírala y dime cómo voy'."],
+ objetivo:"que tengas una sola hoja donde apuntas los pedidos y ella calcule sola cuánto vendiste, cuánto ganaste y qué producto va ganando.",
+ copy:"Créame el tablero de control de mi negocio de pesca en una hoja de cálculo, con dos pestañas. Pestaña 1 'Pedidos': fecha, nombre del cliente, cómo me contactó, qué pidió, cuánto pagó, si ya lo entregué y si ya me pagó. Pestaña 2 'Cómo voy': que se calcule sola y muestre cuánto he vendido en total, cuánta ganancia llevo, cuántos pedidos son, el producto más vendido y cuánta plata me deben todavía. Agrégale una gráfica de barras con las ventas por mes. Que todo se actualice solo cuando yo escriba un pedido nuevo. Al final explícame en pasos cortos cómo anoto un pedido nuevo sin dañar nada.",
+ botin:"Tu tablero de pedidos con totales y gráfica que se actualizan solos, y la costumbre de mirarlo cada domingo."},
+
+/* ===== ETAPA 8 · PILOTO AUTOMÁTICO — agentes y automatizaciones ===== */
+{mid:"m8a",etapa:8,tipo:"corta",min:20,xp:20,
+ title:"Un ayudante que trabaja mientras duermes",
+ intro:"Lo difícil de las redes no es publicar: es acordarse de qué publicar. Vas a dejar programado un ayudante que cada semana te llega con las ideas listas, sin que tú hagas nada.",
+ steps:["Abre Cowork y busca donde se programan las <b>tareas programadas</b>.",
+  "Crea una nueva, pega el prompt y ponla para que se repita cada semana, el día que tú quieras.",
+  "Ejecútala una vez a mano para ver qué entrega. Si las ideas salen flojas, dile qué le faltó y vuelve a guardar la tarea mejorada.",
+  "Listo: acabas de contratar un empleado que trabaja gratis todas las semanas. Eso es un agente."],
+ objetivo:"que una tarea programada te entregue sola, cada semana, ideas de publicación para tu negocio sin que se las tengas que pedir.",
+ copy:"Cada semana, dame 5 ideas de publicación para las redes de mi negocio de pesca. Para cada idea: el gancho (la primera frase que hace parar el dedo), qué mostrar en la foto o el video, el texto completo listo para copiar y 3 etiquetas. Que sean variadas: una que enseñe algo de pesca, una que muestre un producto, una que cuente algo mío, una que haga que la gente comente y una divertida. Nada de frases de vendedor acartonado: escríbelo como habla un pelado de 15 años que sabe de pesca. Ten en cuenta la época del año y si es temporada de pesca o no.",
+ botin:"Una tarea programada que te va a mandar 5 ideas de publicación todas las semanas, sola, sin que se lo vuelvas a pedir."},
+
+{mid:"m8b",etapa:8,tipo:"larga",min:50,xp:40,
+ title:"Un mes entero de contenido, de una sentada",
+ intro:"La gente abandona las redes porque publica cuando se acuerda. Tú vas a hacer trampa: dejas el mes completo escrito hoy, y de ahí en adelante solo copias y pegas.",
+ steps:["Abre Cowork en la carpeta de tu negocio y pega el prompt.",
+  "Te va a entregar un calendario con 12 publicaciones. Léelas y bota las 2 que menos te gusten: pídele 2 nuevas para reemplazarlas.",
+  "Haz las fotos de las 3 primeras. Solo 3. Con el celular, sin producción.",
+  "Publica la primera HOY. No mañana. Hoy.",
+  "Marca en el calendario cada una que publiques. Al final del mes vas a tener algo que casi nadie tiene: constancia."],
+ objetivo:"que quede escrito en un archivo todo un mes de publicaciones listas para copiar, para que publicar deje de depender de las ganas.",
+ copy:"Arma el calendario de contenido de un mes para las redes de mi negocio de pesca: 12 publicaciones, tres por semana. Para cada una: qué día va, el gancho, el texto completo listo para copiar, qué foto o video hay que hacer (algo que yo pueda grabar con el celular, sin equipo), las etiquetas y qué quiero lograr con esa publicación (que me conozcan, que me escriban o que me compren). Mézclalas: enseñar algo de pesca, mostrar producto, contar mi historia, responder dudas de principiantes. Ponlo en una tabla, guárdalo como archivo en la carpeta y deja una columna vacía para yo marcar las que ya publiqué.",
+ botin:"Un archivo con 12 publicaciones listas para copiar y pegar, con la foto que hay que hacer en cada una. Y la primera ya publicada."},
 
 /* ===== ETAPA 9 · INGENIERÍA DE VUELO — crear con IA ===== */
-{mid:"m9a",etapa:8,tipo:"corta",min:25,xp:20,
+{mid:"m9a",etapa:9,tipo:"corta",min:25,xp:20,
  title:"El botón que te trae los pedidos",
  intro:"Una página bonita donde nadie sabe cómo comprarte no sirve de nada. Le vas a poner el botón que convierte visitas en pedidos: uno que abre WhatsApp con el mensaje ya escrito.",
  steps:["Abre la conversación donde hiciste tu página (o Cowork, en la carpeta de la página).",
@@ -1120,7 +1170,7 @@ const MISIONES=[
  copy:"Ponle a mi página un botón de WhatsApp que se vea siempre, flotando en la esquina de abajo a la derecha, también en el celular. Al tocarlo debe abrir WhatsApp con mi número [57 y tu número, sin espacios] y con este mensaje ya escrito: 'Hola, vi tu página y quiero preguntarte por...'. Que el botón sea verde de WhatsApp, redondo, con el icono, y que se note pero no tape el contenido. Después dime en pasos sencillos cómo publico el cambio para verlo en internet.",
  botin:"El botón de WhatsApp funcionando en tu página, probado por ti desde el celular. De ahí en adelante, cada visita puede volverse un pedido."},
 
-{mid:"m9b",etapa:8,tipo:"larga",min:60,xp:40,
+{mid:"m9b",etapa:9,tipo:"larga",min:60,xp:40,
  title:"Constrúyete tu cotizador de pedidos",
  intro:"Aquí dejas de usar programas y empiezas a hacerlos. Vas a construir, sin saber programar, una herramienta que solo existe para tu negocio: el cliente escoge lo que quiere y ella le dice cuánto vale.",
  steps:["Antes de pedir nada, escribe en una nota qué quieres que haga: qué escoge el cliente y qué le tiene que salir. Sin eso, la IA construye cualquier cosa.",
@@ -1140,7 +1190,7 @@ const MISIONES_LECCION=[
  {mid:"L1", etapa:1, tipo:"larga", min:30, xp:40, les:"e1l4",  li:0, lj:3, title:"Pon a la IA a pescar por ti"},
  {mid:"L2", etapa:2, tipo:"larga", min:30, xp:35, les:"e2l3",  li:1, lj:2, title:"Un prompt que te vende lociones"},
  {mid:"L3", etapa:3, tipo:"larga", min:30, xp:35, les:"e3l3",  li:2, lj:2, title:"Tu pieza gráfica de verdad"},
- {mid:"L10",etapa:9,tipo:"larga", min:30, xp:50, les:"e10l3", li:8, lj:2, title:"Tu Tarjeta de Piloto Responsable"}
+ {mid:"L10",etapa:10,tipo:"larga", min:30, xp:50, les:"e10l3", li:9, lj:2, title:"Tu Tarjeta de Piloto Responsable"}
 ];
 
 /* =====================================================================
@@ -1192,13 +1242,9 @@ function stateKey(){ return STATE_PREFIX+(activeId||"none"); }
    pierda insignias ni lecciones ya hechas. Se ejecuta una sola vez por perfil.
      · Sin _mig  = orden original de 10 etapas → ya coincide con el de hoy: no se toca.
      · _mig = 2  = el orden de 9 etapas del 27/07 → sus etapas 4..9 suben a 5..10,
-                   porque el 28/07 nació la nueva etapa 4 (Radar).
-     · _mig = 3  = el orden de 10 etapas. El 16/09 salieron Bitácora (e7) y Piloto
-                   Automático (e8) y entró Show Aéreo (e11, video). Los ids de las
-                   etapas que siguen NO cambiaron, así que no hay que mover nada:
-                   solo se borran los repasos, que sí guardaban posiciones. */
+                   porque el 28/07 nació la nueva etapa 4 (Radar). */
 function migrarIds(st){
-  if(!st || st._mig>=4) return st;
+  if(!st || st._mig>=3) return st;
   const mapa={};
   if(st._mig===2){ for(let v=9;v>=4;v--) mapa["e"+v]="e"+(v+1); }
   const mueve=obj=>{ if(!obj) return obj; const out={};
@@ -1207,7 +1253,7 @@ function migrarIds(st){
     return out; };
   st.done=mueve(st.done); st.moduleDone=mueve(st.moduleDone); st.fails=mueve(st.fails);
   st.review=[];               // los repasos guardaban posiciones que ya cambiaron
-  st._mig=4; return st;
+  st._mig=3; return st;
 }
 function loadState(){ try{const r=localStorage.getItem(stateKey());if(r)return migrarIds(Object.assign(DEFAULT_STATE(),JSON.parse(r)));}catch(e){} return DEFAULT_STATE(); }
 function saveLocal(){ if(!activeId) return; try{localStorage.setItem(stateKey(),JSON.stringify(S));}catch(e){} }
@@ -1759,7 +1805,7 @@ function hideFeedback(){ elFb.classList.remove('show'); }
 /* =========================================================
    PANTALLA 3 · PERFIL / LOGROS
    ========================================================= */
-const SKILL_NAMES={capacidades:"Capacidades de IA",prompts:"Prompts",imagenes:"Imágenes",voz:"Hablarle a la IA",investigar:"Investigar y proyectos",cowork:"Claude Cowork",chrome:"Claude en Chrome",video:"Video con IA",crear:"Crear con IA",etica:"Ética y seguridad"};
+const SKILL_NAMES={capacidades:"Capacidades de IA",prompts:"Prompts",imagenes:"Imágenes",voz:"Hablarle a la IA",investigar:"Investigar y proyectos",cowork:"Claude Cowork",chrome:"Claude en Chrome",oficina:"Excel y oficina",agentes:"Agentes",crear:"Crear con IA",etica:"Ética y seguridad"};
 function renderProfile(){ const r=rankFor(S.xp); const totalLes=CURRICULUM.levels.reduce((a,l)=>a+l.lessons.length,0);
   const acc=S.exCount?Math.round(S.correctCount/S.exCount*100):0; const p=activeProfile();
   let h=`<div class="rankcard"><div class="avatar">${p?p.avatar:'🎓'}</div><div class="rankinfo"><div class="who">Piloto <b>${pilotName()}</b>${p&&p.callsign?(' «'+p.callsign+'»'):''}</div>
@@ -1849,13 +1895,20 @@ const PLANES={
   {t:"Manos a la obra",como:"Cada uno le pone una tarea real en una página que use. Tú rotas.",ej:"Daniel lo pone a comparar precios de perfumería para fijar el suyo.",tdah:"Máximo 2 tareas por persona. Que la primera sea fácil."},
   {t:"Lo que NUNCA se le delega",como:"Regla dura: pagar, transferir, mandar mensajes y contraseñas son SIEMPRE del humano.",ej:"Le pides que llene un carrito pero TÚ das clic en pagar. La frontera queda vista, no dicha.",tdah:"⏸️ Descanso ANTES (~1h55). Regla en una sola frase, repetida."},
   {t:"Muestra y despega",como:"Cada uno cuenta cuánto tiempo se ahorró. Cierras con la tarea.",ej:"Comparan cuántos clics se ahorraron. Tarea: terminar la etapa.",tdah:"Medir el ahorro en minutos lo hace concreto."}]},
- e11:{tema:"Video con IA: anuncios que sí paran el dedo",blocks:[
-  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 7 y JUÉGUENLA JUNTOS (~10 min). Salen el gancho, el formato vertical y la línea de lo honesto.",ej:"Leen la pregunta de los primeros 3 segundos y él escoge; celebras el acierto con el sonido del juego.",tdah:"Arranca jugando, no explicando. Meta visible: «hoy sales con un video tuyo publicado»."},
-  {t:"De una foto a un video, en vivo",como:"Abre Marketing Studio y haz UNO delante de él con una foto de su producto. Que vea el antes y el después sin que expliques nada todavía.",ej:"Subes la foto que él trajo, escoges vertical y sale el video. Ahí se calla la clase sola.",tdah:"El wow va primero, la teoría después. Que él escoja la foto."},
-  {t:"El gancho: los 3 primeros segundos",como:"Miren dos videos de redes: uno que aburre y uno que engancha. Que él diga en qué segundo se le fue la atención.",ej:"Ponen dos reels del tema de su negocio y él cronometra cuándo se aburre. El dato sale de él, no de ti.",tdah:"⏸️ Descanso 5 min ANTES (55 minutos). Este bloque es de mirar, no de oír."},
-  {t:"Su turno: tres ganchos para lo suyo",como:"Él escribe tres ganchos distintos para el mismo producto y saca un video del que más le guste. Corrige solo lo que confunde.",ej:"Sobre un producto real de su negocio: uno que enseña, uno que muestra y uno personal.",tdah:"Máximo 3 intentos por video. Cronómetro visible o se va en probar estilos."},
-  {t:"La raya: videos honestos",como:"Tema corto y firme: no prometer lo que el producto no es, no usar la cara de otro sin permiso, decirlo cuando parezca grabado de verdad.",ej:"Le muestras un video que exagera y le preguntas qué haría el cliente al recibir el pedido.",tdah:"⏸️ Segundo descanso ANTES (1h55). Que la conclusión la diga él, con sus palabras."},
-  {t:"Publicar y despegar",como:"Que publique el video en vivo, con pie y llamado a la acción. Cierras dejándole la misión larga de tarea.",ej:"Publica, y quedan de mirar los números el fin de semana.",tdah:"Publicar en clase evita que se quede en el teléfono para siempre."}]},
+ e7:{tema:"Claude en Excel: los números de tu negocio",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 6 (~10 min).",ej:"Juegan las preguntas de qué puede hacer en una hoja de cálculo.",tdah:"Meta: «hoy sabemos cuánto gana de verdad el negocio»."},
+  {t:"Explica y construye",como:"Muestra las dos caras: que te EXPLIQUE una hoja y que te la CONSTRUYA desde cero.",ej:"Le pides que arme la hoja de inventario de lociones con fórmula de ganancia.",tdah:"Ver la fórmula aparecer sola engancha más que explicarla."},
+  {t:"Tus números reales",como:"Cargan datos reales (aunque sean pocos) y hacen preguntas de negocio.",ej:"«¿Cuál loción me deja más ganancia?» «¿Cuánto llevo vendido este mes?»",tdah:"⏸️ Descanso ANTES (55'). Sus datos, no ejemplos inventados."},
+  {t:"Manos a la obra",como:"Cada uno arma su hoja. Tú rotas resolviendo.",ej:"Daniel deja su control de inventario y ganancia funcionando.",tdah:"Una sola hoja, bien hecha. Nada de perfeccionismo."},
+  {t:"Aprobar antes de aplicar",como:"Enseña que el cambio se ve ANTES de aplicarse y que él aprueba.",ej:"Propone un cambio de fórmula; lo revisan juntos antes de aceptar.",tdah:"⏸️ Descanso ANTES (~1h55)."},
+  {t:"Muestra y despega",como:"Cada uno muestra su hoja y un número que descubrió.",ej:"Daniel dice cuánto gana por frasco. Tarea: terminar la etapa.",tdah:"Descubrir un número propio cierra con impacto."}]},
+ e8:{tema:"Agentes: que trabaje solo",blocks:[
+  {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 7 (~10 min).",ej:"Juegan la pregunta de qué diferencia a un agente de un chat.",tdah:"Meta: «hoy dejamos algo trabajando solo»."},
+  {t:"Qué es un agente de verdad",como:"Observar → pensar → actuar → revisar. Con un ejemplo, no con teoría.",ej:"Un agente que vigila si alguien menciona su marca y le avisa.",tdah:"Dibuja el ciclo en 4 palabras y déjalo a la vista."},
+  {t:"El piloto automático (no el capitán)",como:"Deja clarísimo que el agente es el piloto automático y él sigue siendo el capitán.",ej:"Analogía de vuelo: el piloto automático vuela el tramo, el capitán puede desconectarlo cuando quiera.",tdah:"⏸️ Descanso ANTES (55'). La analogía de avión es su lenguaje."},
+  {t:"Manos a la obra",como:"Cada uno define un agente sencillo por escrito: objetivo, cada cuánto y qué NO puede hacer.",ej:"«Cada domingo revisa precios de la competencia y mándame el resumen. No compres nada.»",tdah:"Plantilla de 3 líneas para llenar."},
+  {t:"Límites y permisos",como:"Qué pasa si se equivoca: límites, avisos y apagarlo.",ej:"Revisan qué haría el agente si el precio bajara raro. Definen el aviso.",tdah:"⏸️ Descanso ANTES (~1h55)."},
+  {t:"Muestra y despega",como:"Cada uno presenta su agente y su límite.",ej:"Daniel presenta su vigilante de precios. Tarea: terminar la etapa.",tdah:"Presentar el LÍMITE, no solo la idea: fija el criterio."}]},
  e9:{tema:"Crear con IA sin programar",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 8 (~10 min).",ej:"Juegan las preguntas de qué se puede construir sin saber código.",tdah:"Meta: «hoy cada uno estrena algo hecho por él»."},
   {t:"De la idea al prototipo",como:"Muestra en vivo cómo una frase se vuelve algo que funciona.",ej:"Pides un marcador de pádel simple y aparece funcionando en minutos.",tdah:"Que vean el resultado antes de entender el cómo."},
