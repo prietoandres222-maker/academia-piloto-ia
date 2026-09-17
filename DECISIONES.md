@@ -55,8 +55,26 @@
   preguntas equivocadas. Su lección suelta de la vieja Bitácora (`e7l1`) quedó como clave
   huérfana: no le quita XP.
 
+## 17/09/2026 · La carta del papá tenía que viajar
+
+- **Asumido solo (puerta 4, reversible y probado):** la configuración del Comandante (carta del
+  papá, mensaje de la familia, premios por rango) ahora **se guarda en la nube**, en la fila
+  `cve_cfg`. *Por qué:* vivía solo en el navegador donde se escribiera, así que Andrés podía
+  escribir la carta en su PC y Daniel **nunca la iba a ver** en el suyo. Eso rompía justo la
+  parte que le da alma al premio.
+- **Asumido solo:** `claseFijada` pasa de `"e3"` (la clase del 28/07) a vacío, para que el
+  plan de clase se abra en la etapa que sigue según el avance en vez de quedarse en la 3.
+- ⚠️ **Lo que Andrés debe saber antes de escribir la carta:** ese endpoint de nube **no tiene
+  contraseña** y el repositorio es público, así que quien conozca la dirección puede leer lo
+  que se escriba ahí. Para una carta de papá a hijo está bien; **no** se escriban ahí datos
+  sensibles. Si Andrés prefiere que la carta NO salga del equipo, se quita el `cloudPut` de
+  `saveConfig()` y vuelve a ser local.
+
 ## Pendiente de Andrés (17/09/2026)
 
+- **Escribir la Carta del papá y el Mensaje de la familia** en Modo Comandante (PIN 1214).
+  Sigue siendo lo único que falta para que el premio pegue de verdad; ahora sí se ve en
+  cualquier equipo.
 - **Los otros dos productos de Milla Azul** y **la ciudad** de Daniel.
 - **Avisar cuando la página web esté publicada** (iba para el 18/09/2026), para poner la
   dirección literal en las misiones que la revisan.

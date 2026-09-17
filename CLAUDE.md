@@ -62,6 +62,10 @@ La nube es una función de **Netlify Blobs** (`SYNC_URL`, definida como constant
 `index.html`), con dos clases de fila:
 
 - `cve_roster` → la lista de pilotos de la familia (compartida).
+- `cve_cfg` → la configuración del Comandante (carta del papá, mensaje de la familia y
+  premios por rango), compartida por la familia. Gana la escritura más reciente (`_t`), no la
+  de más progreso: no es progreso, es un texto que escribe una sola persona. Antes vivía solo
+  en el equipo donde se escribiera, y por eso Daniel nunca veía la carta.
 - `cve_<id>` → el progreso de cada piloto. El `id` sale del nombre (`dani`, `andres`…), y ese
   mismo id es el "código de piloto" que permite recuperar el avance en otro equipo.
 
