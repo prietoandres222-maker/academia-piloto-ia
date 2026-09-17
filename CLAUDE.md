@@ -71,21 +71,25 @@ La carrera de sincronización se resuelve por `progressScore` (lecciones × 1000
 
 ## Contenido y reglas del juego (esto es el producto, no adorno)
 
-- **10 etapas de vuelo, 2 temas cada una**, definidas en la constante `CURRICULUM` dentro de
+- **9 etapas de vuelo**, definidas en la constante `CURRICULUM` dentro de
   `index.html`: 1 Despegue · 2 Plan de Vuelo · 3 Cartografía · 4 Radar · 5 Copiloto ·
-  6 Controles · 7 Bitácora · 8 Piloto Automático · 9 Ingeniería · 10 Comando.
+  6 Controles · 7 Show Aéreo (video) · 8 Ingeniería · 9 Comando.
   Cada etapa da una insignia. **Sin GPTs**, a propósito.
-- **Torre de Misiones** (constante `MISIONES`, pantalla `scr-missions`, 05/08/2026): 12 misiones
+  El **16/09/2026** salieron Bitácora (Excel) y Piloto Automático (agentes) y entró
+  **Show Aéreo**: video con IA para vender, con Higgsfield Marketing Studio. Los ids internos
+  NO se renumeraron (`e9` y `e10` siguen llamándose así aunque muestren 8 y 9), justamente
+  para no romper el progreso ya guardado.
+- **Torre de Misiones** (constante `MISIONES`, pantalla `scr-missions`, 05/08/2026): 10 misiones
   reales — una **corta** (~20 min, 20 XP) y una **larga** (~45 min, 40 XP) por etapa, de la 4 a
-  la 9. **Cada etapa superada libera las suyas** y quedan disponibles para siempre; se pagan una
-  sola vez (`S.missions`). Las 4 misiones que viven dentro de una lección (etapas 1, 2, 3 y 10)
+  la 8. **Cada etapa superada libera las suyas** y quedan disponibles para siempre; se pagan una
+  sola vez (`S.missions`). Las 4 misiones que viven dentro de una lección (etapas 1, 2, 3 y 9)
   se listan también ahí vía `MISIONES_LECCION`, y si ya están hechas se abren en modo lectura.
   **Todas empujan el mismo negocio real de pesca de Daniel**, encadenadas: el Proyecto de la
-  etapa 4 alimenta el catálogo de la 5, que alimenta las cuentas de la 7 y el cotizador de la 9.
+  etapa 4 alimenta el catálogo de la 5, que alimenta los videos de la 7 y el cotizador de la 8.
   Al terminar el juego, el negocio queda armado. Herramientas que se dan por disponibles:
-  **Cowork y Claude en Chrome** (no Claude en Excel: las de la etapa 7 se hacen con Cowork).
-- **Rangos y umbrales exactos:** Cadete → Alférez (220) → Teniente (520) → Primer Oficial (780)
-  → Capitán IA (1000). No cambiarlos sin recalcular el contenido: están calibrados con el número
+  **Cowork, Claude en Chrome y Higgsfield** (para los videos de la etapa 7).
+- **Rangos y umbrales exactos:** Cadete → Alférez (220) → Teniente (520) → Primer Oficial (700)
+  → Capitán IA (900). No cambiarlos sin recalcular el contenido: están calibrados con el número
   de ejercicios.
 - **Máximo 5 pilotos.** Cada uno con nombre, avatar e indicativo, y progreso aislado.
 - **Se empieza desde cero.** No sembrar progreso: el punto es que se lo gane jugando.
@@ -109,13 +113,14 @@ Color de fondo y tema: `#070d20`. Español de Colombia. Sin scroll horizontal en
 ## Trampas conocidas (ya costaron, no repetir)
 
 - **Correr `node validar.cjs` antes de publicar, siempre.** Existe por un error real: una
-  pregunta tenía marcada como correcta la opción "Un emoji". El validador revisa las 135
-  preguntas **y las 16 misiones**, y falla si algo está mal. Si se agregan preguntas o misiones,
+  pregunta tenía marcada como correcta la opción "Un emoji". El validador revisa las 127
+  preguntas **y las 14 misiones**, y falla si algo está mal. Si se agregan preguntas o misiones,
   se agregan **con el validador pasando**.
 - **Los umbrales de rango se calibran contra la "pasada limpia", y el validador la calcula.**
-  Hoy: 954 XP (31 lecciones × 14 + 520 de misiones) contra los 1000 que pide Capitán IA — o sea
-  que hay que repasar un poco para llegar, que es lo que se buscaba. Al agregar misiones o
-  lecciones, mirar esa línea del informe: si se pasa de 1000 el premio se regala.
+  Hoy: 866 XP (29 lecciones × 14 + 460 de misiones) contra los 900 que pide Capitán IA — o sea
+  que hay que repasar un poco para llegar, que es lo que se buscaba. Al agregar o quitar
+  misiones o lecciones, mirar esa línea del informe y mover los umbrales con ella: la
+  proporción que se sostiene es ~96% de una pasada limpia contra el rango de Capitán.
 - **Escapar el texto que escribe el usuario** (nombres de piloto, indicativos): fue una regresión
   detectada en la ronda 2 del loop. Cualquier campo nuevo debe escapar igual.
 - **La nube puede no responder y eso está bien.** Ninguna funcionalidad nueva debe quedar
@@ -133,7 +138,9 @@ Color de fondo y tema: `#070d20`. Español de Colombia. Sin scroll horizontal en
 - **La estructura de un solo archivo.** Es la decisión que hace que esto se pueda mantener sin
   entorno de desarrollo.
 - **Los umbrales de rango y el número de etapas**: están calibrados con la cantidad de
-  ejercicios y con los premios que ya se le prometieron a Daniel.
+  ejercicios y con los premios que ya se le prometieron a Daniel. Si Andrés pide cambiar el
+  temario (como el 16/09/2026), sí se tocan — pero **siempre recalculando** contra la pasada
+  limpia que imprime `validar.cjs`, nunca a ojo.
 - **Las claves de fila de la nube** (`cve_roster`, `cve_<id>`): cambiarlas deja huérfano el
   progreso ya guardado.
 - **`RESPALDO-SUPABASE/` y `RESPALDOS/`**: son la red de seguridad, no archivos viejos que

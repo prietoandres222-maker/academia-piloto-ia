@@ -10,9 +10,10 @@ complemento de las clases de Felipe. Un único `index.html` vanilla.
 - **Nombre:** Capitán Velez EchandIA (con el apellido Vélez del papá + "IA").
 - **Multiusuario (máx 5):** pantalla "¿Quién vuela hoy?" para crear / elegir / **editar** / borrar piloto (nombre + avatar + indicativo). Progreso y nube **separados por perfil**. **Recuperación entre equipos con "código de piloto"** (se ve en Modo Comandante; trae el progreso de la nube).
 - **Empieza desde CERO** (sin progreso sembrado). Daniel se gana todo jugando.
-- **10 etapas de vuelo** (2 temas c/u), cada una da una insignia:
-  1 Despegue (capacidades) · 2 Plan de Vuelo (prompts) · 3 Cartografía (imágenes) · 4 Radar (investigar: Deep Research + NotebookLM) · 5 Copiloto (Cowork) · 6 Controles (Chrome) · 7 Bitácora (Excel/oficina) · 8 Piloto Automático (agentes) · 9 Ingeniería (crear con IA) · 10 Comando (uso responsable). **Sin GPTs.** Etapas 1 y 2 a fondo con el contenido real de las clases; 3–10 según la presentación (Criminal 1 y 2).
-- **Rangos:** Cadete → Alférez (220) → Teniente (520) → Primer Oficial (780) → Capitán IA (1000).
+- **9 etapas de vuelo**, cada una da una insignia:
+  1 Despegue (capacidades) · 2 Plan de Vuelo (prompts) · 3 Cartografía (imágenes) · 4 Radar (investigar: Deep Research + NotebookLM) · 5 Copiloto (Cowork) · 6 Controles (Chrome) · 7 **Show Aéreo (video con IA · Higgsfield)** · 8 Ingeniería (crear con IA) · 9 Comando (uso responsable). **Sin GPTs.** Etapas 1 y 2 a fondo con el contenido real de las clases; el resto según la presentación (Criminal 1 y 2).
+  **Cambio del 16/09/2026:** salieron Bitácora (Excel) y Piloto Automático (agentes) y entró Show Aéreo. Daniel venía en la etapa 7, así que el cambio le cae justo en lo que sigue y no le borra nada de lo hecho.
+- **Rangos:** Cadete → Alférez (220) → Teniente (520) → Primer Oficial (700) → Capitán IA (900). Recalibrados el 16/09/2026 porque el juego quedó más corto: una pasada limpia da 866 XP, la misma proporción de antes contra el premio.
 - **Premio real (héroe del Camino):** 1 hora en un simulador **Airbus A320 con pilotos reales — V1 Aviation Center, Medellín**, con pista + avión que avanza hacia "V1" según el progreso. El **Comandante (Felipe) escribe la carta del papá, el mensaje de la familia y los premios por rango** (aparecen para motivar; los premios del próximo rango se ven por adelantado).
 - **UX Duolingo:** un ejercicio a la vez, botón COMPROBAR **fijo abajo**, sin corazones, feedback que sube desde abajo, misiones reales, práctica libre por tema.
 - **Motivación TDAH:** celebraciones variables + **jackpot** (también en repaso), **racha con escudo que perdona**, arranque en frío fácil, arte propio (Capi guacamayo en SVG).
