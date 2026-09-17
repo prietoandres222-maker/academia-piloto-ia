@@ -84,7 +84,9 @@ La carrera de sincronización se resuelve por `progressScore` (lecciones × 1000
   la 8. **Cada etapa superada libera las suyas** y quedan disponibles para siempre; se pagan una
   sola vez (`S.missions`). Las 4 misiones que viven dentro de una lección (etapas 1, 2, 3 y 9)
   se listan también ahí vía `MISIONES_LECCION`, y si ya están hechas se abren en modo lectura.
-  **Todas empujan el mismo negocio real de pesca de Daniel**, encadenadas: el Proyecto de la
+  **Todas empujan el mismo negocio real de Daniel: Milla Azul**, insumos de pesca para
+  principiantes con asesoría (señuelos, chaquetas impermeables, morrales y dos productos más
+  que faltan por confirmar; la página web salía el 18/09/2026), encadenadas: el Proyecto de la
   etapa 4 alimenta el catálogo de la 5, que alimenta los videos de la 7 y el cotizador de la 8.
   Al terminar el juego, el negocio queda armado. Herramientas que se dan por disponibles:
   **Cowork, Claude en Chrome y Higgsfield** (para los videos de la etapa 7).
@@ -113,11 +115,11 @@ Color de fondo y tema: `#070d20`. Español de Colombia. Sin scroll horizontal en
 ## Trampas conocidas (ya costaron, no repetir)
 
 - **Correr `node validar.cjs` antes de publicar, siempre.** Existe por un error real: una
-  pregunta tenía marcada como correcta la opción "Un emoji". El validador revisa las 127
+  pregunta tenía marcada como correcta la opción "Un emoji". El validador revisa las 131
   preguntas **y las 14 misiones**, y falla si algo está mal. Si se agregan preguntas o misiones,
   se agregan **con el validador pasando**.
 - **Los umbrales de rango se calibran contra la "pasada limpia", y el validador la calcula.**
-  Hoy: 866 XP (29 lecciones × 14 + 460 de misiones) contra los 900 que pide Capitán IA — o sea
+  Hoy: 880 XP (30 lecciones × 14 + 460 de misiones) contra los 900 que pide Capitán IA — o sea
   que hay que repasar un poco para llegar, que es lo que se buscaba. Al agregar o quitar
   misiones o lecciones, mirar esa línea del informe y mover los umbrales con ella: la
   proporción que se sostiene es ~96% de una pasada limpia contra el rango de Capitán.

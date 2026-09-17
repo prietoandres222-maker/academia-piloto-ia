@@ -884,7 +884,7 @@ const CURRICULUM={
        ex:"Verdadero. Lo que antes era un día de grabación hoy se resuelve mientras haces otra cosa."},
       {type:"fill",skill:"video",q:"En Higgsfield, la parte que hace anuncios de producto se llama Marketing ______.",
        opts:["Studio","Center","Camera","Piloto"],a:0,
-       ex:"Marketing Studio: le das la foto del producto, escoges el estilo y te entrega el video vertical listo para publicar. Ojo: la cuenta es de mayores de 18, así que esta parte se hace con la de tu papá."},
+       ex:"Marketing Studio: le das la foto del producto, escoges el estilo y te entrega el video vertical listo para publicar. Ojo: la cuenta es de mayores de 18, así que esta parte se hace con Andrés."},
       {type:"mc",skill:"video",q:"¿Por qué a tu negocio le sirve más un video que una foto?",
        opts:["Muestra el producto en movimiento y retiene más la atención","Porque los videos siempre salen más baratos de hacer","Porque las fotos ya no se pueden publicar en redes","Porque un video no necesita que escribas nada"],a:0,
        ex:"El movimiento retiene: la gente para el dedo. Por eso las redes muestran más los videos que las fotos."}
@@ -917,96 +917,78 @@ const CURRICULUM={
     ]}
   ]},
 
-  /* ===== ETAPA 8 · INGENIERÍA DE VUELO — crear con IA, para Milla Azul ===== */
+  /* ===== ETAPA 9 · INGENIERÍA DE VUELO — Crear con IA ===== */
   {id:"e9",etapa:8,name:"Ingeniería de Vuelo",tag:"Crear programas con IA",ic:"🔧",skill:"crear",
    insignia:{id:"e9",ic:"🔧",n:"Ingeniero de Vuelo"},
    lessons:[
     {id:"e9l1",t:"Crear sin programar",d:"Claude Code",ex:[
-      {type:"mc",skill:"crear",q:"Quieres una página donde el cliente de Milla Azul arme su pedido. Con Claude Code tú…",
-       opts:["Le dices qué quieres y él lo construye, sin que sepas programar","Escribes el código tú y la IA solo te lo corrige","Tienes que ser ingeniero de sistemas para poder empezar","Solo puedes usar plantillas ya hechas, sin cambiarlas"],a:0,
-       ex:"La idea es tuya; la IA pone el código. Tú diriges y pruebas, como el capitán de la nave."},
-      {type:"tf",skill:"crear",q:"Para pedirle a la IA una página sencilla para Milla Azul hay que saber programar primero.",a:false,
-       ex:"Falso. Describes lo que quieres con tus palabras y la IA lo arma. Lo tuyo es saber qué necesita tu cliente."},
-      {type:"fill",skill:"crear",q:"Tú pones la ______; la IA pone el código.",
-       opts:["idea","cuenta","plata","firma"],a:0,
-       ex:"La idea y el criterio son tuyos. Por eso el que conoce el negocio manda, no el que sabe programar."},
-      {type:"mc",skill:"crear",q:"¿Cuál de estas SÍ puedes construir tú esta semana para Milla Azul?",
-       opts:["Una página donde el cliente arma su pedido y te escribe","Una aplicación de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que maneje el motor de una lancha"],a:0,
-       ex:"Cosas chiquitas y útiles, hechas por partes. Empiezas por lo que ya te sirve el lunes."}
+      {type:"mc",skill:"crear",q:"Con Claude Code tú…",
+       opts:["Dices qué quieres y la IA lo construye, sin saber programar","Escribes el código tú y la IA solo te lo corrige","Necesitas ser ingeniero de sistemas para poder empezar","Solo puedes usar plantillas ya hechas, sin cambiarles nada"],a:0,
+       ex:"Tú tienes la idea; Claude la ejecuta. Solo dices qué quieres y avanzas. ¡Como este mismo juego!"},
+      {type:"tf",skill:"crear",q:"Para pedirle un programa simple a la IA hay que saber programar primero.",a:false,
+       ex:"Falso. No necesitas saber programar: describes lo que quieres (por ejemplo, el cotizador de tu negocio) y la IA lo arma. Tú lo pruebas."},
+      {type:"fill",skill:"crear",q:"Tú tienes la ______; Claude la ejecuta.",
+       opts:["idea","respuesta","herramienta","cuenta"],a:0,ex:"La idea es tuya. La IA pone los ladrillos. Tú diriges."},
+      {type:"mc",skill:"crear",q:"¿Qué podrías crear tú con IA?",
+       opts:["El catálogo o el cotizador de tu propio negocio","Una app de banco que mueva plata de verdad","Un videojuego como el FIFA en un fin de semana","Un sistema que pilotee un avión de verdad"],a:0,
+       ex:"Cosas simples y útiles para tu negocio. Empiezas pequeño y mejoras por partes."}
     ]},
     {id:"e9l2",t:"Vibecoding",d:"De idea a prototipo",ex:[
       {type:"mc",skill:"crear",q:"'Vibecoding' significa…",
-       opts:["Armar rápido una primera versión con IA, sin saber código","Programar escuchando música para concentrarte mejor","Copiar código de internet y pegarlo sin entenderlo","Dibujar cómo se ve una página, pero sin que funcione"],a:0,
-       ex:"De idea a algo que se puede tocar en horas. Pruebas si sirve antes de gastarle tiempo."},
+       opts:["Crear rápido un prototipo con IA, sin saber código","Programar escuchando música para concentrarte mejor","Copiar código de internet y pegarlo sin entenderlo","Diseñar cómo se ve una app, pero sin que funcione"],a:0,
+       ex:"De idea a prototipo en horas: pruebas tu idea rapidísimo y la mejoras al instante."},
+      {type:"tf",skill:"crear",q:"Con vibecoding puedo probar una idea en poco tiempo.",a:true,
+       ex:"Verdadero. Velocidad extrema para validar: creas, ves si sirve y ajustas."},
       {type:"fill",skill:"crear",q:"Vibecoding: de idea a ______ en horas.",
-       opts:["prototipo","empresa","patente","fábrica"],a:0,
-       ex:"Un prototipo es la primera versión, la que sirve para probar. Ni bonita ni completa: que funcione."},
-      {type:"tf",skill:"crear",q:"Es mejor sacar ya una versión sencilla de la página de Milla Azul y mejorarla, que esperar a tenerla perfecta.",a:true,
-       ex:"Verdadero. Una página sencilla publicada ya te trae pedidos; una perfecta que no existe no vende nada."},
-      {type:"mc",skill:"crear",q:"Empiezas por el cotizador y no por la tienda completa. ¿Por qué?",
-       opts:["Porque algo pequeño que funcione ya te trae pedidos hoy","Porque una tienda completa es imposible de hacer con IA","Porque los cotizadores son lo único que la IA sabe armar","Porque así no toca pensar en los precios todavía"],a:0,
-       ex:"Capa por capa. Sacas lo que ya sirve, ves qué pide el cliente y con eso decides lo siguiente."}
-    ]},
-    {id:"e9l3",t:"Probar como cliente",d:"Construir, probar, arreglar",ex:[
-      {type:"mc",skill:"crear",q:"Ya tienes listo el cotizador de Milla Azul. Lo PRIMERO que haces es…",
-       opts:["Abrirlo en tu celular y pedir algo como si fueras el cliente","Mandárselo de una vez a todos tus contactos","Ponerle más colores y animaciones antes de probarlo","Dejarlo quieto hasta que alguien te escriba"],a:0,
-       ex:"Se prueba usándolo, no mirándolo. Si tú no logras pedir, el cliente tampoco."},
-      {type:"tf",skill:"crear",q:"Si me funciona en el computador, seguro le funciona al cliente en el celular.",a:false,
-       ex:"Falso. Casi todos tus clientes entran por el celular, y ahí se dañan cosas que en el computador se ven bien."},
-      {type:"fill",skill:"crear",q:"Cuando algo se ve mal, le pides a la IA que lo ______.",
-       opts:["arregle","publique","celebre","traduzca"],a:0,
-       ex:"Le dices exactamente qué se ve mal y en qué pantalla. Entre más preciso el reclamo, mejor el arreglo."},
-      {type:"mc",skill:"crear",q:"Un amigo probó el cotizador y se perdió a la hora de pedir. ¿Qué haces?",
-       opts:["Arreglas ese paso: lo que a él le costó, a un cliente también","Le explicas cómo se usa y lo dejas igual","Le pides que lo intente otra vez con más calma","Quitas el cotizador porque no sirvió"],a:0,
-       ex:"Cuando alguien se pierde, el problema es de la página, no de la persona. Eso vale oro y es gratis."}
+       opts:["prototipo","producto final","empresa","patente"],a:0,ex:"Un prototipo es una primera versión para probar. Rápido y barato."},
+      {type:"mc",skill:"crear",q:"La gracia de crear por partes es…",
+       opts:["Empezar pequeño, probar y mejorar de a poco","Dejarlo perfecto de una antes de mostrárselo a alguien","Escribir todo el plan al principio y no cambiarlo nunca","Esperar a saber programar bien para poder empezar"],a:0,
+       ex:"Nadie hace algo perfecto de una. Capa por capa: funciona, mejoras, repites."}
     ]}
   ]},
 
-  /* ===== ETAPA 9 · COMANDO — uso responsable y repaso final ===== */
+  /* ===== ETAPA 10 · COMANDO — Uso responsable y repaso ===== */
   {id:"e10",etapa:9,name:"Comando",tag:"Uso responsable y repaso final",ic:"🎖️",skill:"etica",
    insignia:{id:"e10",ic:"👨‍✈️",n:"Capitán IA",logo:true},
    lessons:[
     {id:"e10l1",t:"Cuidado con las alucinaciones",d:"Verificar siempre",ex:[
       {type:"mc",skill:"etica",eth:true,q:"Una 'alucinación' de la IA es…",
-       opts:["Cuando inventa un dato falso pero lo dice muy seguro","Cuando te dice que no sabe la respuesta","Cuando se demora mucho en responder","Cuando entiende mal y te contesta otra cosa"],a:0,
-       ex:"Inventa con toda la seguridad del mundo. Por eso las cifras, las fechas y los nombres se verifican."},
-      {type:"mc",skill:"etica",eth:true,q:"La IA te dice que un proveedor vende señuelos a $4.000. Antes de comprar, tú…",
-       opts:["Le pides la fuente y lo confirmas con el proveedor","Le crees: los precios los saca de internet","Se lo cobras así al cliente y después miras","Se lo preguntas otra vez a ver si repite lo mismo"],a:0,
-       ex:"Un precio inventado te lo comes tú: le cobras de menos al cliente y pierdes plata de tu bolsillo."},
-      {type:"tf",skill:"etica",eth:true,q:"Si la IA me da el precio de un producto, ya puedo ponerlo en el catálogo de Milla Azul.",a:false,
-       ex:"Falso. El precio que va al catálogo es el que te confirmó el proveedor, no el que se imaginó la IA."},
-      {type:"fill",skill:"etica",eth:true,q:"Cuando la IA me da una cifra exacta, lo primero que hago es ______.",
-       opts:["comprobarla","creerla","copiarla","publicarla"],a:0,
-       ex:"Tú decides al final. La IA es el copiloto; el capitán, y el que responde, eres tú."}
+       opts:["Cuando inventa un dato falso pero lo dice muy seguro","Cuando te dice que no sabe la respuesta","Cuando se demora mucho en responder","Cuando entiende mal tu pregunta y te responde otra cosa"],a:0,
+       ex:"Inventa con seguridad. Por eso los datos duros (cifras, fechas, nombres) siempre se verifican."},
+      {type:"mc",skill:"etica",eth:true,q:"¿Cuándo desconfías más y verificas?",
+       opts:["Cuando te da cifras, fechas, nombres o citas exactas","Cuando la respuesta es larga y bien escrita","Cuando usa palabras técnicas que no conoces","Cuando responde en menos de un segundo"],a:0,
+       ex:"Lo específico y comprobable es lo que más se inventa. Ahí enciende el radar."},
+      {type:"tf",skill:"etica",eth:true,q:"En temas de salud o de dinero, con lo que diga la IA ya es suficiente.",a:false,
+       ex:"Falso. En cosas serias la IA puede equivocarse: confirma con un adulto o un experto antes de actuar."},
+      {type:"fill",skill:"etica",eth:true,q:"Cuando la IA da una cifra exacta y rara, lo primero que hago es ______.",
+       opts:["comprobarla","creerla","copiarla","compartirla"],a:0,ex:"Tú decides al final. La IA es el copiloto; el capitán eres tú."}
     ]},
     {id:"e10l2",t:"Vuela seguro",d:"Ética y datos",ex:[
-      {type:"mc",skill:"etica",eth:true,q:"¿Qué NO le escribes nunca a una IA?",
-       opts:["La dirección de tu casa o los datos de tu familia","Una duda del colegio que no entendiste","Los productos que vende Milla Azul","El resumen de un libro que estás leyendo"],a:0,
-       ex:"Lo del negocio se puede contar; lo tuyo y lo de tu familia, no. Eres menor: esa información es privada."},
+      {type:"mc",skill:"etica",eth:true,q:"¿Qué NO debes escribirle nunca a una IA?",
+       opts:["Tu dirección, teléfono o datos de tu familia","Una duda del colegio que no entendiste","Una idea para tu negocio","El resumen de un libro que estás leyendo"],a:0,
+       ex:"Nunca datos personales tuyos ni de tu familia. Eres menor: tu información es privada."},
       {type:"mc",skill:"etica",eth:true,q:"Para una tarea del colegio, lo honesto es…",
-       opts:["Usar la IA para entender y luego escribir con TUS palabras","Copiar y pegar la respuesta tal cual y entregarla","Pedirle que la haga toda y cambiarle unas palabras","Entregarla sin avisar, aunque el profe pida decirlo"],a:0,
-       ex:"Para el negocio la IA construye contigo; para el colegio te explica y escribes tú. No es la misma regla."},
-      {type:"tf",skill:"etica",eth:true,q:"Si alguien por internet me pide fotos o dónde vivo a cambio de un premio, aviso a un adulto.",a:true,
-       ex:"Verdadero. Nadie serio pide datos personales por un premio. No respondas y cuéntale a un adulto."},
+       opts:["Usar la IA para entender y luego escribir con TUS palabras","Copiar y pegar la respuesta tal cual y entregarla","Pedirle que la haga toda y solo cambiarle unas palabras","Entregarla sin avisar que usaste IA, aunque el profe lo pida"],a:0,
+       ex:"Úsala para aprender y luego escribe tú. Copiar sin entender no te enseña nada."},
+      {type:"tf",skill:"etica",eth:true,q:"Si un chat me pide fotos o dónde vivo por un 'premio', aviso a un adulto.",a:true,
+       ex:"Verdadero. Nadie legítimo pide datos personales por un premio. Ignóralo y cuéntale a un adulto."},
       {type:"fill",skill:"etica",eth:true,q:"Lema del Piloto Seguro: la IA asiste, yo ______.",
-       opts:["decido","acepto","repito","comparto"],a:0,
-       ex:"El control es tuyo. Usar la IA con cabeza es lo que separa a un capitán de un pasajero."}
+       opts:["decido","acepto","repito","comparto"],a:0,ex:"Tú tienes el control. Usar la IA con cabeza es de capitanes."}
     ]},
-    {id:"e10l3",t:"Repaso de Capitán",d:"Todo el camino",ex:[
+    {id:"e10l3",t:"Repaso de Capitán",d:"Lo más importante",ex:[
       {type:"mc",skill:"etica",q:"Lo más importante de un buen prompt es…",
-       opts:["Que tenga contexto y objetivo claros","Que sea lo más largo y detallado posible","Usar palabras técnicas para que te tomen en serio","Pedirle varias cosas distintas en un mismo mensaje"],a:0,
-       ex:"¡Los dos vitales! Contexto y objetivo. Ya piensas como alguien que sabe pedirle a la IA."},
-      {type:"mc",skill:"video",q:"En un video para las redes de Milla Azul, lo que decide si lo ven completo son…",
-       opts:["Los primeros 3 segundos del video","Las etiquetas que le pongas al publicar","La música que suene sobre el final","El filtro de color que le apliques"],a:0,
-       ex:"El gancho manda. Si el arranque no para el dedo, lo demás no lo ve nadie."},
-      {type:"tf",skill:"capacidades",q:"La IA crece rapidísimo y a veces inventa: por eso hay que verificar siempre.",a:true,
-       ex:"Verdadero. Uniste las dos ideas grandes del camino. Eso es nivel Capitán."},
+       opts:["Contexto y objetivo claros","Que sea lo más largo y detallado posible","Usar palabras técnicas para que la IA te tome en serio","Pedirle varias cosas distintas en un mismo mensaje"],a:0,
+       ex:"¡Los dos vitales! Contexto + objetivo. Ya piensas como un Prompt Master."},
+      {type:"tf",skill:"capacidades",q:"La IA crece de forma exponencial y es un genio que a veces inventa: hay que verificar.",a:true,
+       ex:"¡Correcto! Uniste las dos ideas clave. Vas nivel Capitán."},
+      {type:"fill",skill:"etica",q:"Si la IA se equivoca y yo lo publico, la responsabilidad es ______.",
+       opts:["mía","de la IA","del colegio","del profesor"],a:0,ex:"Firmas tú, respondes tú. Por eso se verifica antes de publicar: la IA no da la cara, tú sí."},
       {type:"mission",skill:"etica",q:"",title:"Misión final: tu Tarjeta de Piloto Responsable",
-       intro:"Un capitán sabe usar la IA sin estrellarse, y con Milla Azul ya no es solo tu tarea: hay clientes de por medio. Arma tu tarjeta de reglas de oro y enséñale una a tu familia. El que enseña, aprende doble.",
-       steps:["Abre Claude. Copia el prompt y pídele tu Tarjeta de Piloto Responsable.","Léela y quítale o cámbiale lo que no te suene. TÚ decides; la IA solo propone (y a veces se equivoca).","Guárdala: hazle captura o pásala a una nota en tu teléfono.","Con la tarjeta en la mano, enséñale UNA regla a alguien de tu familia y pídele que te diga si le quedó clara."],
-       objetivo:"que la IA te arme TU tarjeta con 5 reglas de oro para usar la IA de forma segura y honesta, incluidas las que aplican ahora que le vendes a clientes de verdad.",
-       copy:"Actúa como mi entrenador de uso responsable de la IA. Tengo 15 años y tengo un negocio que se llama Milla Azul: vendo insumos de pesca (señuelos, chaquetas impermeables, morrales) a gente que está empezando, y les doy asesoría. Hazme una 'Tarjeta de Piloto Responsable' con 5 reglas de oro, cortas y fáciles de recordar. Deben cubrir: qué datos personales NUNCA dar, por qué verifico los precios y los datos antes de pasárselos a un cliente, por qué no prometo en un video lo que el producto no es, cuándo digo que algo lo hice con IA, y por qué la decisión final siempre es mía. Ponlas como lista numerada, en español de Colombia y con palabras mías, no acartonadas.",
-       botin:"Tu Tarjeta de Piloto Responsable: 5 reglas para usar la IA sin meterte en problemas, ni en el colegio ni con un cliente. Te sirve de por vida.",xp:50}
+       intro:"Un capitán sabe usar la IA sin estrellarse. Crea con la IA tu propia tarjeta de reglas de oro, y enséñale una a tu familia. El que enseña, aprende doble.",
+       steps:["Abre Claude. Copia el prompt y pídele tu Tarjeta de Piloto Responsable.","Léela y quítale o cámbiale lo que no te suene. TÚ decides; la IA solo ayuda (y a veces se equivoca).","Guárdala: hazle captura o pásala a una nota en tu teléfono.","Con la tarjeta en la mano, enséñale UNA regla a alguien de tu familia."],
+       objetivo:"que la IA te arme TU tarjeta con 5 reglas de oro para usar la IA de forma segura (no dar datos personales, verificar porque a veces inventa, decidir tú).",
+       copy:"Actúa como mi entrenador de uso responsable de la IA. Tengo 15 años. Hazme una 'Tarjeta de Piloto Responsable' con 5 reglas de oro, cortas y fáciles de recordar, para usar la IA de forma segura: qué datos personales NUNCA dar, por qué debo verificar lo que me dice (a veces inventa) y por qué la decisión final siempre es mía. Ponlas como lista numerada para memorizarlas rápido.",
+       botin:"Tu Tarjeta de Piloto Responsable: 5 reglas para usar la IA sin meterte en problemas. Te sirve de por vida y ya sabes enseñarla.",xp:50}
     ]}
   ]}
 ]
@@ -1029,14 +1011,14 @@ const MISIONES=[
 /* ===== ETAPA 4 · RADAR DE DATOS — investigar y verificar ===== */
 {mid:"m4a",etapa:4,tipo:"corta",min:15,xp:20,
  title:"El cuartel general de tu negocio",
- intro:"Cada vez que le hablas a la IA le toca explicarle otra vez quién eres y qué vendes. Se acabó. Vas a crear un Proyecto: un espacio que ya te conoce y arranca sabiendo de Milla Azul, tu negocio.",
+ intro:"Cada vez que le hablas a la IA le toca explicarle otra vez quién eres y qué vendes. Se acabó. Vas a crear un Proyecto: un espacio que ya te conoce y arranca sabiendo de tu negocio de pesca.",
  steps:["Abre Claude y busca <b>Proyectos</b> en el menú de la izquierda. Crea uno nuevo y ponle el nombre de tu negocio.",
   "Adentro busca donde dice <b>Instrucciones</b> del proyecto. Copia el texto de abajo, pégalo ahí y cambia lo que está entre corchetes por lo tuyo de verdad.",
   "Guarda. Ahora, dentro del Proyecto, escríbele solo esto: 'dame 3 ideas de publicación para esta semana'. Nada más.",
   "Fíjate en lo que pasó: te contestó sabiendo quién eres, sin que le explicaras nada. Eso es el Proyecto trabajando.",
   "De aquí en adelante, TODO lo de tu negocio lo haces dentro de este Proyecto."],
  objetivo:"que la IA quede configurada como un empleado que ya conoce tu negocio, para no repetirle el contexto nunca más.",
- copy:"Este proyecto es para Milla Azul, mi negocio de insumos de pesca. Datos: me llamo [tu nombre] y tengo [tu edad] años. Mi negocio se llama Milla Azul y vende insumos de pesca: señuelos, chaquetas impermeables, morrales y [los otros dos productos]. Mis clientes son personas que están empezando a pescar, y lo que me diferencia es que les doy asesoría: les digo qué necesitan de verdad y qué no. Estoy en [tu ciudad o región] y vendo por [Instagram / WhatsApp / mi página web]. Reglas para ti: háblame como a alguien de mi edad, sin palabras raras; los precios siempre en pesos colombianos; cuando me des ideas, que sean cosas que yo pueda hacer hoy con lo que tengo (poco dinero y un celular); y si algo no lo sabes con seguridad, dímelo en vez de inventarlo.",
+ copy:"Este proyecto es para mi negocio de pesca. Datos: me llamo [tu nombre] y tengo [tu edad] años. Mi negocio se llama [nombre del negocio] y vende [qué vendes: señuelos, guiadas, combos, ropa...]. Mis clientes son [a quién le vendes: pescadores de tu zona, principiantes, deportivos...]. Estoy en [tu ciudad o región] y vendo por [Instagram / WhatsApp / mi página web]. Reglas para ti: háblame como a alguien de mi edad, sin palabras raras; los precios siempre en pesos colombianos; cuando me des ideas, que sean cosas que yo pueda hacer hoy con lo que tengo (poco dinero y un celular); y si algo no lo sabes con seguridad, dímelo en vez de inventarlo.",
  botin:"Tu Proyecto de negocio montado: un espacio donde la IA ya sabe quién eres, qué vendes y a quién. Nunca más le explicas todo desde cero."},
 
 {mid:"m4b",etapa:4,tipo:"larga",min:45,xp:40,
@@ -1048,7 +1030,7 @@ const MISIONES=[
   "Marca en la tabla los precios que verificaste. A los que no pudiste verificar, ponles un signo de pregunta.",
   "Al final quédate con UNA sola frase: qué le falta al mercado que tú sí puedes ofrecer. Escríbela y guárdala. Esa frase es tu negocio."],
  objetivo:"que la IA te entregue el mapa de tu competencia (qué venden, a cuánto, qué les critican) para que pongas tu precio con datos y no adivinando.",
- copy:"Investiga a fondo el mercado de artículos de pesca para principiantes en [tu región de Colombia] y en Instagram. Quiero saber: 1) quiénes están vendiendo lo mismo que yo, con nombre y enlace; 2) qué cobran exactamente por cada cosa, en pesos colombianos, y de dónde sacaste ese precio; 3) qué dicen los clientes en comentarios y reseñas que les gusta y de qué se quejan; 4) tres cosas que nadie está ofreciendo y que un negocio nuevo y pequeño sí podría hacer. Organízalo en una tabla sencilla y pon la fuente de cada dato. Si un precio no lo encuentras confirmado, dímelo en vez de estimarlo.",
+ copy:"Investiga a fondo el mercado de la pesca deportiva y de artículos de pesca en [tu región de Colombia] y en Instagram. Quiero saber: 1) quiénes están vendiendo lo mismo que yo, con nombre y enlace; 2) qué cobran exactamente por cada cosa, en pesos colombianos, y de dónde sacaste ese precio; 3) qué dicen los clientes en comentarios y reseñas que les gusta y de qué se quejan; 4) tres cosas que nadie está ofreciendo y que un negocio nuevo y pequeño sí podría hacer. Organízalo en una tabla sencilla y pon la fuente de cada dato. Si un precio no lo encuentras confirmado, dímelo en vez de estimarlo.",
  botin:"La tabla de precios de tu competencia con 2 datos verificados por ti, más la frase de qué te hace distinto. Con eso ya le pones precio a lo tuyo sin adivinar."},
 
 /* ===== ETAPA 5 · COPILOTO — Cowork ===== */
@@ -1061,7 +1043,7 @@ const MISIONES=[
   "Ábrelo y revísalo TÚ: ¿los costos son reales? Corrige lo que esté mal — lo que Cowork no sabía, lo adivinó.",
   "Mira la columna de ganancia y busca cuál producto te deja más plata. Sorpresa: casi nunca es el que más se vende."],
  objetivo:"que Cowork te deje un archivo de catálogo con precio, costo y ganancia por producto, para saber cuál te conviene empujar.",
- copy:"Créame una carpeta para Milla Azul, mi negocio de insumos de pesca y adentro un archivo de catálogo. Debe tener una fila por cada cosa que vendo, con estas columnas: producto o servicio, qué incluye, cuánto me cuesta a mí, a cuánto lo vendo, cuánta ganancia me deja y qué porcentaje es esa ganancia. Los precios en pesos colombianos con puntos de miles. Empieza con estos productos: señuelos, chaquetas impermeables, morrales y [los otros dos productos]. Los costos que no sepas, déjalos en blanco y márcalos para que yo los llene. Al final dime cuál producto me deja más ganancia y por qué.",
+ copy:"Créame una carpeta para mi negocio de pesca y adentro un archivo de catálogo. Debe tener una fila por cada cosa que vendo, con estas columnas: producto o servicio, qué incluye, cuánto me cuesta a mí, a cuánto lo vendo, cuánta ganancia me deja y qué porcentaje es esa ganancia. Los precios en pesos colombianos con puntos de miles. Empieza con estos productos: [escribe aquí lo que vendes]. Los costos que no sepas, déjalos en blanco y márcalos para que yo los llene. Al final dime cuál producto me deja más ganancia y por qué.",
  botin:"El archivo de catálogo de tu negocio con precios y ganancia por producto, guardado en tu computador. Y saber cuál producto te conviene vender más."},
 
 {mid:"m5b",etapa:5,tipo:"larga",min:40,xp:40,
@@ -1073,7 +1055,7 @@ const MISIONES=[
   "Prueba el de respuestas: pídele a alguien de tu familia que te escriba haciéndose pasar por cliente, y contéstale usando el archivo. ¿Sirvió?",
   "Deja la carpeta ordenada. Ese es tu puesto de mando: cuando llegue un cliente de verdad, no vas a improvisar."],
  objetivo:"que Cowork te arme de una sentada la papelería completa del negocio: presentación, respuestas listas y guion de venta, en archivos que abres cuando quieras.",
- copy:"En la carpeta de Milla Azul, mi negocio de insumos de pesca, créame cuatro archivos. 1) 'Quiénes somos': un párrafo corto que explique Milla Azul y por qué alguien me compraría a mí y no a otro. Lo mío es que le vendo a quien está empezando y le doy asesoría de verdad, no solo el producto. 2) 'Respuestas listas': las 10 preguntas que más me van a hacer los clientes (precio, envío, si sirve para principiantes, garantía) con una respuesta corta y amable para cada una, lista para copiar y pegar en WhatsApp. 3) 'Guion de venta': qué decirle a alguien que muestra interés pero no se decide, sin sonar rogón. 4) 'Lista de tareas': las 10 cosas que me faltan para que el negocio esté completo, de la más urgente a la menos. Escríbelo todo como habla alguien de 15 años en Colombia, sin palabras acartonadas.",
+ copy:"En la carpeta de mi negocio de pesca, créame cuatro archivos. 1) 'Quiénes somos': un párrafo corto que explique mi negocio y por qué alguien me compraría a mí y no a otro. 2) 'Respuestas listas': las 10 preguntas que más me van a hacer los clientes (precio, envío, si sirve para principiantes, garantía) con una respuesta corta y amable para cada una, lista para copiar y pegar en WhatsApp. 3) 'Guion de venta': qué decirle a alguien que muestra interés pero no se decide, sin sonar rogón. 4) 'Lista de tareas': las 10 cosas que me faltan para que el negocio esté completo, de la más urgente a la menos. Escríbelo todo como habla alguien de 15 años en Colombia, sin palabras acartonadas.",
  botin:"Cuatro archivos que son la papelería de tu negocio: tu presentación, tus respuestas de WhatsApp listas para copiar, tu guion de venta y tu lista de pendientes."},
 
 /* ===== ETAPA 6 · CONTROLES — Claude en Chrome ===== */
@@ -1086,7 +1068,7 @@ const MISIONES=[
   "Escoge SOLO los 2 arreglos más fáciles y hazlos hoy. Los demás quedan anotados — no intentes arreglar todo de una.",
   "Vuelve a abrir la página en el celular con los 2 arreglos hechos. ¿Se ve mejor?"],
  objetivo:"que Claude revise tu página con ojos de cliente nuevo y te diga qué confunde, qué falta y qué espanta compradores.",
- copy:"Estás viendo la página de Milla Azul, mi negocio de insumos de pesca. Revísala como si fueras un cliente que llega por primera vez desde el celular y no me conoce de nada. Dime: 1) en los primeros 5 segundos, ¿se entiende qué vendo y a quién? 2) ¿qué información importante falta y que un comprador necesita para decidirse (precios, cómo pedir, dónde estoy, si hay envío)? 3) ¿hay algo que confunda o que se vea mal en pantalla pequeña? 4) dame 5 arreglos concretos, del más fácil al más difícil, y dime cuánto cambiaría cada uno. Sé honesto: prefiero que me lo digas tú ahora y no que me lo diga un cliente que ya se fue.",
+ copy:"Estás viendo la página de mi negocio de pesca. Revísala como si fueras un cliente que llega por primera vez desde el celular y no me conoce de nada. Dime: 1) en los primeros 5 segundos, ¿se entiende qué vendo y a quién? 2) ¿qué información importante falta y que un comprador necesita para decidirse (precios, cómo pedir, dónde estoy, si hay envío)? 3) ¿hay algo que confunda o que se vea mal en pantalla pequeña? 4) dame 5 arreglos concretos, del más fácil al más difícil, y dime cuánto cambiaría cada uno. Sé honesto: prefiero que me lo digas tú ahora y no que me lo diga un cliente que ya se fue.",
  botin:"La lista de 5 arreglos de tu página ordenados por facilidad, y 2 de ellos ya hechos hoy."},
 
 {mid:"m6b",etapa:6,tipo:"larga",min:45,xp:40,
@@ -1106,24 +1088,24 @@ const MISIONES=[
  title:"Tu primer video de producto",
  intro:"Tienes fotos de lo que vendes y nadie las mira. Hoy una de esas fotos se convierte en un video vertical de 15 segundos, del estilo de los que sí paran el dedo.",
  steps:["Escoge UNA foto de lo que vendes: la más clara, con el producto bien visible y fondo sencillo.",
-  "Higgsfield es solo para mayores de 18, así que esto se hace con la cuenta de tu papá y él al lado. Abre Marketing Studio y sube la foto del producto.",
+  "Higgsfield es solo para mayores de 18, así que esto se hace en el computador de Andrés, con su cuenta y él al lado. Abre Marketing Studio y sube la foto del producto.",
   "Escoge formato vertical (9:16) y un estilo de anuncio. Escribe en una frase qué quieres que pase en el video.",
   "Míralo con ojo de cliente: ¿se entiende qué es y se ve real? Si exagera lo que el producto es, vuélvelo a hacer más sobrio.",
   "Guárdalo en el teléfono y publícalo con el texto y el precio. Que el pie diga cómo pedirlo."],
  objetivo:"que salgas con UN video vertical de tu producto, publicado, hecho a partir de una foto que ya tenías.",
- copy:"Quiero un video vertical de 15 segundos para Instagram de este producto: [qué es y para qué sirve]. Mi negocio se llama Milla Azul y le vendo a gente que está empezando a pescar. El video debe mostrar el producto en movimiento, verse real (nada de prometer más de lo que es) y terminar invitando a escribirme por WhatsApp. Dime también qué texto pongo en el pie de la publicación, en español de Colombia, con el precio en pesos.",
+ copy:"Quiero un video vertical de 15 segundos para Instagram de este producto: [qué es y para qué sirve]. Mi negocio se llama [nombre] y le vendo a [a quién]. El video debe mostrar el producto en movimiento, verse real (nada de prometer más de lo que es) y terminar invitando a escribirme por WhatsApp. Dime también qué texto pongo en el pie de la publicación, en español de Colombia, con el precio en pesos.",
  botin:"Tu primer video de producto publicado, y la certeza de que puedes sacar uno nuevo en 20 minutos cada vez que quieras."},
 
 {mid:"m11b",etapa:7,tipo:"larga",min:45,xp:40,
  title:"Tres anuncios y el que gana",
  intro:"Nadie sabe de antemano qué video funciona: se prueba. Vas a sacar tres versiones del mismo producto con ganchos distintos, publicarlas y dejar que la gente decida cuál sirve.",
  steps:["Escribe tres ganchos distintos para el mismo producto: uno que enseñe algo útil, uno que muestre el producto en uso y uno que cuente por qué lo vendes tú.",
-  "En Marketing Studio (con la cuenta de tu papá, que el servicio es de mayores de 18) saca un video vertical por cada gancho, con la misma foto de producto. Que los tres duren entre 10 y 15 segundos.",
+  "En Marketing Studio (en la cuenta de Andrés, que es de mayores de 18) saca un video vertical por cada gancho, con la misma foto de producto. Que los tres duren entre 10 y 15 segundos.",
   "Publícalos en días distintos, a la misma hora, con el mismo texto de pie. Solo cambia el gancho: así sabes qué fue lo que funcionó.",
   "A los tres días anota en el archivo de tu negocio las vistas de cada uno y cuántas personas te escribieron.",
   "Quédate con el gancho ganador y saca dos videos más con esa misma fórmula, cambiando de producto."],
  objetivo:"que descubras con datos tuyos cuál gancho vende en TU negocio, y te quedes con una fórmula que puedes repetir.",
- copy:"Actúa como el que maneja las redes de mi negocio. Vendo insumos de pesca (señuelos, chaquetas impermeables, morrales) a gente que está empezando, en [tu ciudad]. Lo que me diferencia es la asesoría: les explico qué sirve para un principiante y qué no. Escríbeme TRES ganchos distintos para videos cortos del mismo producto: uno que enseñe algo útil a mi cliente, uno que muestre el producto en uso y uno que cuente por qué lo vendo yo. Para cada uno dame: la primera frase exacta que se ve en el video, qué debe pasar en pantalla en esos 15 segundos y el texto del pie de la publicación. Después dime cómo comparo cuál funcionó mejor sin pagar publicidad.",
+ copy:"Actúa como el que maneja las redes de mi negocio. Vendo [qué vendes] a [a quién] en [tu ciudad]. Escríbeme TRES ganchos distintos para videos cortos del mismo producto: uno que enseñe algo útil a mi cliente, uno que muestre el producto en uso y uno que cuente por qué lo vendo yo. Para cada uno dame: la primera frase exacta que se ve en el video, qué debe pasar en pantalla en esos 15 segundos y el texto del pie de la publicación. Después dime cómo comparo cuál funcionó mejor sin pagar publicidad.",
  botin:"Tres videos publicados, los números de cada uno y tu fórmula ganadora por escrito: ya no adivinas qué publicar."},
 
 /* ===== ETAPA 9 · INGENIERÍA DE VUELO — crear con IA ===== */
@@ -1147,7 +1129,7 @@ const MISIONES=[
   "Enséñaselo a un pescador de verdad y quédate callado mientras lo usa. Lo que le cueste entender, eso es lo que hay que arreglar.",
   "Cuando funcione, pégalo en tu página. Acabas de hacer un programa."],
  objetivo:"que construyas una herramienta propia donde el cliente arma su pedido y le sale el total, sin que tú tengas que contestar precios uno por uno.",
- copy:"Hazme una página web sencilla, de un solo archivo, que sea el cotizador de Milla Azul, mi negocio de insumos de pesca. El cliente debe poder escoger de una lista los productos que quiere y cuántos de cada uno, y que se le vaya mostrando el total en pesos colombianos con puntos de miles, actualizándose solo. Los productos y precios son estos: [pega aquí tu catálogo]. Al final un botón que diga 'Pedir por WhatsApp' que abra mi WhatsApp [tu número] con el resumen del pedido y el total ya escritos en el mensaje. Que se vea bien en celular, que use los colores y el logo de mi marca, y que sea fácil de usar para alguien que no es de tecnología. Explícame al final cómo lo pongo en internet.",
+ copy:"Hazme una página web sencilla, de un solo archivo, que sea el cotizador de mi negocio de pesca. El cliente debe poder escoger de una lista los productos que quiere y cuántos de cada uno, y que se le vaya mostrando el total en pesos colombianos con puntos de miles, actualizándose solo. Los productos y precios son estos: [pega aquí tu catálogo]. Al final un botón que diga 'Pedir por WhatsApp' que abra mi WhatsApp [tu número] con el resumen del pedido y el total ya escritos en el mensaje. Que se vea bien en celular, que use los colores y el logo de mi marca, y que sea fácil de usar para alguien que no es de tecnología. Explícame al final cómo lo pongo en internet.",
  botin:"Tu cotizador funcionando: el cliente arma su pedido, ve el total y te lo manda por WhatsApp solo. Es un programa hecho por ti."}
 ];
 
@@ -1869,7 +1851,7 @@ const PLANES={
   {t:"Muestra y despega",como:"Cada uno cuenta cuánto tiempo se ahorró. Cierras con la tarea.",ej:"Comparan cuántos clics se ahorraron. Tarea: terminar la etapa.",tdah:"Medir el ahorro en minutos lo hace concreto."}]},
  e11:{tema:"Video con IA: anuncios que sí paran el dedo",blocks:[
   {t:"Despegue: jueguen la etapa juntos",como:"Proyecta la Etapa 7 y JUÉGUENLA JUNTOS (~10 min). Salen el gancho, el formato vertical y la línea de lo honesto.",ej:"Leen la pregunta de los primeros 3 segundos y él escoge; celebras el acierto con el sonido del juego.",tdah:"Arranca jugando, no explicando. Meta visible: «hoy sales con un video tuyo publicado»."},
-  {t:"De una foto a un video, en vivo",como:"Abre Marketing Studio y haz UNO delante de él con una foto de su producto. Que vea el antes y el después sin que expliques nada todavía.",ej:"Subes la foto que él trajo, escoges vertical y sale el video. Ahí se calla la clase sola.",tdah:"El wow va primero, la teoría después. Que él escoja la foto. La cuenta de Higgsfield es la del papá de Daniel (el servicio pide 18 años): Daniel maneja, el papá pone la sesión."},
+  {t:"De una foto a un video, en vivo",como:"Abre Marketing Studio y haz UNO delante de él con una foto de su producto. Que vea el antes y el después sin que expliques nada todavía.",ej:"Subes la foto que él trajo, escoges vertical y sale el video. Ahí se calla la clase sola.",tdah:"El wow va primero, la teoría después. Que él escoja la foto. La cuenta de Higgsfield es tuya (pide 18 años): él maneja, tú pones el computador."},
   {t:"El gancho: los 3 primeros segundos",como:"Miren dos videos de redes: uno que aburre y uno que engancha. Que él diga en qué segundo se le fue la atención.",ej:"Ponen dos reels del tema de su negocio y él cronometra cuándo se aburre. El dato sale de él, no de ti.",tdah:"⏸️ Descanso 5 min ANTES (55 minutos). Este bloque es de mirar, no de oír."},
   {t:"Su turno: tres ganchos para lo suyo",como:"Él escribe tres ganchos distintos para el mismo producto y saca un video del que más le guste. Corrige solo lo que confunde.",ej:"Sobre un producto real de su negocio: uno que enseña, uno que muestra y uno personal.",tdah:"Máximo 3 intentos por video. Cronómetro visible o se va en probar estilos."},
   {t:"La raya: videos honestos",como:"Tema corto y firme: no prometer lo que el producto no es, no usar la cara de otro sin permiso, decirlo cuando parezca grabado de verdad.",ej:"Le muestras un video que exagera y le preguntas qué haría el cliente al recibir el pedido.",tdah:"⏸️ Segundo descanso ANTES (1h55). Que la conclusión la diga él, con sus palabras."},

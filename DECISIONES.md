@@ -29,13 +29,37 @@
   Con 900 se mantiene la misma proporción de antes (~96%), o sea el mismo esfuerzo. Alférez
   (220) y Teniente (520) **no se movieron**, para no regalarle un rango a nadie.
 
-## Pendiente de Andrés (16/09/2026)
+## 17/09/2026 · El negocio es Milla Azul, y las etapas 8 y 9 se rehacen a fondo
 
-- **Los datos reales del negocio**: nombre, dirección de la página web, propuesta de valor y
-  la lista de lo que vende con precios. Las misiones funcionan sin eso (dicen "tu negocio",
-  "[qué vendes]"), pero con los datos de verdad se vuelven literales. Es un ajuste de minutos.
-- **La cuenta de Higgsfield**: gasta créditos de pago y hay que decidir si Daniel usa la de
-  Andrés o tiene una propia (ver la edad mínima del servicio antes de darle cuenta propia).
+- **¿Cómo se llama el negocio?** → **Milla Azul**.
+- **¿Qué vende y a quién?** → **insumos de pesca para gente que está empezando**: señuelos,
+  chaquetas impermeables, morrales y **dos productos más que Andrés no recordaba** (quedaron
+  como `[los otros dos productos]` dentro de los prompts, para que se vea el hueco).
+- **¿Cuál es la propuesta de valor?** → que él **da asesoría**: le dice al principiante qué
+  necesita de verdad y qué no. Eso es lo que lo diferencia, y así quedó escrito en las misiones.
+- **¿Página web?** → **todavía no tiene**; debía salir el **viernes 18/09/2026**. Las misiones
+  que la usan (revisar la página, el botón de WhatsApp, el cotizador) ya la dan por existente.
+- **¿De qué ciudad?** → **sin confirmar**. Quedó como `[tu ciudad]` / `[tu región]`: lo llena
+  Daniel, que se lo sabe.
+- **¿Con qué cuenta de Higgsfield?** → con la **del papá de Daniel**. El servicio exige 18 años
+  (Términos de Uso, secc. 2.1, verificado el 16/09/2026) y Daniel tiene 15. Ya está dicho así
+  dentro del juego: él maneja, el papá pone la sesión.
+- **¿Las etapas 8 y 9?** → **rehechas a fondo, sin cambiarles el tema.** La 8 sigue siendo
+  crear con IA y la 9 sigue siendo uso responsable y repaso; lo que cambió es que ahora todos
+  los ejercicios pasan por Milla Azul. A la 8 se le agregó una tercera lección, **"Probar como
+  cliente"**, porque el bucle real de crear algo es construir, probarlo en el celular y
+  arreglarlo. Pasada limpia: **880 XP** contra los 900 de Capitán IA.
+- **Lo que Daniel NO perdió (verificado contra la nube el 17/09/2026):** 470 XP, rango Alférez,
+  **6 de 9 insignias** (etapas 1 a 6) y 21 lecciones. Lo único que se reinició fueron los **27
+  repasos pendientes**, que guardaban posiciones de etapas que ya no existen y habrían sacado
+  preguntas equivocadas. Su lección suelta de la vieja Bitácora (`e7l1`) quedó como clave
+  huérfana: no le quita XP.
+
+## Pendiente de Andrés (17/09/2026)
+
+- **Los otros dos productos de Milla Azul** y **la ciudad** de Daniel.
+- **Avisar cuando la página web esté publicada** (iba para el 18/09/2026), para poner la
+  dirección literal en las misiones que la revisan.
 
 ## 05/08/2026 · Torre de Misiones
 
