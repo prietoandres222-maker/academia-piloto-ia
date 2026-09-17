@@ -1189,21 +1189,9 @@ function defConfig(){ return {
   rewards:{Alférez:"",Teniente:"","Primer Oficial":""},
   prizeText:"Cuando llegues a Capitán IA, vuelas de verdad: 1 hora en un simulador de Airbus A320 con pilotos reales en V1 Aviation Center (Medellín).",
   dadLetter:"", familyNote:"",
-  claseFijada:"", _t:0 }; }   /* sin clase fijada: el plan se abre en la que sigue según el avance */
+  claseFijada:"e3" }; }   /* la clase del 28/07/2026; se cambia con un toque en el plan */
 let CFG=loadConfig();
-function saveConfig(){ CFG._t=Date.now();
-  try{localStorage.setItem(CONFIG_KEY,JSON.stringify(CFG));}catch(e){}
-  /* La carta del papá y los premios son de la familia, no del equipo donde se
-     escribieron: se suben para que Daniel los vea en SU computador. Si la nube
-     no responde, no pasa nada: quedan guardados aquí igual. */
-  try{ cloudPut(CONFIG_ROW,CFG); }catch(e){} }
-/* Trae lo que haya escrito el Comandante desde otro equipo. Gana el más reciente:
-   esto no es progreso de juego, es un texto que solo escribe una persona. */
-function pullConfig(){ return cloudGet(CONFIG_ROW).then(rem=>{
-  if(!rem || (rem._t||0)<=(CFG._t||0)) return false;
-  CFG=Object.assign(defConfig(),rem);
-  try{localStorage.setItem(CONFIG_KEY,JSON.stringify(CFG));}catch(e){}
-  return true; }).catch(()=>false); }
+function saveConfig(){ try{localStorage.setItem(CONFIG_KEY,JSON.stringify(CFG));}catch(e){} }
 
 /* ---------- perfiles ---------- */
 function loadProfiles(){ try{const r=localStorage.getItem(PROFILES_KEY);if(r)return JSON.parse(r);}catch(e){} return []; }
@@ -1252,7 +1240,6 @@ function save(){ S._t=Date.now(); saveLocal(); cloudPush(); }
    ========================================================= */
 const SYNC_URL="https://capitan-echandia-sync.prieto-ia.workers.dev";
 const ROSTER_ROW="cve_roster";
-const CONFIG_ROW="cve_cfg";   /* carta del papá, mensaje de la familia y premios por rango */
 let cloudOk=null, sbTimer=null, cloudReady=false;
 function syncRow(){ return "cve_"+activeId; }
 function setCloud(ok){ cloudOk=ok; const el=document.getElementById('cloudStat'); if(el) el.textContent=ok?'☁️ Sincronizado con la nube':'☁️ Guardado en este equipo'; }
@@ -2097,7 +2084,6 @@ function boot(){
   };
   // Siempre se pregunta a la nube por la tripulación: así los pilotos aparecen
   // en cualquier equipo aunque este celular haya perdido sus datos.
-  pullConfig().then(cambio=>{ if(cambio && document.getElementById('scr-path')) renderPath(); });
   if(activeId && PROFILES.find(p=>p.id===activeId)){
     entrarAlPiloto(); pullRoster();
   } else {
