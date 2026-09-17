@@ -1,3 +1,0 @@
-Documentacion: la fila cve_cfg y el aviso de que ese endpoint es publico
-
-Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
